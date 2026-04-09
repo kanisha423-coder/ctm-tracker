@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTM Layer 2 — Action & Coaching Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+  :root {
+    --bg:          #f5f4f0;
+    --surface:     #ffffff;
+    --surface2:    #f1efe8;
+    --border:      #d3d1c7;
+    --border-lt:   #b4b2a9;
+    --text:        #1a1a18;
+    --text-dim:    #5f5e5a;
+    --text-muted:  #888780;
+    --green:       #0f6e56;
+    --green-soft:  rgba(15,110,86,.09);
+    --green-bd:    rgba(15,110,86,.3);
+    --amber:       #854f0b;
+    --amber-soft:  rgba(133,79,11,.09);
+    --amber-bd:    rgba(133,79,11,.3);
+    --red:         #a32d2d;
+    --red-soft:    rgba(163,45,45,.09);
+    --red-bd:      rgba(163,45,45,.3);
+    --blue:        #185fa5;
+    --blue-soft:   rgba(24,95,165,.09);
+    --blue-bd:     rgba(24,95,165,.3);
+    --purple:      #534ab7;
+    --purple-soft: rgba(83,74,183,.09);
+    --purple-bd:   rgba(83,74,183,.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2.5rem 1rem 5rem;
+  }
+
+  .page-wrap { max-width: 920px; margin: 0 auto; }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
+  }
+  .system-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--purple); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 5px;
+  }
+  .page-title { font-size: 21px; font-weight: 600; color: var(--text); letter-spacing: -0.02em; }
+  .page-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+  .top-chips { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+  }
+  .chip-l2     { background: var(--purple-soft); color: var(--purple); border: 0.5px solid var(--purple-bd); }
+  .chip-from   { background: var(--surface2); color: var(--text-muted); border: 0.5px solid var(--border); }
+
+  /* ── FROM L1 BANNER ── */
+  .l1-banner {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface2); border: 0.5px solid var(--border-lt);
+    border-left: 3px solid var(--text-muted); border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 22px; flex-wrap: wrap;
+  }
+  .l1-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap;
+  }
+  .l1-divider { width: 0.5px; height: 26px; background: var(--border); flex-shrink: 0; }
+  .l1-fields { display: flex; flex-wrap: wrap; gap: 18px; }
+  .l1-field { display: flex; flex-direction: column; gap: 2px; }
+  .l1-key { font-size: 10px; color: var(--text-muted); }
+  .l1-val { font-size: 13px; font-weight: 500; color: var(--text); font-family: 'IBM Plex Mono', monospace; }
+  .l1-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+  .tag-ctm      { background: #e1f5ee; color: #0f6e56; }
+  .tag-grievance { background: #e6f1fb; color: #185fa5; }
+  .tag-audit    { background: #eeedfe; color: #534ab7; }
+
+  /* ── STATUS STRIP ── */
+  .status-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 22px; }
+  .stat { background: var(--surface2); border-radius: 8px; padding: 10px 12px; border: 0.5px solid var(--border); }
+  .stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'IBM Plex Mono', monospace; }
+  .stat-val { font-size: 17px; font-weight: 600; color: var(--text); }
+  .stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── SECTION CARDS ── */
+  .section-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 0.5px solid var(--border); background: var(--surface2); }
+  .section-bar { width: 3px; border-radius: 2px; flex-shrink: 0; }
+  .section-title { font-size: 12px; font-weight: 500; color: var(--text); letter-spacing: 0.02em; flex: 1; }
+  .section-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px;
+  }
+  .section-body { padding: 16px; }
+
+  /* ── GRIDS ── */
+  .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px 14px; margin-bottom: 12px; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px 14px; margin-bottom: 12px; }
+  .mb0 { margin-bottom: 0 !important; }
+  .mb12 { margin-bottom: 12px; }
+
+  /* ── FIELDS ── */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 10px; font-weight: 500; color: var(--text-dim);
+    letter-spacing: 0.07em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .req { color: var(--red); }
+  .field input, .field select, .field textarea {
+    width: 100%; font-size: 13px; font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg); border: 0.5px solid var(--border-lt);
+    border-radius: 6px; padding: 8px 10px; color: var(--text); outline: none;
+    transition: border-color .12s, box-shadow .12s;
+  }
+  .field select option { background: var(--surface); color: var(--text); }
+  .field textarea { resize: vertical; line-height: 1.55; min-height: 80px; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 2px var(--purple-soft); }
+  .field-note { font-size: 10px; color: var(--text-muted); line-height: 1.45; }
+  .field-note.warn { color: var(--amber); }
+  .field-note.alert { color: var(--red); }
+  .trend-label { color: var(--red) !important; font-weight: 600 !important; }
+  .req-legend { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* ── PILL TOGGLES ── */
+  .pill-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .pill {
+    display: inline-flex; align-items: center; padding: 5px 13px;
+    border-radius: 5px; font-size: 12px; cursor: pointer;
+    border: 0.5px solid var(--border-lt); background: var(--bg); color: var(--text-muted);
+    transition: all .12s; user-select: none;
+  }
+  .pill:hover { border-color: var(--text-muted); color: var(--text); }
+  .pill.p-pass     { background: var(--green-soft);  color: var(--green);  border-color: var(--green-bd);  }
+  .pill.p-fail     { background: var(--red-soft);    color: var(--red);    border-color: var(--red-bd);    }
+  .pill.p-review   { background: var(--amber-soft);  color: var(--amber);  border-color: var(--amber-bd);  }
+  .pill.p-pending  { background: var(--blue-soft);   color: var(--blue);   border-color: var(--blue-bd);   }
+  .pill.p-closed   { background: var(--green-soft);  color: var(--green);  border-color: var(--green-bd);  }
+  .pill.p-coaching { background: var(--purple-soft); color: var(--purple); border-color: var(--purple-bd); }
+  .pill.p-unfounded    { background: var(--green-soft);  color: var(--green);  border-color: var(--green-bd);  }
+  .pill.p-substantiated { background: var(--red-soft);   color: var(--red);    border-color: var(--red-bd);    }
+  .pill.p-partial  { background: var(--amber-soft);  color: var(--amber);  border-color: var(--amber-bd);  }
+  .pill.p-inconclusive { background: var(--purple-soft); color: var(--purple); border-color: var(--purple-bd); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 14px 0; }
+
+  /* ── REQUESTED / SENT TABLE ── */
+  .rs-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .rs-table th {
+    font-size: 9px; font-weight: 500; color: var(--text-muted); text-align: left;
+    padding: 4px 10px 7px; border-bottom: 0.5px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .rs-table td { padding: 7px 10px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+  .rs-table tr:last-child td { border-bottom: none; }
+  .rs-table .iname { font-size: 12px; font-weight: 500; color: var(--text); }
+  .rs-table input[type="date"] {
+    font-size: 12px; font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg); border: 0.5px solid var(--border-lt);
+    border-radius: 5px; padding: 5px 8px; color: var(--text); outline: none; width: 148px;
+  }
+  .cb-wrap { display: flex; align-items: center; gap: 7px; }
+  .cb {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 0.5px solid var(--border-lt); background: var(--bg);
+    cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; transition: all .12s;
+  }
+  .cb.on { background: var(--green-soft); border-color: var(--green-bd); }
+  .cb-lbl { font-size: 12px; color: var(--text-muted); min-width: 22px; }
+
+  /* ── RECONCILE ROW ── */
+  .reconcile-row {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface2); border: 0.5px solid var(--border);
+    border-radius: 8px; padding: 11px 14px;
+  }
+  .reconcile-info { flex: 1; }
+  .reconcile-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .reconcile-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .reconcile-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+    background: var(--red-soft); color: var(--red); border: 0.5px solid var(--red-bd);
+  }
+  .reconcile-badge.done { background: var(--green-soft); color: var(--green); border-color: var(--green-bd); }
+
+  /* ── FOLLOW-UP ROWS ── */
+  .followup-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
+  .followup-row:last-child { border-bottom: none; }
+  .followup-check {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 0.5px solid var(--border-lt); background: var(--bg);
+    cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .followup-check.done { background: var(--green-soft); border-color: var(--green-bd); }
+  .followup-text { font-size: 12px; color: var(--text); flex: 1; }
+  .followup-date { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
+  .followup-date.due { color: var(--amber); }
+
+  /* ── NOTIF BANNER ── */
+  .notif {
+    display: flex; align-items: flex-start; gap: 10px;
+    border-radius: 7px; padding: 10px 12px; margin-bottom: 12px;
+  }
+  .notif-amber { background: var(--amber-soft); border: 0.5px solid var(--amber-bd); }
+  .notif-purple { background: var(--purple-soft); border: 0.5px solid var(--purple-bd); }
+  .notif-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+  .notif-text { font-size: 11px; line-height: 1.55; }
+  .notif-amber .notif-text { color: var(--amber); }
+  .notif-purple .notif-text { color: var(--purple); }
+  .notif-text strong { font-weight: 500; }
+
+  /* ── ATTACHMENTS ── */
+  .attach-zone {
+    border: 0.5px dashed var(--border-lt); border-radius: 8px; padding: 22px;
+    text-align: center; color: var(--text-muted); font-size: 12px; cursor: pointer;
+    transition: all .15s; position: relative;
+  }
+  .attach-zone:hover { border-color: var(--purple); color: var(--text); background: var(--purple-soft); }
+  .attach-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+  .attach-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .attach-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 0.5px solid var(--border);
+    border-radius: 6px; padding: 7px 10px;
+  }
+  .attach-icon { font-size: 15px; flex-shrink: 0; }
+  .attach-name { font-size: 12px; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .attach-size { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
+  .attach-del { font-size: 11px; color: var(--red); cursor: pointer; padding: 2px 7px; border-radius: 4px; border: 0.5px solid transparent; transition: all .12s; flex-shrink: 0; }
+  .attach-del:hover { background: var(--red-soft); border-color: var(--red-bd); }
+
+  /* ── EXPORT BTN ── */
+  .export-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 500; color: var(--text-dim);
+    background: var(--surface2); border: 0.5px solid var(--border-lt);
+    border-radius: 5px; padding: 4px 10px; cursor: pointer;
+    transition: all .12s; margin-top: 6px; font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .export-btn:hover { background: var(--border); color: var(--text); }
+
+  /* ── ACTION BAR ── */
+  .action-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 24px; flex-wrap: wrap; gap: 12px;
+  }
+  .action-meta { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .action-meta strong { color: var(--text-dim); font-weight: 500; }
+  .action-btns { display: flex; gap: 8px; }
+  .btn {
+    padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;
+    cursor: pointer; border: 0.5px solid var(--border-lt);
+    background: var(--surface2); color: var(--text-dim);
+    transition: all .12s; font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .btn:hover { background: var(--border); color: var(--text); }
+  .btn-primary { background: var(--text); color: #fff; border-color: transparent; }
+  .btn-primary:hover { opacity: .85; }
+
+  @media (max-width: 660px) {
+    .g2, .g3 { grid-template-columns: 1fr; }
+    .status-strip { grid-template-columns: repeat(2,1fr); }
+    .l1-divider { display: none; }
+    .rs-table input[type="date"] { width: 120px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div>
+      <div class="system-eyebrow">Complaint Tracking Module</div>
+      <div class="page-title">Action &amp; coaching tracker</div>
+      <div class="page-sub">Layer 2 — Internal response, coaching, and determinations. Compliance intake record lives in Layer 1.</div>
+      <div class="top-chips">
+        <div class="chip chip-l2">Layer 2 — Action</div>
+        <div class="chip chip-from">↑ Pulls from Layer 1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FROM L1 BANNER -->
+  <div class="l1-banner">
+    <div class="l1-label">From Layer 1</div>
+    <div class="l1-divider"></div>
+    <div class="l1-fields">
+      <div class="l1-field"><span class="l1-key">Case number 🔒</span><span class="l1-val">CTM-2024-08847</span></div>
+      <div class="l1-field"><span class="l1-key">Internal tracking ID</span><span class="l1-val">ITC-0847</span></div>
+      <div class="l1-field"><span class="l1-key">Type</span><span class="l1-tag tag-ctm" id="display-type-tag">CTM</span></div>
+      <div class="l1-field"><span class="l1-key">Carrier</span><span class="l1-val" style="font-family:inherit;">Humana</span></div>
+      <div class="l1-field"><span class="l1-key">Date received (L1)</span><span class="l1-val" style="font-size:12px;">Aug 12, 2024</span></div>
+      <div class="l1-field"><span class="l1-key">Agent</span><span class="l1-val" style="font-family:inherit;">Marcus Webb</span></div>
+    </div>
+  </div>
+
+  <div class="req-legend"><span class="req">*</span> Required field</div>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div class="stat"><div class="stat-label">Coaching status</div><div class="stat-val" style="color:var(--purple);">In progress</div><div class="stat-sub">Due Aug 19</div></div>
+    <div class="stat"><div class="stat-label">Determination</div><div class="stat-val" style="font-size:14px;color:var(--text-muted);">Pending</div></div>
+    <div class="stat"><div class="stat-label">Items sent</div><div class="stat-val" id="sent-count">0 / 3</div><div class="stat-sub">Calls, leads, statement</div></div>
+    <div class="stat"><div class="stat-label">Follow-up status</div><div class="stat-val" id="followup-stat" style="font-size:14px;color:var(--amber);">Pending</div></div>
+  </div>
+
+  <!-- ══ 1. CASE IDENTIFICATION ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--text-muted);"></div>
+      <div class="section-title">Case identification</div>
+    </div>
+    <div class="section-body">
+      <div class="g3">
+        <div class="field">
+          <label>Case type <span class="req">*</span></label>
+          <select id="case-type" onchange="updateTypeTag()">
+            <option value="">Select type…</option>
+            <option value="CTM" selected>CTM</option>
+            <option value="Grievance">Grievance</option>
+            <option value="Audit">Audit</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Carrier case number <span class="req">*</span></label>
+          <input type="text" id="carrier-case-num" value="CTM-2024-08847" placeholder="As assigned by carrier">
+        </div>
+        <div class="field">
+          <label>Internal tracking ID</label>
+          <input type="text" value="ITC-0847" placeholder="Auto-filled if available">
+          <span class="field-note">Auto-populated from incoming email when present</span>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="field">
+          <label>Carrier <span class="req">*</span></label>
+          <input type="text" value="Humana">
+        </div>
+        <div class="field">
+          <label>Date received (L1) <span class="req">*</span></label>
+          <input type="date" value="2024-08-12">
+        </div>
+        <div class="field">
+          <label>Carrier due date</label>
+          <input type="date" value="2024-08-19">
+          <span class="field-note">Imposed by carrier</span>
+        </div>
+      </div>
+      <div class="g2 mb0">
+        <div class="field">
+          <label>Agent <span class="req">*</span></label>
+          <input type="text" value="Marcus Webb">
+        </div>
+        <div class="field">
+          <label><span class="trend-label">Trend coaching</span></label>
+          <select>
+            <option value="">Select if applicable…</option>
+            <option>Yes — trend identified</option>
+            <option>No — isolated incident</option>
+            <option>Monitoring</option>
+          </select>
+          <span class="field-note alert">Flag if this agent has a recurring pattern requiring escalation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2. REQUESTED & SENT ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--blue);"></div>
+      <div class="section-title">Requested &amp; sent items</div>
+      <div class="section-badge" style="background:var(--amber-soft);color:var(--amber);border:0.5px solid var(--amber-bd);">Triggers reminders</div>
+    </div>
+    <div class="section-body">
+      <div class="notif notif-amber">
+        <div class="notif-icon">⚠</div>
+        <div class="notif-text"><strong>Reminder logic:</strong> Any item marked Requested but not yet Sent — while the case is Pending — triggers reminders to the <strong>compliance mailbox and Peter</strong>. Reminders respect Eastern Time / agent time zone.</div>
+      </div>
+      <table class="rs-table">
+        <thead>
+          <tr>
+            <th style="width:160px;">Item</th>
+            <th>Requested</th>
+            <th>Date requested</th>
+            <th>Sent to carrier</th>
+            <th>Date sent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="iname">Call recordings</td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-c-req" onclick="toggleCb(this,'c-req')"></div><span class="cb-lbl" id="lbl-c-req">No</span></div></td>
+            <td><input type="date"></td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-c-sent" onclick="toggleCb(this,'c-sent')"></div><span class="cb-lbl" id="lbl-c-sent">No</span></div></td>
+            <td><input type="date"></td>
+          </tr>
+          <tr>
+            <td class="iname">Leads</td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-l-req" onclick="toggleCb(this,'l-req')"></div><span class="cb-lbl" id="lbl-l-req">No</span></div></td>
+            <td><input type="date"></td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-l-sent" onclick="toggleCb(this,'l-sent')"></div><span class="cb-lbl" id="lbl-l-sent">No</span></div></td>
+            <td><input type="date"></td>
+          </tr>
+          <tr>
+            <td class="iname">Agent statement</td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-s-req" onclick="toggleCb(this,'s-req')"></div><span class="cb-lbl" id="lbl-s-req">No</span></div></td>
+            <td><input type="date"></td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-s-sent" onclick="toggleCb(this,'s-sent')"></div><span class="cb-lbl" id="lbl-s-sent">No</span></div></td>
+            <td><input type="date"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ 3. COACHING & TRAINING ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--purple);"></div>
+      <div class="section-title">Coaching &amp; training assignment</div>
+      <div class="section-badge" style="background:var(--purple-soft);color:var(--purple);border:0.5px solid var(--purple-bd);">Routes to agent + manager</div>
+    </div>
+    <div class="section-body">
+      <div class="notif notif-purple">
+        <div class="notif-icon">📣</div>
+        <div class="notif-text"><strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the <strong>agent and their sales manager</strong>. Reminders respect Eastern Time / agent time zone.</div>
+      </div>
+      <div class="field mb12">
+        <label>Assignment type <span class="req">*</span></label>
+        <div class="pill-group">
+          <div class="pill p-coaching" onclick="toggleAssign(this)">Coaching</div>
+          <div class="pill" onclick="toggleAssign(this)">Training</div>
+          <div class="pill" onclick="toggleAssign(this)">Coaching + Training</div>
+          <div class="pill" onclick="toggleAssign(this)">None required</div>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="field"><label>Date assigned <span class="req">*</span></label><input type="date" value="2024-08-13"></div>
+        <div class="field"><label>Due date <span class="req">*</span></label><input type="date" value="2024-08-19"></div>
+        <div class="field"><label>Date completed</label><input type="date"></div>
+      </div>
+      <div class="g2 mb0">
+        <div class="field">
+          <label>Sales manager at time of coaching</label>
+          <input type="text" placeholder="Enter name">
+          <span class="field-note">May differ from manager at time of complaint (see Layer 1).</span>
+        </div>
+        <div class="field">
+          <label>Person who conducted coaching <span class="req">*</span></label>
+          <input type="text" placeholder="Enter name">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4. DETERMINATION & ACTION ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--red);"></div>
+      <div class="section-title">Determination &amp; action taken</div>
+    </div>
+    <div class="section-body">
+      <div class="field mb12">
+        <label>Internal determination <span class="req">*</span></label>
+        <div class="pill-group">
+          <div class="pill" onclick="toggleDet(this)">Unfounded</div>
+          <div class="pill" onclick="toggleDet(this)">Substantiated</div>
+          <div class="pill" onclick="toggleDet(this)">Partially substantiated</div>
+          <div class="pill" onclick="toggleDet(this)">Inconclusive</div>
+          <div class="pill p-pending" onclick="toggleDet(this)">Pending</div>
+        </div>
+      </div>
+      <div class="field mb12">
+        <label>Action taken <span class="req">*</span></label>
+        <textarea placeholder="Describe corrective action, verbal or written warnings, retraining, PIP, termination, etc."></textarea>
+      </div>
+      <div class="field mb12">
+        <label>Agent instructions</label>
+        <textarea placeholder="Specific guidance given to agent during the coaching session…"></textarea>
+      </div>
+      <div class="divider"></div>
+      <div class="reconcile-row">
+        <div class="cb" id="cb-reconciled" onclick="toggleReconcile()"></div>
+        <div class="reconcile-info">
+          <div class="reconcile-title">Reconciled to carrier</div>
+          <div class="reconcile-sub">Check when this case has been reconciled / confirmed closed with the carrier.</div>
+        </div>
+        <span class="reconcile-badge not-rec" id="reconcile-tag">Not reconciled</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 5. FOLLOW-UP TRACKING ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--green);"></div>
+      <div class="section-title">Follow-up tracking</div>
+    </div>
+    <div class="section-body">
+      <div class="followup-row">
+        <div class="followup-check done" onclick="toggleCheck(this)"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#0f6e56"/></svg></div>
+        <div class="followup-text">Confirm call recordings received from carrier</div>
+        <div class="followup-date">Aug 13</div>
+      </div>
+      <div class="followup-row">
+        <div class="followup-check done" onclick="toggleCheck(this)"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#0f6e56"/></svg></div>
+        <div class="followup-text">Review agent script compliance on flagged calls</div>
+        <div class="followup-date">Aug 14</div>
+      </div>
+      <div class="followup-row">
+        <div class="followup-check" onclick="toggleCheck(this)"></div>
+        <div class="followup-text">Conduct coaching session with agent and document outcome</div>
+        <div class="followup-date due">Due Aug 19</div>
+      </div>
+      <div class="divider"></div>
+      <div class="g2 mb0">
+        <div class="field">
+          <label>Follow-up status <span class="req">*</span></label>
+          <div class="pill-group">
+            <div class="pill p-pending" onclick="toggleFollowup(this,'pending')">Pending</div>
+            <div class="pill" onclick="toggleFollowup(this,'closed')">Closed</div>
+          </div>
+          <span class="field-note" style="margin-top:4px;">Mark Closed only when the case is fully resolved.</span>
+        </div>
+        <div class="field"><label>Next follow-up date</label><input type="date" value="2024-08-19"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 6. ATTACHMENTS ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--amber);"></div>
+      <div class="section-title">Attachments &amp; documentation</div>
+      <div class="section-badge" style="background:var(--amber-soft);color:var(--amber);border:0.5px solid var(--amber-bd);">No limit</div>
+    </div>
+    <div class="section-body">
+      <div class="attach-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()">
+        <input type="file" multiple onchange="handleFiles(this.files)">
+        <div style="font-size:22px;margin-bottom:6px;color:var(--border-lt);">+</div>
+        <div style="font-weight:500;color:var(--text-dim);">Drop files or click to upload</div>
+        <div style="margin-top:4px;">Call recordings, written statements, PIP documents, screenshots, agent forms</div>
+        <div style="margin-top:6px;font-size:10px;color:var(--green);">No limit — delete and replace files at any time</div>
+      </div>
+      <div class="attach-list" id="attach-list"></div>
+    </div>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <div class="action-meta">
+      <strong>Report access:</strong> Chris &amp; Bernice have read-only access to L1 &amp; L2 reports.<br>
+      Changes require edit permissions — contact Kanisha or Tracy W.
+    </div>
+    <div class="action-btns">
+      <button class="btn">Save draft</button>
+      <button class="btn btn-primary">Submit coaching record</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const allPills = ['p-pass','p-fail','p-review','p-pending','p-closed','p-coaching','p-unfounded','p-substantiated','p-partial','p-inconclusive'];
+
+function toggleDet(el) {
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove(...allPills));
+  const map = { 'Unfounded':'p-unfounded','Substantiated':'p-substantiated','Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending' };
+  const cls = map[el.textContent.trim()];
+  if (cls) el.classList.add(cls);
+}
+
+function toggleAssign(el) {
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove(...allPills));
+  const map = { 'Coaching':'p-coaching','Training':'p-pending','Coaching + Training':'p-pass','None required':'' };
+  const cls = map[el.textContent.trim()];
+  if (cls) el.classList.add(cls);
+}
+
+function toggleFollowup(el, type) {
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('p-pending','p-closed'));
+  el.classList.add(type === 'closed' ? 'p-closed' : 'p-pending');
+  const stat = document.getElementById('followup-stat');
+  stat.textContent = type === 'closed' ? 'Closed' : 'Pending';
+  stat.style.color  = type === 'closed' ? 'var(--green)' : 'var(--amber)';
+}
+
+function toggleCheck(el) {
+  const was = el.classList.contains('done');
+  el.classList.toggle('done', !was);
+  el.innerHTML = was ? '' : '<svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="#0f6e56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+const sentIds = ['c-sent','l-sent','s-sent'];
+function toggleCb(el, id) {
+  const was = el.classList.contains('on');
+  el.classList.toggle('on', !was);
+  const lbl = document.getElementById('lbl-' + id);
+  if (lbl) lbl.textContent = was ? 'No' : 'Yes';
+  const count = sentIds.filter(f => document.getElementById('cb-'+f)?.classList.contains('on')).length;
+  document.getElementById('sent-count').textContent = count + ' / 3';
+}
+
+function toggleReconcile() {
+  const cb  = document.getElementById('cb-reconciled');
+  const tag = document.getElementById('reconcile-tag');
+  const was = cb.classList.contains('on');
+  cb.classList.toggle('on', !was);
+  tag.textContent = was ? 'Not reconciled' : 'Reconciled ✓';
+  tag.classList.toggle('done', !was);
+  if (was) tag.classList.add('not-rec'); else tag.classList.remove('not-rec');
+}
+
+function updateTypeTag() {
+  const val = document.getElementById('case-type').value;
+  const tag = document.getElementById('display-type-tag');
+  tag.textContent = val || '—';
+  tag.className = 'l1-tag';
+  const cls = { CTM:'tag-ctm', Grievance:'tag-grievance', Audit:'tag-audit' };
+  if (cls[val]) tag.classList.add(cls[val]);
+}
+
+let attachments = [];
+function handleFiles(files) {
+  Array.from(files).forEach(f => attachments.push({ name: f.name, size: f.size, id: Date.now() + Math.random() }));
+  renderAttachments();
+}
+function handleDrop(e) { e.preventDefault(); handleFiles(e.dataTransfer.files); }
+function removeAttachment(id) { attachments = attachments.filter(a => a.id !== id); renderAttachments(); }
+function renderAttachments() {
+  const list = document.getElementById('attach-list');
+  if (!attachments.length) { list.innerHTML = ''; return; }
+  const icons = { pdf:'📄',mp3:'🎵',wav:'🎵',m4a:'🎵',mp4:'🎬',mov:'🎬',png:'🖼',jpg:'🖼',jpeg:'🖼',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊' };
+  list.innerHTML = attachments.map(a => {
+    const ext  = a.name.split('.').pop().toLowerCase();
+    const icon = icons[ext] || '📎';
+    const size = a.size > 1048576 ? (a.size/1048576).toFixed(1)+' MB' : Math.round(a.size/1024)+' KB';
+    return `<div class="attach-item"><div class="attach-icon">${icon}</div><div class="attach-name">${a.name}</div><div class="attach-size">${size}</div><div class="attach-del" onclick="removeAttachment(${a.id})">Remove</div></div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTM Layer 1 — Compliance Intake Record</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+  :root {
+    --bg:             #f5f4f0;
+    --surface:        #ffffff;
+    --surface2:       #f1efe8;
+    --border:         #d3d1c7;
+    --border-lt:      #b4b2a9;
+    --text:           #1a1a18;
+    --text-dim:       #5f5e5a;
+    --text-muted:     #888780;
+    --accent:         #2a5ce6;
+    --accent-soft:    rgba(42,92,230,.09);
+    --accent-bd:      rgba(42,92,230,.28);
+    --green:          #0f6e56;
+    --green-soft:     rgba(15,110,86,.09);
+    --green-bd:       rgba(15,110,86,.28);
+    --amber:          #854f0b;
+    --amber-soft:     rgba(133,79,11,.09);
+    --amber-bd:       rgba(133,79,11,.28);
+    --red:            #a32d2d;
+    --red-soft:       rgba(163,45,45,.09);
+    --red-bd:         rgba(163,45,45,.28);
+    --purple:         #534ab7;
+    --purple-soft:    rgba(83,74,183,.09);
+    --purple-bd:      rgba(83,74,183,.28);
+    --teal:           #0f6e6e;
+    --teal-soft:      rgba(15,110,110,.09);
+    --teal-bd:        rgba(15,110,110,.28);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2.5rem 1rem 5rem;
+  }
+
+  .page-wrap { max-width: 920px; margin: 0 auto; }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
+  }
+  .system-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--accent); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 5px;
+  }
+  .page-title { font-size: 21px; font-weight: 600; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
+  .page-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+  .top-chips { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+  }
+  .chip-l1      { background: var(--accent-soft); color: var(--accent); border: 0.5px solid var(--accent-bd); }
+  .chip-auto    { background: var(--green-soft);  color: var(--green);  border: 0.5px solid var(--green-bd);  }
+  .chip-feeds   { background: var(--surface2);    color: var(--text-dim); border: 0.5px solid var(--border-lt); }
+
+  /* ── AUTO-POP BANNER ── */
+  .auto-banner {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--green-soft); border: 0.5px solid var(--green-bd);
+    border-radius: 8px; padding: 11px 14px; margin-bottom: 22px;
+  }
+  .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 3px; animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .auto-text { font-size: 12px; color: var(--green); line-height: 1.55; }
+  .auto-text strong { font-weight: 500; }
+
+  /* ── REQ LEGEND ── */
+  .req-legend { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
+  .req { color: var(--red); }
+
+  /* ── SECTION CARDS ── */
+  .section-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px; margin-bottom: 12px; overflow: hidden;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border-bottom: 0.5px solid var(--border);
+    background: var(--surface2);
+  }
+  .section-bar { width: 3px; border-radius: 2px; flex-shrink: 0; }
+  .section-title { font-size: 12px; font-weight: 500; color: var(--text); letter-spacing: 0.02em; flex: 1; }
+  .section-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 3px;
+  }
+  .section-body { padding: 16px; }
+
+  /* ── GRIDS ── */
+  .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px 14px; margin-bottom: 12px; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px 14px; margin-bottom: 12px; }
+  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px 14px; margin-bottom: 12px; }
+  .mb0 { margin-bottom: 0 !important; }
+  .mb12 { margin-bottom: 12px; }
+
+  /* ── FIELDS ── */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 10px; font-weight: 500; color: var(--text-dim);
+    letter-spacing: 0.07em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; font-size: 13px; font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg); border: 0.5px solid var(--border-lt);
+    border-radius: 6px; padding: 8px 10px; color: var(--text); outline: none;
+    transition: border-color .12s, box-shadow .12s;
+    -webkit-appearance: none;
+  }
+  .field select { cursor: pointer; }
+  .field select option { background: var(--surface); color: var(--text); }
+  .field textarea { resize: vertical; line-height: 1.55; min-height: 80px; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+  .field-note { font-size: 10px; color: var(--text-muted); line-height: 1.45; }
+  .field-note.auto { color: var(--green); }
+  .field-note.warn { color: var(--amber); }
+  .field-note.alert { color: var(--red); }
+
+  /* ── PILL TOGGLES ── */
+  .pill-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .pill {
+    display: inline-flex; align-items: center; padding: 5px 13px;
+    border-radius: 5px; font-size: 12px; font-weight: 400; cursor: pointer;
+    border: 0.5px solid var(--border-lt); background: var(--bg); color: var(--text-muted);
+    transition: all .12s; user-select: none;
+  }
+  .pill:hover { border-color: var(--text-dim); color: var(--text); }
+  .pill.p-ctm       { background: var(--accent-soft);  color: var(--accent);  border-color: var(--accent-bd);  }
+  .pill.p-grievance { background: var(--purple-soft);  color: var(--purple);  border-color: var(--purple-bd);  }
+  .pill.p-audit     { background: var(--teal-soft);    color: var(--teal);    border-color: var(--teal-bd);    }
+  .pill.p-shopper   { background: var(--amber-soft);   color: var(--amber);   border-color: var(--amber-bd);   }
+  .pill.p-trend     { background: var(--red-soft);     color: var(--red);     border-color: var(--red-bd);     }
+  .pill.p-completed { background: var(--green-soft);   color: var(--green);   border-color: var(--green-bd);   }
+  .pill.p-pending   { background: var(--amber-soft);   color: var(--amber);   border-color: var(--amber-bd);   }
+  .pill.p-coaching  { background: var(--purple-soft);  color: var(--purple);  border-color: var(--purple-bd);  }
+  .pill.p-yes       { background: var(--red-soft);     color: var(--red);     border-color: var(--red-bd);     }
+  .pill.p-no        { background: var(--green-soft);   color: var(--green);   border-color: var(--green-bd);   }
+  .pill.p-monitor   { background: var(--amber-soft);   color: var(--amber);   border-color: var(--amber-bd);   }
+
+  /* ── REQUESTED / SENT TABLE ── */
+  .rs-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .rs-table th {
+    font-size: 9px; font-weight: 500; color: var(--text-muted);
+    text-align: left; padding: 4px 10px 7px;
+    border-bottom: 0.5px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .rs-table td {
+    padding: 8px 10px; border-bottom: 0.5px solid var(--border);
+    font-size: 13px; vertical-align: middle;
+  }
+  .rs-table tr:last-child td { border-bottom: none; }
+  .rs-table .iname { font-size: 12px; font-weight: 500; color: var(--text); }
+  .rs-table input[type="date"] {
+    font-size: 12px; font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg); border: 0.5px solid var(--border-lt);
+    border-radius: 5px; padding: 5px 8px; color: var(--text); outline: none; width: 148px;
+  }
+  .cb-wrap { display: flex; align-items: center; gap: 7px; }
+  .cb {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 0.5px solid var(--border-lt); background: var(--bg);
+    cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .12s;
+  }
+  .cb.on { background: var(--green-soft); border-color: var(--green-bd); }
+  .cb-lbl { font-size: 12px; color: var(--text-muted); min-width: 22px; }
+
+  /* ── NOTIF BANNERS ── */
+  .notif {
+    display: flex; align-items: flex-start; gap: 10px;
+    border-radius: 7px; padding: 10px 12px; margin-bottom: 12px;
+  }
+  .notif-amber { background: var(--amber-soft); border: 0.5px solid var(--amber-bd); }
+  .notif-purple { background: var(--purple-soft); border: 0.5px solid var(--purple-bd); }
+  .notif-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+  .notif-text { font-size: 11px; line-height: 1.55; }
+  .notif-amber .notif-text { color: var(--amber); }
+  .notif-purple .notif-text { color: var(--purple); }
+  .notif-text strong { font-weight: 500; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 14px 0; }
+
+  /* ── ATTACHMENTS ── */
+  .attach-zone {
+    border: 0.5px dashed var(--border-lt); border-radius: 8px; padding: 22px;
+    text-align: center; color: var(--text-muted); font-size: 12px; cursor: pointer;
+    transition: all .15s; position: relative;
+  }
+  .attach-zone:hover { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
+  .attach-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+  .attach-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .attach-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 0.5px solid var(--border);
+    border-radius: 6px; padding: 7px 10px;
+  }
+  .attach-icon { font-size: 15px; flex-shrink: 0; }
+  .attach-name { font-size: 12px; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .attach-size { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
+  .attach-del { font-size: 11px; color: var(--red); cursor: pointer; padding: 2px 7px; border-radius: 4px; border: 0.5px solid transparent; transition: all .12s; flex-shrink: 0; }
+  .attach-del:hover { background: var(--red-soft); border-color: var(--red-bd); }
+  .attach-note { font-size: 10px; color: var(--green); margin-top: 6px; text-align: center; }
+
+  /* ── REVIEWER NOTES ── */
+  .notes-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+  .notes-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--surface2); border: 0.5px solid var(--border); border-radius: 3px; padding: 2px 7px;
+  }
+
+  /* ── ACTION BAR ── */
+  .action-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 24px; flex-wrap: wrap; gap: 12px;
+  }
+  .action-meta { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .action-meta strong { color: var(--text-dim); font-weight: 500; }
+  .action-btns { display: flex; gap: 8px; }
+  .btn {
+    padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;
+    cursor: pointer; border: 0.5px solid var(--border-lt);
+    background: var(--surface2); color: var(--text-dim);
+    transition: all .12s; font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .btn:hover { background: var(--border); color: var(--text); border-color: var(--text-muted); }
+  .btn-primary { background: var(--text); color: #fff; border-color: transparent; }
+  .btn-primary:hover { opacity: .85; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  @media (max-width: 660px) {
+    .g2,.g3,.g4 { grid-template-columns: 1fr; }
+    .rs-table input[type="date"] { width: 120px; }
+    .top-bar { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div>
+      <div class="system-eyebrow">Complaint Tracking Module</div>
+      <div class="page-title">Compliance intake record</div>
+      <div class="page-sub">Primary compliance record (Layer 1). Reviewer case notes and case data feed into the Layer 2 action &amp; coaching tracker.</div>
+      <div class="top-chips" style="margin-top:10px;">
+        <div class="chip chip-l1">Layer 1 — Intake</div>
+        <div class="chip chip-auto">● Auto-fill active</div>
+        <div class="chip chip-feeds">↓ Feeds Layer 2</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTO-POPULATE BANNER -->
+  <div class="auto-banner">
+    <div class="pulse-dot"></div>
+    <div class="auto-text"><strong>Auto-population enabled.</strong> Carrier case number, internal tracking ID, and available metadata will be pre-filled from incoming email where present. Review all auto-filled values before submitting.</div>
+  </div>
+
+  <div class="req-legend"><span class="req">*</span> Required field</div>
+
+  <!-- ══ SECTION 1: CASE INFORMATION (TOP) ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--accent);"></div>
+      <div class="section-title">Case information</div>
+      <div class="section-badge" style="background:var(--accent-soft);color:var(--accent);border:0.5px solid var(--accent-bd);">Auto-fill eligible</div>
+    </div>
+    <div class="section-body">
+
+      <!-- CTM Type -->
+      <div class="field mb12">
+        <label>CTM type <span class="req">*</span></label>
+        <select>
+          <option value="">Select type…</option>
+          <option value="CTM">CTM</option>
+          <option value="Grievance">Grievance</option>
+          <option value="Audit">Audit</option>
+        </select>
+      </div>
+
+      <div class="g3">
+        <div class="field">
+          <label>Carrier name <span class="req">*</span></label>
+          <select>
+            <option value="">Select carrier…</option>
+            <option selected>Humana</option>
+            <option>Aetna</option>
+            <option>UnitedHealthcare</option>
+            <option>BCBS</option>
+            <option>Cigna</option>
+            <option>WellCare</option>
+            <option>Molina</option>
+            <option>Centene</option>
+            <option>All carriers</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Case number</label>
+          <input type="text" id="case-num" value="CTM-2024-08847" placeholder="Carrier-assigned, if applicable">
+          <span class="field-note auto">↳ Auto-filled from email</span>
+        </div>
+        <div class="field">
+          <label>Internal tracking ID</label>
+          <input type="text" value="ITC-0847" placeholder="Auto-generated or from email">
+          <span class="field-note auto">↳ Auto-filled from email</span>
+        </div>
+      </div>
+
+      <div class="g3">
+        <div class="field">
+          <label>Date received <span class="req">*</span></label>
+          <input type="date" value="2024-08-12">
+        </div>
+        <div class="field">
+          <label>Due date <span class="req">*</span></label>
+          <input type="date" value="2024-08-19">
+          <span class="field-note warn">Imposed by carrier — drives all deadlines</span>
+        </div>
+        <div class="field">
+          <label>Date responded</label>
+          <input type="date">
+        </div>
+      </div>
+
+      <!-- Calls / Leads / Agent Statement requested & sent -->
+      <div class="notif notif-amber">
+        <div class="notif-icon">⚠</div>
+        <div class="notif-text"><strong>Reminder logic:</strong> Any item marked Requested but not yet Sent — while case status is Pending — triggers automatic reminders to the <strong>compliance mailbox and Peter</strong>. Reminders respect Eastern Time / agent time zone.</div>
+      </div>
+
+      <table class="rs-table">
+        <thead>
+          <tr>
+            <th style="width:155px;">Item</th>
+            <th>Requested</th>
+            <th>Date requested</th>
+            <th>Sent</th>
+            <th>Date sent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="iname">Calls</td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-c-req" onclick="toggleCb(this,'c-req')"></div><span class="cb-lbl" id="lbl-c-req">No</span></div></td>
+            <td><input type="date"></td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-c-sent" onclick="toggleCb(this,'c-sent')"></div><span class="cb-lbl" id="lbl-c-sent">No</span></div></td>
+            <td><input type="date"></td>
+          </tr>
+          <tr>
+            <td class="iname">Leads</td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-l-req" onclick="toggleCb(this,'l-req')"></div><span class="cb-lbl" id="lbl-l-req">No</span></div></td>
+            <td><input type="date"></td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-l-sent" onclick="toggleCb(this,'l-sent')"></div><span class="cb-lbl" id="lbl-l-sent">No</span></div></td>
+            <td><input type="date"></td>
+          </tr>
+          <tr>
+            <td class="iname">Agent statement</td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-s-req" onclick="toggleCb(this,'s-req')"></div><span class="cb-lbl" id="lbl-s-req">No</span></div></td>
+            <td><input type="date"></td>
+            <td><div class="cb-wrap"><div class="cb" id="cb-s-sent" onclick="toggleCb(this,'s-sent')"></div><span class="cb-lbl" id="lbl-s-sent">No</span></div></td>
+            <td><input type="date"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ══ SECTION 2: SITUATION DETAILS ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--purple);"></div>
+      <div class="section-title">Situation details</div>
+    </div>
+    <div class="section-body">
+
+      <div class="g2">
+        <div class="field">
+          <label>Allegation <span class="req">*</span></label>
+          <select>
+            <option value="">Select…</option>
+            <option>Slamming</option>
+            <option>Cramming</option>
+            <option>Misrepresentation</option>
+            <option>Failure to disclose</option>
+            <option>Marketing violation</option>
+            <option>Unauthorized enrollment</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Number of calls</label>
+          <input type="number" min="0" placeholder="0">
+        </div>
+      </div>
+
+      <div class="field mb12">
+        <label>Situation <span class="req">*</span></label>
+        <textarea placeholder="Summarize the complaint or audit finding. Do not include personally identifiable information beyond what is required."></textarea>
+      </div>
+
+      <div class="g3">
+        <div class="field">
+          <label>Beneficiary name</label>
+          <input type="text" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label>Beneficiary phone number</label>
+          <input type="tel" placeholder="(000) 000-0000">
+        </div>
+        <div class="field">
+          <label>Enrollment date</label>
+          <input type="date">
+        </div>
+      </div>
+
+      <div class="field mb0">
+        <label>Status <span class="req">*</span></label>
+        <div class="pill-group">
+          <div class="pill p-pending"   onclick="toggleStatus(this,'p-pending')">Pending</div>
+          <div class="pill"             onclick="toggleStatus(this,'p-completed')">Completed</div>
+        </div>
+        <span class="field-note" style="margin-top:6px;">Only two options. Mark Completed when all items are sent and case is fully resolved.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3: AGENT, SM & COMPLIANCE NAMES ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--teal);"></div>
+      <div class="section-title">Agent, SM &amp; compliance names</div>
+    </div>
+    <div class="section-body">
+      <div class="g3 mb0">
+        <div class="field">
+          <label>Agent name <span class="req">*</span></label>
+          <input type="text" value="Marcus Webb" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label>Sales manager at time of complaint <span class="req">*</span></label>
+          <input type="text" placeholder="Full name">
+          <span class="field-note">Recorded here in L1. Coaching-time manager tracked in Layer 2.</span>
+        </div>
+        <div class="field">
+          <label>Reviewer <span class="req">*</span></label>
+          <select>
+            <option value="">Select…</option>
+            <option>Tom</option>
+            <option>Jamie</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 4: COACHING SECTION ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--purple);"></div>
+      <div class="section-title">Coaching section</div>
+      <div class="section-badge" style="background:var(--purple-soft);color:var(--purple);border:0.5px solid var(--purple-bd);">Routes to agent + manager</div>
+    </div>
+    <div class="section-body">
+
+      <div class="notif notif-purple">
+        <div class="notif-icon" style="color:var(--purple);">📣</div>
+        <div class="notif-text"><strong>Reminder routing:</strong> Incomplete coaching or training reminders route automatically to the <strong>agent and their sales manager</strong>. Reminders respect Eastern Time / agent time zone.</div>
+      </div>
+
+      <div class="g3">
+        <div class="field">
+          <label>Date received <span class="req">*</span></label>
+          <input type="date" value="2024-08-13">
+        </div>
+        <div class="field">
+          <label>Due date <span class="req">*</span></label>
+          <input type="date" value="2024-08-19">
+        </div>
+        <div class="field">
+          <label>Date responded</label>
+          <input type="date">
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="field">
+          <label>Sales manager at time of coaching</label>
+          <input type="text" placeholder="May differ from complaint-time manager">
+        </div>
+        <div class="field">
+          <label>Person who coached <span class="req">*</span></label>
+          <input type="text" placeholder="Full name">
+        </div>
+      </div>
+
+      <div class="field mb0">
+        <div class="notes-header">
+          <label>Agent instructions</label>
+        </div>
+        <textarea placeholder="Free text — specific guidance given to the agent during the coaching session…"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ SECTION 5: ATTACHMENTS ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--amber);"></div>
+      <div class="section-title">Attachments</div>
+      <div class="section-badge" style="background:var(--amber-soft);color:var(--amber);border:0.5px solid var(--amber-bd);">No limit</div>
+    </div>
+    <div class="section-body">
+      <div class="attach-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()">
+        <input type="file" multiple onchange="handleFiles(this.files)">
+        <div style="font-size:24px;margin-bottom:6px;color:var(--border-lt);">+</div>
+        <div style="font-weight:500;color:var(--text-dim);">Drop files or click to upload</div>
+        <div style="margin-top:4px;">Call recordings, agent statements, leads, PIP documents, screenshots</div>
+        <div style="margin-top:6px;font-size:10px;color:var(--green);">No limit on attachments — upload blank agent forms first, replace with completed versions at any time</div>
+      </div>
+      <div class="attach-list" id="attach-list"></div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 6: REVIEWER CASE NOTES ══ -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-bar" style="height:18px;background:var(--text-muted);"></div>
+      <div class="section-title">Reviewer case notes</div>
+      <div class="section-badge" style="background:var(--surface2);color:var(--text-dim);border:0.5px solid var(--border-lt);">L1 record only</div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <textarea placeholder="Case notes for the reviewer (Tom / Jamie). Visible in the Layer 1 compliance record. These are separate from any Layer 2 operational notes." style="min-height:90px;"></textarea>
+        <span class="field-note" style="margin-top:4px;">Previously labelled "Case Notes" — now <strong style="color:var(--text-dim);">Reviewer Case Notes</strong> per team update.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <div class="action-meta">
+      <strong>Report access:</strong> Chris &amp; Bernice have read-only report access to L1 &amp; L2.<br>
+      Changes require edit permissions — contact Kanisha or Tracy W.
+    </div>
+    <div class="action-btns">
+      <button class="btn">Save draft</button>
+      <button class="btn btn-primary">Submit intake record</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── Type select (single) ── */
+const typeClasses = ['p-ctm','p-grievance','p-audit'];
+function typeSelect(el, cls) {
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove(...typeClasses));
+  el.classList.add(cls);
+}
+
+/* ── Status toggle ── */
+function toggleStatus(el, cls) {
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('p-pending','p-completed'));
+  el.classList.add(cls);
+}
+
+/* ── Checkboxes ── */
+function toggleCb(el, id) {
+  const was = el.classList.contains('on');
+  el.classList.toggle('on', !was);
+  const lbl = document.getElementById('lbl-' + id);
+  if (lbl) lbl.textContent = was ? 'No' : 'Yes';
+}
+
+/* ── Attachments ── */
+let attachments = [];
+function handleFiles(files) {
+  Array.from(files).forEach(f => attachments.push({ name: f.name, size: f.size, id: Date.now() + Math.random() }));
+  renderAttachments();
+}
+function handleDrop(e) { e.preventDefault(); handleFiles(e.dataTransfer.files); }
+function removeAttachment(id) { attachments = attachments.filter(a => a.id !== id); renderAttachments(); }
+function renderAttachments() {
+  const list = document.getElementById('attach-list');
+  if (!attachments.length) { list.innerHTML = ''; return; }
+  const icons = { pdf:'📄', mp3:'🎵', wav:'🎵', m4a:'🎵', mp4:'🎬', mov:'🎬', png:'🖼', jpg:'🖼', jpeg:'🖼', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊' };
+  list.innerHTML = attachments.map(a => {
+    const ext  = a.name.split('.').pop().toLowerCase();
+    const icon = icons[ext] || '📎';
+    const size = a.size > 1048576 ? (a.size / 1048576).toFixed(1) + ' MB' : Math.round(a.size / 1024) + ' KB';
+    return `<div class="attach-item">
+      <div class="attach-icon">${icon}</div>
+      <div class="attach-name">${a.name}</div>
+      <div class="attach-size">${size}</div>
+      <div class="attach-del" onclick="removeAttachment(${a.id})">Remove</div>
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
