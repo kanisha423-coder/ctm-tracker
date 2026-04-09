@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CTM Tracker</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+            font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+            min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+}
+    h1 { font-size: 2.2rem; color: #1a202c; margin-bottom: 10px; }
+    p.subtitle { color: #718096; margin-bottom: 40px; font-size: 1rem; }
+    .cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .card {
+            background: white;
+      border-radius: 12px;
+      padding: 32px 28px;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+}
+    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.14); }
+    .card .icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .card h2 { font-size: 1.1rem; color: #2d3748; margin-bottom: 8px; }
+    .card p { font-size: 0.9rem; color: #718096; }
+    .btn {
+            display: inline-block;
+      margin-top: 18px;
+      padding: 10px 22px;
+      background: #4f46e5;
+      color: white;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-decoration: none;
+}
+    .btn:hover { background: #4338ca; }
+  </style>
+    </head>
+    <body>
+      <h1>CTM Tracker</h1>
+      <p class="subtitle">Select a module to get started</p>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">&#128203;</div>
+      <h2>Layer 1 - Compliance Intake</h2>
+      <p>Initial compliance intake and assessment form.</p>
+          <a class="btn" href="ctm_layer1_compliance_intake.html">Open</a>
+        </div>
+        <div class="card">
+          <div class="icon">&#127919;</div>
+          <h2>Layer 2 - Action Coaching</h2>
+          <p>Action coaching workflow and tracking (v3).</p>
+          <a class="btn" href="ctm_layer2_action_coaching_v3.html">Open</a>
+        </div>
+      </div>
+    </body>
+    </html>
