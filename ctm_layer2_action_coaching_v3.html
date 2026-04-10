@@ -348,14 +348,28 @@
         </div>
         <div class="field">
           <label>Internal tracking ID</label>
-          <input type="text" value="ITC-0847" placeholder="Auto-filled if available">
-          <span class="field-note">Auto-populated from incoming email when present</span>
+          <input type="text" value="ITC-0847" placeholder="Internal reference number">
         </div>
       </div>
       <div class="g3">
         <div class="field">
           <label>Carrier <span class="req">*</span></label>
-          <input type="text" value="Humana">
+          <select>
+      <option value="">Select carrier</option>
+      <option selected>Humana</option>
+      <option>Aetna</option>
+      <option>UnitedHealthcare</option>
+      <option>BCBS</option>
+      <option>Cigna</option>
+      <option>WellCare</option>
+      <option>Molina</option>
+      <option>Centene</option>
+      <option>Devoted Health</option>
+      <option>Florida Blue</option>
+      <option>HealthSun</option>
+      <option>Simply Healthcare</option>
+      <option>CarePlus</option>
+     </select>
         </div>
         <div class="field">
           <label>Date received (L1) <span class="req">*</span></label>
@@ -396,7 +410,11 @@
     <div class="section-body">
       <div class="notif notif-amber">
         <div class="notif-icon">⚠</div>
-        <div class="notif-text"><strong>Reminder logic:</strong> Any item marked Requested but not yet Sent — while the case is Pending — triggers reminders to the <strong>compliance mailbox and Peter</strong>. Reminders respect Eastern Time / agent time zone.</div>
+        <div class="notif-text"><strong>Pending Calls and Leads reminder:</strong> If Calls or Leads are marked Requested but not yet Sent while case is Pending — automatic reminders go to <strong>Compliance and Peter only</strong>. Reminders respect Eastern Time / agent time zone.</div>
+      </div>
+      <div class="notif notif-purple">
+        <div class="notif-icon">*</div>
+        <div class="notif-text"><strong>Pending Agent Statement reminder:</strong> If Agent Statement is marked Requested but not yet Sent while case is Pending — automatic reminders go to <strong>Sales Manager and Agent only</strong>. Reminders respect Eastern Time / agent time zone.</div>
       </div>
       <table class="rs-table">
         <thead>
