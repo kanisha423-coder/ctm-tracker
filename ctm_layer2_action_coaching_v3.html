@@ -3,679 +3,516 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTM Layer 2 — Action & Coaching Tracker</title>
+<title>CTM Layer 2 — Action &amp; Coaching Tracker</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
-
   :root {
-    --bg:          #f5f4f0;
-    --surface:     #ffffff;
-    --surface2:    #f1efe8;
-    --border:      #d3d1c7;
-    --border-lt:   #b4b2a9;
-    --text:        #1a1a18;
-    --text-dim:    #5f5e5a;
-    --text-muted:  #888780;
-    --green:       #0f6e56;
-    --green-soft:  rgba(15,110,86,.09);
-    --green-bd:    rgba(15,110,86,.3);
-    --amber:       #854f0b;
-    --amber-soft:  rgba(133,79,11,.09);
-    --amber-bd:    rgba(133,79,11,.3);
-    --red:         #a32d2d;
-    --red-soft:    rgba(163,45,45,.09);
-    --red-bd:      rgba(163,45,45,.3);
-    --blue:        #185fa5;
-    --blue-soft:   rgba(24,95,165,.09);
-    --blue-bd:     rgba(24,95,165,.3);
-    --purple:      #534ab7;
-    --purple-soft: rgba(83,74,183,.09);
-    --purple-bd:   rgba(83,74,183,.3);
+    --navy:#0d2b45; --teal:#0f6e56; --amber:#b45309; --red:#b91c1c;
+    --green:#15803d; --blue:#1d4ed8; --purple:#7c3aed;
+    --bg:#f0f4f8; --card:#ffffff; --border:#d1d5db;
+    --text:#1e293b; --muted:#64748b; --light:#f8fafc;
   }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2.5rem 1rem 5rem;
-  }
-
-  .page-wrap { max-width: 920px; margin: 0 auto; }
-
-  /* ── TOP BAR ── */
-  .top-bar {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 24px; gap: 16px; flex-wrap: wrap;
-  }
-  .system-eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px; color: var(--purple); letter-spacing: 0.14em;
-    text-transform: uppercase; margin-bottom: 5px;
-  }
-  .page-title { font-size: 21px; font-weight: 600; color: var(--text); letter-spacing: -0.02em; }
-  .page-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
-  .top-chips { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
-  .chip {
-    font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 500;
-    letter-spacing: 0.09em; text-transform: uppercase;
-    padding: 3px 9px; border-radius: 4px; white-space: nowrap;
-  }
-  .chip-l2     { background: var(--purple-soft); color: var(--purple); border: 0.5px solid var(--purple-bd); }
-  .chip-from   { background: var(--surface2); color: var(--text-muted); border: 0.5px solid var(--border); }
-
-  /* ── FROM L1 BANNER ── */
-  .l1-banner {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--surface2); border: 0.5px solid var(--border-lt);
-    border-left: 3px solid var(--text-muted); border-radius: 10px;
-    padding: 10px 14px; margin-bottom: 22px; flex-wrap: wrap;
-  }
-  .l1-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px; font-weight: 500; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap;
-  }
-  .l1-divider { width: 0.5px; height: 26px; background: var(--border); flex-shrink: 0; }
-  .l1-fields { display: flex; flex-wrap: wrap; gap: 18px; }
-  .l1-field { display: flex; flex-direction: column; gap: 2px; }
-  .l1-key { font-size: 10px; color: var(--text-muted); }
-  .l1-val { font-size: 13px; font-weight: 500; color: var(--text); font-family: 'IBM Plex Mono', monospace; }
-  .l1-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; display: inline-block; }
-  .tag-ctm      { background: #e1f5ee; color: #0f6e56; }
-  .tag-grievance { background: #e6f1fb; color: #185fa5; }
-  .tag-audit    { background: #eeedfe; color: #534ab7; }
-
-  /* ── STATUS STRIP ── */
-  .status-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 22px; }
-  .stat { background: var(--surface2); border-radius: 8px; padding: 10px 12px; border: 0.5px solid var(--border); }
-  .stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'IBM Plex Mono', monospace; }
-  .stat-val { font-size: 17px; font-weight: 600; color: var(--text); }
-  .stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-
-  /* ── SECTION CARDS ── */
-  .section-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
-  .section-header { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 0.5px solid var(--border); background: var(--surface2); }
-  .section-bar { width: 3px; border-radius: 2px; flex-shrink: 0; }
-  .section-title { font-size: 12px; font-weight: 500; color: var(--text); letter-spacing: 0.02em; flex: 1; }
-  .section-badge {
-    font-family: 'IBM Plex Mono', monospace; font-size: 9px;
-    letter-spacing: 0.07em; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 3px;
-  }
-  .section-body { padding: 16px; }
-
-  /* ── GRIDS ── */
-  .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px 14px; margin-bottom: 12px; }
-  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px 14px; margin-bottom: 12px; }
-  .mb0 { margin-bottom: 0 !important; }
-  .mb12 { margin-bottom: 12px; }
-
-  /* ── FIELDS ── */
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label {
-    font-size: 10px; font-weight: 500; color: var(--text-dim);
-    letter-spacing: 0.07em; text-transform: uppercase;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .req { color: var(--red); }
-  .field input, .field select, .field textarea {
-    width: 100%; font-size: 13px; font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg); border: 0.5px solid var(--border-lt);
-    border-radius: 6px; padding: 8px 10px; color: var(--text); outline: none;
-    transition: border-color .12s, box-shadow .12s;
-  }
-  .field select option { background: var(--surface); color: var(--text); }
-  .field textarea { resize: vertical; line-height: 1.55; min-height: 80px; }
-  .field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 2px var(--purple-soft); }
-  .field-note { font-size: 10px; color: var(--text-muted); line-height: 1.45; }
-  .field-note.warn { color: var(--amber); }
-  .field-note.alert { color: var(--red); }
-  .trend-label { color: var(--red) !important; font-weight: 600 !important; }
-  .req-legend { font-size: 11px; color: var(--text-muted); margin-bottom: 18px; }
-
-  /* ── PILL TOGGLES ── */
-  .pill-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
-  .pill {
-    display: inline-flex; align-items: center; padding: 5px 13px;
-    border-radius: 5px; font-size: 12px; cursor: pointer;
-    border: 0.5px solid var(--border-lt); background: var(--bg); color: var(--text-muted);
-    transition: all .12s; user-select: none;
-  }
-  .pill:hover { border-color: var(--text-muted); color: var(--text); }
-  .pill.p-pass     { background: var(--green-soft);  color: var(--green);  border-color: var(--green-bd);  }
-  .pill.p-fail     { background: var(--red-soft);    color: var(--red);    border-color: var(--red-bd);    }
-  .pill.p-review   { background: var(--amber-soft);  color: var(--amber);  border-color: var(--amber-bd);  }
-  .pill.p-pending  { background: var(--blue-soft);   color: var(--blue);   border-color: var(--blue-bd);   }
-  .pill.p-closed   { background: var(--green-soft);  color: var(--green);  border-color: var(--green-bd);  }
-  .pill.p-coaching { background: var(--purple-soft); color: var(--purple); border-color: var(--purple-bd); }
-  .pill.p-unfounded    { background: var(--green-soft);  color: var(--green);  border-color: var(--green-bd);  }
-  .pill.p-substantiated { background: var(--red-soft);   color: var(--red);    border-color: var(--red-bd);    }
-  .pill.p-partial  { background: var(--amber-soft);  color: var(--amber);  border-color: var(--amber-bd);  }
-  .pill.p-inconclusive { background: var(--purple-soft); color: var(--purple); border-color: var(--purple-bd); }
-
-  /* ── DIVIDER ── */
-  .divider { border: none; border-top: 0.5px solid var(--border); margin: 14px 0; }
-
-  /* ── REQUESTED / SENT TABLE ── */
-  .rs-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-  .rs-table th {
-    font-size: 9px; font-weight: 500; color: var(--text-muted); text-align: left;
-    padding: 4px 10px 7px; border-bottom: 0.5px solid var(--border);
-    text-transform: uppercase; letter-spacing: 0.08em;
-  }
-  .rs-table td { padding: 7px 10px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
-  .rs-table tr:last-child td { border-bottom: none; }
-  .rs-table .iname { font-size: 12px; font-weight: 500; color: var(--text); }
-  .rs-table input[type="date"] {
-    font-size: 12px; font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg); border: 0.5px solid var(--border-lt);
-    border-radius: 5px; padding: 5px 8px; color: var(--text); outline: none; width: 148px;
-  }
-  .cb-wrap { display: flex; align-items: center; gap: 7px; }
-  .cb {
-    width: 16px; height: 16px; border-radius: 3px;
-    border: 0.5px solid var(--border-lt); background: var(--bg);
-    cursor: pointer; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; transition: all .12s;
-  }
-  .cb.on { background: var(--green-soft); border-color: var(--green-bd); }
-  .cb-lbl { font-size: 12px; color: var(--text-muted); min-width: 22px; }
-
-  /* ── RECONCILE ROW ── */
-  .reconcile-row {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--surface2); border: 0.5px solid var(--border);
-    border-radius: 8px; padding: 11px 14px;
-  }
-  .reconcile-info { flex: 1; }
-  .reconcile-title { font-size: 13px; font-weight: 500; color: var(--text); }
-  .reconcile-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .reconcile-badge {
-    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 3px 9px; border-radius: 4px; white-space: nowrap;
-    background: var(--red-soft); color: var(--red); border: 0.5px solid var(--red-bd);
-  }
-  .reconcile-badge.done { background: var(--green-soft); color: var(--green); border-color: var(--green-bd); }
-
-  /* ── FOLLOW-UP ROWS ── */
-  .followup-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
-  .followup-row:last-child { border-bottom: none; }
-  .followup-check {
-    width: 16px; height: 16px; border-radius: 3px;
-    border: 0.5px solid var(--border-lt); background: var(--bg);
-    cursor: pointer; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .followup-check.done { background: var(--green-soft); border-color: var(--green-bd); }
-  .followup-text { font-size: 12px; color: var(--text); flex: 1; }
-  .followup-date { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
-  .followup-date.due { color: var(--amber); }
-
-  /* ── NOTIF BANNER ── */
-  .notif {
-    display: flex; align-items: flex-start; gap: 10px;
-    border-radius: 7px; padding: 10px 12px; margin-bottom: 12px;
-  }
-  .notif-amber { background: var(--amber-soft); border: 0.5px solid var(--amber-bd); }
-  .notif-purple { background: var(--purple-soft); border: 0.5px solid var(--purple-bd); }
-  .notif-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
-  .notif-text { font-size: 11px; line-height: 1.55; }
-  .notif-amber .notif-text { color: var(--amber); }
-  .notif-purple .notif-text { color: var(--purple); }
-  .notif-text strong { font-weight: 500; }
-
-  /* ── ATTACHMENTS ── */
-  .attach-zone {
-    border: 0.5px dashed var(--border-lt); border-radius: 8px; padding: 22px;
-    text-align: center; color: var(--text-muted); font-size: 12px; cursor: pointer;
-    transition: all .15s; position: relative;
-  }
-  .attach-zone:hover { border-color: var(--purple); color: var(--text); background: var(--purple-soft); }
-  .attach-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .attach-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-  .attach-item {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--surface2); border: 0.5px solid var(--border);
-    border-radius: 6px; padding: 7px 10px;
-  }
-  .attach-icon { font-size: 15px; flex-shrink: 0; }
-  .attach-name { font-size: 12px; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .attach-size { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
-  .attach-del { font-size: 11px; color: var(--red); cursor: pointer; padding: 2px 7px; border-radius: 4px; border: 0.5px solid transparent; transition: all .12s; flex-shrink: 0; }
-  .attach-del:hover { background: var(--red-soft); border-color: var(--red-bd); }
-
-  /* ── EXPORT BTN ── */
-  .export-btn {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 11px; font-weight: 500; color: var(--text-dim);
-    background: var(--surface2); border: 0.5px solid var(--border-lt);
-    border-radius: 5px; padding: 4px 10px; cursor: pointer;
-    transition: all .12s; margin-top: 6px; font-family: 'IBM Plex Sans', sans-serif;
-  }
-  .export-btn:hover { background: var(--border); color: var(--text); }
-
-  /* ── ACTION BAR ── */
-  .action-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 24px; flex-wrap: wrap; gap: 12px;
-  }
-  .action-meta { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-  .action-meta strong { color: var(--text-dim); font-weight: 500; }
-  .action-btns { display: flex; gap: 8px; }
-  .btn {
-    padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;
-    cursor: pointer; border: 0.5px solid var(--border-lt);
-    background: var(--surface2); color: var(--text-dim);
-    transition: all .12s; font-family: 'IBM Plex Sans', sans-serif;
-  }
-  .btn:hover { background: var(--border); color: var(--text); }
-  .btn-primary { background: var(--text); color: #fff; border-color: transparent; }
-  .btn-primary:hover { opacity: .85; }
-
-  @media (max-width: 660px) {
-    .g2, .g3 { grid-template-columns: 1fr; }
-    .status-strip { grid-template-columns: repeat(2,1fr); }
-    .l1-divider { display: none; }
-    .rs-table input[type="date"] { width: 120px; }
-  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  .header { background:linear-gradient(135deg,var(--navy) 0%,#1a4a6e 100%); color:#fff; padding:20px 28px 16px; }
+  .header-top { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .header h1 { font-size:1.45rem; font-weight:700; letter-spacing:-.3px; }
+  .header .sub { font-size:.8rem; opacity:.75; margin-top:3px; }
+  .badge-l2 { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:4px 14px; font-size:.75rem; font-weight:600; white-space:nowrap; }
+  .header-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+  .meta-chip { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 12px; font-size:.78rem; display:flex; flex-direction:column; gap:2px; }
+  .meta-chip span:first-child { opacity:.7; font-size:.7rem; text-transform:uppercase; letter-spacing:.5px; }
+  .meta-chip span:last-child { font-weight:600; }
+  .status-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .status-chip { border-radius:20px; padding:4px 12px; font-size:.75rem; font-weight:600; }
+  .sc-amber { background:#fef3c7; color:var(--amber); }
+  .sc-blue  { background:#dbeafe; color:var(--blue); }
+  .search-bar { background:#fff; border-bottom:1px solid var(--border); padding:12px 28px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .search-bar input { flex:1; min-width:220px; padding:8px 14px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; outline:none; }
+  .search-bar input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
+  .search-bar button { padding:8px 18px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; }
+  .search-bar button:hover { background:#0a5a46; }
+  .export-btn { padding:8px 18px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; }
+  .export-btn:hover { background:#0a1f30; }
+  .search-results { width:100%; }
+  .search-result-item { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:8px 12px; margin-top:6px; font-size:.83rem; cursor:pointer; display:flex; gap:16px; flex-wrap:wrap; }
+  .search-result-item:hover { background:#dcfce7; }
+  main { max-width:860px; margin:0 auto; padding:24px 16px 60px; display:flex; flex-direction:column; gap:20px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .card-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+  .card-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .ci-navy { background:#e0e7ff; }
+  .ci-teal { background:#d1fae5; }
+  .ci-amber { background:#fef3c7; }
+  .ci-purple { background:#f3e8ff; }
+  .card-title { font-size:.95rem; font-weight:700; }
+  .card-sub { font-size:.75rem; color:var(--muted); margin-top:1px; }
+  .card-body { padding:20px; }
+  .l1-banner { background:linear-gradient(90deg,#f0fdf4,#f8fafc); border:1px solid #bbf7d0; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .l1-banner .arrow { font-size:1.2rem; }
+  .l1-banner .l1-label { font-size:.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+  .l1-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .l1-tag { background:#e2e8f0; border-radius:6px; padding:3px 10px; font-size:.8rem; font-weight:600; }
+  .tag-ctm { background:#dbeafe; color:var(--blue); }
+  .tag-grievance { background:#fce7f3; color:#9d174d; }
+  .tag-audit { background:#fef3c7; color:var(--amber); }
+  .tag-trend { background:#f3e8ff; color:var(--purple); }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:600px){ .form-grid { grid-template-columns:1fr; } }
+  .form-group { display:flex; flex-direction:column; gap:5px; }
+  .form-group.full { grid-column:1/-1; }
+  label { font-size:.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+  label .req { color:var(--red); margin-left:2px; }
+  input[type=text], input[type=date], select, textarea { width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; color:var(--text); background:#fff; outline:none; transition:border-color .2s, box-shadow .2s; }
+  input:focus, select:focus, textarea:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
+  textarea { resize:vertical; min-height:80px; }
+  .pill-group { display:flex; flex-wrap:wrap; gap:8px; }
+  .pill { padding:7px 16px; border-radius:20px; font-size:.82rem; font-weight:600; border:1.5px solid var(--border); background:#f8fafc; cursor:pointer; transition:all .15s; }
+  .pill:hover { border-color:var(--teal); color:var(--teal); }
+  .p-pass { background:#d1fae5; border-color:var(--teal); color:var(--teal); }
+  .p-fail { background:#fee2e2; border-color:var(--red); color:var(--red); }
+  .p-review { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
+  .p-pending { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
+  .p-closed { background:#d1fae5; border-color:var(--teal); color:var(--teal); }
+  .p-coaching { background:#ede9fe; border-color:var(--purple); color:var(--purple); }
+  .p-unfounded { background:#e0f2fe; border-color:var(--blue); color:var(--blue); }
+  .p-substantiated { background:#fee2e2; border-color:var(--red); color:var(--red); }
+  .p-partial { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
+  .p-inconclusive { background:#f3e8ff; border-color:var(--purple); color:var(--purple); }
+  .det-sync-banner { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 14px; font-size:.8rem; color:#92400e; margin-bottom:12px; display:none; }
+  .det-sync-banner.visible { display:block; }
+  .coaching-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:600px){ .coaching-grid { grid-template-columns:1fr; } }
+  .drop-zone { border:2px dashed var(--border); border-radius:10px; padding:28px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s; }
+  .drop-zone:hover, .drop-zone.drag-over { border-color:var(--teal); background:#f0fdf4; }
+  .drop-zone .dz-icon { font-size:2rem; margin-bottom:8px; }
+  .drop-zone .dz-text { font-size:.85rem; color:var(--muted); }
+  .drop-zone .dz-sub { font-size:.75rem; color:var(--muted); margin-top:4px; }
+  .attach-list { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+  .attach-item { display:flex; align-items:center; gap:10px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:8px 12px; }
+  .attach-icon { font-size:1.2rem; }
+  .attach-name { flex:1; font-size:.83rem; font-weight:600; }
+  .attach-size { font-size:.75rem; color:var(--muted); }
+  .attach-del { font-size:.75rem; color:var(--red); cursor:pointer; font-weight:600; }
+  .attach-del:hover { text-decoration:underline; }
+  .footer-note { background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:12px 16px; font-size:.78rem; color:var(--muted); display:flex; align-items:flex-start; gap:8px; }
+  .footer-note .icon { flex-shrink:0; }
+  .action-row { display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap; }
+  .btn-draft { padding:10px 22px; background:#f1f5f9; border:1px solid var(--border); border-radius:8px; font-size:.88rem; font-weight:600; cursor:pointer; color:var(--text); }
+  .btn-draft:hover { background:#e2e8f0; }
+  .btn-submit { padding:10px 28px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:.88rem; font-weight:600; cursor:pointer; }
+  .btn-submit:hover { background:#0a5a46; }
+  .divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
 </style>
 </head>
 <body>
-<div class="page-wrap">
 
-  <!-- TOP BAR -->
-  <div class="top-bar">
+<div class="header">
+  <div class="header-top">
     <div>
-      <div class="system-eyebrow">Complaint Tracking Module</div>
-      <div class="page-title">Action &amp; coaching tracker</div>
-      <div class="page-sub">Layer 2 — Internal response, coaching, and determinations. Compliance intake record lives in Layer 1.</div>
-      <div class="top-chips">
-        <div class="chip chip-l2">Layer 2 — Action</div>
-        <div class="chip chip-from">↑ Pulls from Layer 1</div>
+      <h1>Complaint Tracking Module</h1>
+      <div class="sub">Action &amp; coaching tracker</div>
+    </div>
+    <div class="badge-l2">Layer 2 — Action &#x2191;</div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-chip"><span>Pulls from Layer 1</span><span>From Layer 1</span></div>
+    <div class="meta-chip"><span>Case number</span><span>&#x1F512; <span id="display-case-num">&#x2014;</span></span></div>
+    <div class="meta-chip"><span>Internal tracking ID</span><span id="display-tracking-id">&#x2014;</span></div>
+    <div class="meta-chip"><span>Type</span><span id="display-type-tag" class="l1-tag">&#x2014;</span></div>
+    <div class="meta-chip"><span>Carrier</span><span id="display-carrier">&#x2014;</span></div>
+    <div class="meta-chip"><span>Date received (L1)</span><span id="display-date-recv">&#x2014;</span></div>
+    <div class="meta-chip"><span>Agent</span><span id="display-agent">&#x2014;</span></div>
+  </div>
+  <div class="status-chips">
+    <div class="status-chip sc-amber">Coaching status: <span id="coaching-status-txt">In progress</span></div>
+    <div class="status-chip sc-blue">Determination: <span id="header-det-txt">Pending</span></div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="search-input" placeholder="Search by case #, carrier, agent name, or tracking ID&#x2026;" />
+  <button onclick="runSearch()">Search</button>
+  <button class="export-btn" onclick="exportToExcel()">Export to Excel</button>
+  <div class="search-results" id="search-results"></div>
+</div>
+
+<main>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-navy">&#x1F5C2;&#xFE0F;</div>
+      <div>
+        <div class="card-title">Case identification</div>
+        <div class="card-sub">Link this coaching record to the compliance intake in Layer 1</div>
       </div>
     </div>
-  </div>
-
-  <!-- FROM L1 BANNER -->
-  <div class="l1-banner">
-    <div class="l1-label">From Layer 1</div>
-    <div class="l1-divider"></div>
-    <div class="l1-fields">
-      <div class="l1-field"><span class="l1-key">Case number 🔒</span><span class="l1-val">CTM-2024-08847</span></div>
-      <div class="l1-field"><span class="l1-key">Internal tracking ID</span><span class="l1-val">ITC-0847</span></div>
-      <div class="l1-field"><span class="l1-key">Type</span><span class="l1-tag tag-ctm" id="display-type-tag">CTM</span></div>
-      <div class="l1-field"><span class="l1-key">Carrier</span><span class="l1-val" style="font-family:inherit;">Humana</span></div>
-      <div class="l1-field"><span class="l1-key">Date received (L1)</span><span class="l1-val" style="font-size:12px;">Aug 12, 2024</span></div>
-      <div class="l1-field"><span class="l1-key">Agent</span><span class="l1-val" style="font-family:inherit;">Marcus Webb</span></div>
-    </div>
-  </div>
-
-  <div class="req-legend"><span class="req">*</span> Required field</div>
-
-  <!-- STATUS STRIP -->
-  <div class="status-strip">
-    <div class="stat"><div class="stat-label">Coaching status</div><div class="stat-val" style="color:var(--purple);">In progress</div><div class="stat-sub">Due Aug 19</div></div>
-    <div class="stat"><div class="stat-label">Determination</div><div class="stat-val" style="font-size:14px;color:var(--text-muted);">Pending</div></div>
-    <div class="stat"><div class="stat-label">Items sent</div><div class="stat-val" id="sent-count">0 / 3</div><div class="stat-sub">Calls, leads, statement</div></div>
-    <div class="stat"><div class="stat-label">Follow-up status</div><div class="stat-val" id="followup-stat" style="font-size:14px;color:var(--amber);">Pending</div></div>
-  </div>
-
-  <!-- ══ 1. CASE IDENTIFICATION ══ -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="section-bar" style="height:18px;background:var(--text-muted);"></div>
-      <div class="section-title">Case identification</div>
-    </div>
-    <div class="section-body">
-      <div class="g3">
-        <div class="field">
+    <div class="card-body">
+      <div class="l1-banner">
+        <span class="arrow">&#x2191;</span>
+        <div>
+          <div class="l1-label">Pulls from Layer 1</div>
+          <div class="l1-tags">
+            <span class="l1-tag tag-ctm" id="display-type-tag2">&#x2014;</span>
+            <span class="l1-tag" id="display-carrier2">&#x2014;</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
           <label>Case type <span class="req">*</span></label>
           <select id="case-type" onchange="updateTypeTag()">
-            <option value="">Select type…</option>
-            <option value="CTM" selected>CTM</option>
-            <option value="Grievance">Grievance</option>
-            <option value="Audit">Audit</option>
+            <option value="">Select type&#x2026;</option>
+            <option>CTM</option>
+            <option>Grievance</option>
+            <option>Audit</option>
+            <option>Trend coaching</option>
           </select>
         </div>
-        <div class="field">
-          <label>Carrier case number <span class="req">*</span></label>
-          <input type="text" id="carrier-case-num" value="CTM-2024-08847" placeholder="As assigned by carrier">
+        <div class="form-group">
+          <label>Carrier case number</label>
+          <input type="text" id="carrier-case-num" placeholder="Leave blank if not yet assigned" />
         </div>
-        <div class="field">
-          <label>Internal tracking ID</label>
-          <input type="text" value="ITC-0847" placeholder="Internal reference number">
+        <div class="form-group">
+          <label>Internal tracking ID <span class="req">*</span></label>
+          <input type="text" id="internal-tracking-id" placeholder="e.g. IDITC-0847" oninput="lookupFromL1()" />
         </div>
-      </div>
-      <div class="g3">
-        <div class="field">
+        <div class="form-group">
           <label>Carrier <span class="req">*</span></label>
-          <select>
-      <option value="">Select carrier</option>
-      <option selected>Humana</option>
-      <option>Aetna</option>
-      <option>UnitedHealthcare</option>
-      <option>BCBS</option>
-      <option>Cigna</option>
-      <option>WellCare</option>
-      <option>Molina</option>
-      <option>Centene</option>
-      <option>Devoted Health</option>
-      <option>Florida Blue</option>
-      <option>HealthSun</option>
-      <option>Simply Healthcare</option>
-      <option>CarePlus</option>
-     </select>
-        </div>
-        <div class="field">
-          <label>Date received (L1) <span class="req">*</span></label>
-          <input type="date" value="2024-08-12">
-        </div>
-        <div class="field">
-          <label>Carrier due date</label>
-          <input type="date" value="2024-08-19">
-          <span class="field-note">Imposed by carrier</span>
-        </div>
-      </div>
-      <div class="g2 mb0">
-        <div class="field">
-          <label>Agent <span class="req">*</span></label>
-          <input type="text" value="Marcus Webb">
-        </div>
-        <div class="field">
-          <label><span class="trend-label">Trend coaching</span></label>
-          <select>
-            <option value="">Select if applicable…</option>
-            <option>Yes — trend identified</option>
-            <option>No — isolated incident</option>
-            <option>Monitoring</option>
+          <select id="carrier-select">
+            <option value="">Select carrier</option>
+            <option>Aetna</option>
+            <option>Allstate</option>
+            <option>BCBS &#x2013; IL (HCSC)</option>
+            <option>BCBS &#x2013; MT (HCSC)</option>
+            <option>BCBS &#x2013; NM (HCSC)</option>
+            <option>BCBS &#x2013; OK (HCSC)</option>
+            <option>BCBS &#x2013; TX (HCSC)</option>
+            <option>CarePlus</option>
+            <option>CareSource</option>
+            <option>Centene</option>
+            <option>Cigna</option>
+            <option>Devoted Health</option>
+            <option>Elevance</option>
+            <option>Florida Blue</option>
+            <option>HealthSun</option>
+            <option>Humana</option>
+            <option>IFG</option>
+            <option>Molina</option>
+            <option>Scan</option>
+            <option>Simply Healthcare</option>
+            <option>UnitedHealthcare</option>
+            <option>WellCare</option>
+            <option>Zing</option>
           </select>
-          <span class="field-note alert">Flag if this agent has a recurring pattern requiring escalation</span>
+        </div>
+        <div class="form-group">
+          <label>Date received (L1) <span class="req">*</span></label>
+          <input type="date" id="date-received" />
+        </div>
+        <div class="form-group">
+          <label>Carrier due date</label>
+          <input type="date" id="carrier-due-date" />
+        </div>
+        <div class="form-group">
+          <label>Imposed by carrier</label>
+          <input type="date" id="imposed-date" />
+        </div>
+        <div class="form-group">
+          <label>Agent <span class="req">*</span></label>
+          <input type="text" id="agent-name" placeholder="Full name" />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══ 2. REQUESTED & SENT ══ -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="section-bar" style="height:18px;background:var(--blue);"></div>
-      <div class="section-title">Requested &amp; sent items</div>
-      <div class="section-badge" style="background:var(--amber-soft);color:var(--amber);border:0.5px solid var(--amber-bd);">Triggers reminders</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-teal">&#x2696;&#xFE0F;</div>
+      <div>
+        <div class="card-title">Determination</div>
+        <div class="card-sub">Auto-syncs from Layer 1 when Internal Tracking ID or Carrier Case Number is entered</div>
+      </div>
     </div>
-    <div class="section-body">
-      <div class="notif notif-amber">
-        <div class="notif-icon">⚠</div>
-        <div class="notif-text"><strong>Pending Calls and Leads reminder:</strong> If Calls or Leads are marked Requested but not yet Sent while case is Pending — automatic reminders go to <strong>Compliance and Peter only</strong>. Reminders respect Eastern Time / agent time zone.</div>
+    <div class="card-body">
+      <div class="det-sync-banner" id="det-sync-banner">&#x26A1; Determination loaded from Layer 1 record</div>
+      <div class="pill-group" id="det-pills">
+        <div class="pill" onclick="toggleDet(this)">Unfounded</div>
+        <div class="pill p-pending" onclick="toggleDet(this)">Pending</div>
+        <div class="pill" onclick="toggleDet(this)">Substantiated</div>
+        <div class="pill" onclick="toggleDet(this)">Partially substantiated</div>
+        <div class="pill" onclick="toggleDet(this)">Inconclusive</div>
       </div>
-      <div class="notif notif-purple">
-        <div class="notif-icon">*</div>
-        <div class="notif-text"><strong>Pending Agent Statement reminder:</strong> If Agent Statement is marked Requested but not yet Sent while case is Pending — automatic reminders go to <strong>Sales Manager and Agent only</strong>. Reminders respect Eastern Time / agent time zone.</div>
-      </div>
-      <table class="rs-table">
-        <thead>
-          <tr>
-            <th style="width:160px;">Item</th>
-            <th>Requested</th>
-            <th>Date requested</th>
-            <th>Sent to carrier</th>
-            <th>Date sent</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="iname">Call recordings</td>
-            <td><div class="cb-wrap"><div class="cb" id="cb-c-req" onclick="toggleCb(this,'c-req')"></div><span class="cb-lbl" id="lbl-c-req">No</span></div></td>
-            <td><input type="date"></td>
-            <td><div class="cb-wrap"><div class="cb" id="cb-c-sent" onclick="toggleCb(this,'c-sent')"></div><span class="cb-lbl" id="lbl-c-sent">No</span></div></td>
-            <td><input type="date"></td>
-          </tr>
-          <tr>
-            <td class="iname">Leads</td>
-            <td><div class="cb-wrap"><div class="cb" id="cb-l-req" onclick="toggleCb(this,'l-req')"></div><span class="cb-lbl" id="lbl-l-req">No</span></div></td>
-            <td><input type="date"></td>
-            <td><div class="cb-wrap"><div class="cb" id="cb-l-sent" onclick="toggleCb(this,'l-sent')"></div><span class="cb-lbl" id="lbl-l-sent">No</span></div></td>
-            <td><input type="date"></td>
-          </tr>
-          <tr>
-            <td class="iname">Agent statement</td>
-            <td><div class="cb-wrap"><div class="cb" id="cb-s-req" onclick="toggleCb(this,'s-req')"></div><span class="cb-lbl" id="lbl-s-req">No</span></div></td>
-            <td><input type="date"></td>
-            <td><div class="cb-wrap"><div class="cb" id="cb-s-sent" onclick="toggleCb(this,'s-sent')"></div><span class="cb-lbl" id="lbl-s-sent">No</span></div></td>
-            <td><input type="date"></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
-  <!-- ══ 3. COACHING & TRAINING ══ -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="section-bar" style="height:18px;background:var(--purple);"></div>
-      <div class="section-title">Coaching &amp; training assignment</div>
-      <div class="section-badge" style="background:var(--purple-soft);color:var(--purple);border:0.5px solid var(--purple-bd);">Routes to agent + manager</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-teal">&#x1F4CB;</div>
+      <div>
+        <div class="card-title">Action taken</div>
+        <div class="card-sub">Document actions and instructions for this coaching record</div>
+      </div>
     </div>
-    <div class="section-body">
-      <div class="notif notif-purple">
-        <div class="notif-icon">📣</div>
-        <div class="notif-text"><strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the <strong>agent and their sales manager</strong>. Reminders respect Eastern Time / agent time zone.</div>
-      </div>
-      <div class="field mb12">
-        <label>Assignment type <span class="req">*</span></label>
-        <div class="pill-group">
-          <div class="pill p-coaching" onclick="toggleAssign(this)">Coaching</div>
-          <div class="pill" onclick="toggleAssign(this)">Training</div>
-          <div class="pill" onclick="toggleAssign(this)">Coaching + Training</div>
-          <div class="pill" onclick="toggleAssign(this)">None required</div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Action taken <span class="req">*</span></label>
+          <textarea id="action-taken" rows="3" placeholder="Describe the action taken&#x2026;"></textarea>
         </div>
-      </div>
-      <div class="g3">
-        <div class="field"><label>Date assigned <span class="req">*</span></label><input type="date" value="2024-08-13"></div>
-        <div class="field"><label>Due date <span class="req">*</span></label><input type="date" value="2024-08-19"></div>
-        <div class="field"><label>Date completed</label><input type="date"></div>
-      </div>
-      <div class="g2 mb0">
-        <div class="field">
-          <label>Sales manager at time of coaching</label>
-          <input type="text" placeholder="Enter name">
-          <span class="field-note">May differ from manager at time of complaint (see Layer 1).</span>
-        </div>
-        <div class="field">
-          <label>Person who conducted coaching <span class="req">*</span></label>
-          <input type="text" placeholder="Enter name">
+        <div class="form-group full">
+          <label>Agent instructions</label>
+          <textarea id="agent-instructions" rows="3" placeholder="Specific instructions given to the agent&#x2026;"></textarea>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══ 4. DETERMINATION & ACTION ══ -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="section-bar" style="height:18px;background:var(--red);"></div>
-      <div class="section-title">Determination &amp; action taken</div>
-    </div>
-    <div class="section-body">
-      <div class="field mb12">
-        <label>Internal determination <span class="req">*</span></label>
-        <div class="pill-group">
-          <div class="pill" onclick="toggleDet(this)">Unfounded</div>
-          <div class="pill" onclick="toggleDet(this)">Substantiated</div>
-          <div class="pill" onclick="toggleDet(this)">Partially substantiated</div>
-          <div class="pill" onclick="toggleDet(this)">Inconclusive</div>
-          <div class="pill p-pending" onclick="toggleDet(this)">Pending</div>
-        </div>
-      </div>
-      <div class="field mb12">
-        <label>Action taken <span class="req">*</span></label>
-        <textarea placeholder="Describe corrective action, verbal or written warnings, retraining, PIP, termination, etc."></textarea>
-      </div>
-      <div class="field mb12">
-        <label>Agent instructions</label>
-        <textarea placeholder="Specific guidance given to agent during the coaching session…"></textarea>
-      </div>
-      <div class="divider"></div>
-      <div class="reconcile-row">
-        <div class="cb" id="cb-reconciled" onclick="toggleReconcile()"></div>
-        <div class="reconcile-info">
-          <div class="reconcile-title">Reconciled to carrier</div>
-          <div class="reconcile-sub">Check when this case has been reconciled / confirmed closed with the carrier.</div>
-        </div>
-        <span class="reconcile-badge not-rec" id="reconcile-tag">Not reconciled</span>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-purple">&#x1F393;</div>
+      <div>
+        <div class="card-title">Coaching &amp; training assignment</div>
+        <div class="card-sub">Routes to agent + manager</div>
       </div>
     </div>
-  </div>
-
-  <!-- ══ 5. FOLLOW-UP TRACKING ══ -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="section-bar" style="height:18px;background:var(--green);"></div>
-      <div class="section-title">Follow-up tracking</div>
-    </div>
-    <div class="section-body">
-      <div class="followup-row">
-        <div class="followup-check done" onclick="toggleCheck(this)"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#0f6e56"/></svg></div>
-        <div class="followup-text">Confirm call recordings received from carrier</div>
-        <div class="followup-date">Aug 13</div>
-      </div>
-      <div class="followup-row">
-        <div class="followup-check done" onclick="toggleCheck(this)"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" color="#0f6e56"/></svg></div>
-        <div class="followup-text">Review agent script compliance on flagged calls</div>
-        <div class="followup-date">Aug 14</div>
-      </div>
-      <div class="followup-row">
-        <div class="followup-check" onclick="toggleCheck(this)"></div>
-        <div class="followup-text">Conduct coaching session with agent and document outcome</div>
-        <div class="followup-date due">Due Aug 19</div>
-      </div>
-      <div class="divider"></div>
-      <div class="g2 mb0">
-        <div class="field">
-          <label>Follow-up status <span class="req">*</span></label>
-          <div class="pill-group">
-            <div class="pill p-pending" onclick="toggleFollowup(this,'pending')">Pending</div>
-            <div class="pill" onclick="toggleFollowup(this,'closed')">Closed</div>
+    <div class="card-body">
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">&#x1F4E3; <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the agent and their sales manager.</p>
+      <div class="coaching-grid">
+        <div class="form-group">
+          <label>Assignment type <span class="req">*</span></label>
+          <div class="pill-group" id="assign-pills">
+            <div class="pill" onclick="toggleAssign(this)">Coaching</div>
+            <div class="pill" onclick="toggleAssign(this)">Training</div>
+            <div class="pill" onclick="toggleAssign(this)">Coaching + Training</div>
+            <div class="pill" onclick="toggleAssign(this)">None required</div>
           </div>
-          <span class="field-note" style="margin-top:4px;">Mark Closed only when the case is fully resolved.</span>
         </div>
-        <div class="field"><label>Next follow-up date</label><input type="date" value="2024-08-19"></div>
+        <div class="form-group">
+          <label>Date assigned <span class="req">*</span></label>
+          <input type="date" id="date-assigned" />
+        </div>
+        <div class="form-group">
+          <label>Due date <span class="req">*</span></label>
+          <input type="date" id="due-date" />
+        </div>
+        <div class="form-group">
+          <label>Date completed</label>
+          <input type="date" id="date-completed" />
+        </div>
+        <div class="form-group full">
+          <label>Sales manager at time of coaching</label>
+          <input type="text" id="sales-manager" placeholder="May differ from manager at time of complaint (see Layer 1)" />
+        </div>
+        <div class="form-group full">
+          <label>Person who conducted coaching <span class="req">*</span></label>
+          <input type="text" id="coach-person" placeholder="Full name" />
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ══ 6. ATTACHMENTS ══ -->
-  <div class="section-card">
-    <div class="section-header">
-      <div class="section-bar" style="height:18px;background:var(--amber);"></div>
-      <div class="section-title">Attachments &amp; documentation</div>
-      <div class="section-badge" style="background:var(--amber-soft);color:var(--amber);border:0.5px solid var(--amber-bd);">No limit</div>
-    </div>
-    <div class="section-body">
-      <div class="attach-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault()">
-        <input type="file" multiple onchange="handleFiles(this.files)">
-        <div style="font-size:22px;margin-bottom:6px;color:var(--border-lt);">+</div>
-        <div style="font-weight:500;color:var(--text-dim);">Drop files or click to upload</div>
-        <div style="margin-top:4px;">Call recordings, written statements, PIP documents, screenshots, agent forms</div>
-        <div style="margin-top:6px;font-size:10px;color:var(--green);">No limit — delete and replace files at any time</div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-amber">&#x1F4CA;</div>
+      <div>
+        <div class="card-title">Overall status</div>
+        <div class="card-sub">Current status of this coaching record</div>
       </div>
+    </div>
+    <div class="card-body">
+      <div class="pill-group" id="status-pills">
+        <div class="pill p-pending" onclick="toggleStatus(this,'pending')">Pending</div>
+        <div class="pill" onclick="toggleStatus(this,'completed')">Completed</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon ci-teal">&#x1F4CE;</div>
+      <div>
+        <div class="card-title">Attachments &amp; documentation</div>
+        <div class="card-sub">No limit &#x2014; delete and replace files at any time</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="drop-zone" id="drop-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" onclick="document.getElementById('file-input').click()">
+        <div class="dz-icon">&#x1F4C1;</div>
+        <div class="dz-text">Drop files or click to upload</div>
+        <div class="dz-sub">Call recordings, written statements, PIP documents, screenshots, agent forms</div>
+      </div>
+      <input type="file" id="file-input" multiple style="display:none" onchange="handleFiles(this.files)" />
       <div class="attach-list" id="attach-list"></div>
     </div>
   </div>
 
-  <!-- ACTION BAR -->
-  <div class="action-bar">
-    <div class="action-meta">
-      <strong>Report access:</strong> Chris &amp; Bernice have read-only access to L1 &amp; L2 reports.<br>
-      Changes require edit permissions — contact Kanisha or Tracy W.
-    </div>
-    <div class="action-btns">
-      <button class="btn">Save draft</button>
-      <button class="btn btn-primary">Submit coaching record</button>
-    </div>
+  <div class="footer-note">
+    <span class="icon">&#x1F512;</span>
+    <span>Report access: Chris &amp; Bernice have read-only access to L1 &amp; L2 reports. Changes require edit permissions &#x2014; contact Kanisha or Tracy W.</span>
   </div>
 
-</div>
+  <div class="action-row">
+    <button class="btn-draft">Save draft</button>
+    <button class="btn-submit">Submit coaching record</button>
+  </div>
+
+</main>
 
 <script>
 const allPills = ['p-pass','p-fail','p-review','p-pending','p-closed','p-coaching','p-unfounded','p-substantiated','p-partial','p-inconclusive'];
 
 function toggleDet(el) {
   el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove(...allPills));
-  const map = { 'Unfounded':'p-unfounded','Substantiated':'p-substantiated','Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending' };
+  const map = {'Unfounded':'p-unfounded','Substantiated':'p-substantiated','Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending'};
   const cls = map[el.textContent.trim()];
   if (cls) el.classList.add(cls);
+  const hdr = document.getElementById('header-det-txt');
+  if (hdr) hdr.textContent = el.textContent.trim();
 }
 
 function toggleAssign(el) {
   el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove(...allPills));
-  const map = { 'Coaching':'p-coaching','Training':'p-pending','Coaching + Training':'p-pass','None required':'' };
+  const map = {'Coaching':'p-coaching','Training':'p-pending','Coaching + Training':'p-pass','None required':''};
   const cls = map[el.textContent.trim()];
   if (cls) el.classList.add(cls);
 }
 
-function toggleFollowup(el, type) {
+function toggleStatus(el, type) {
   el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('p-pending','p-closed'));
-  el.classList.add(type === 'closed' ? 'p-closed' : 'p-pending');
-  const stat = document.getElementById('followup-stat');
-  stat.textContent = type === 'closed' ? 'Closed' : 'Pending';
-  stat.style.color  = type === 'closed' ? 'var(--green)' : 'var(--amber)';
-}
-
-function toggleCheck(el) {
-  const was = el.classList.contains('done');
-  el.classList.toggle('done', !was);
-  el.innerHTML = was ? '' : '<svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.5 6L8 1" stroke="#0f6e56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-}
-
-const sentIds = ['c-sent','l-sent','s-sent'];
-function toggleCb(el, id) {
-  const was = el.classList.contains('on');
-  el.classList.toggle('on', !was);
-  const lbl = document.getElementById('lbl-' + id);
-  if (lbl) lbl.textContent = was ? 'No' : 'Yes';
-  const count = sentIds.filter(f => document.getElementById('cb-'+f)?.classList.contains('on')).length;
-  document.getElementById('sent-count').textContent = count + ' / 3';
-}
-
-function toggleReconcile() {
-  const cb  = document.getElementById('cb-reconciled');
-  const tag = document.getElementById('reconcile-tag');
-  const was = cb.classList.contains('on');
-  cb.classList.toggle('on', !was);
-  tag.textContent = was ? 'Not reconciled' : 'Reconciled ✓';
-  tag.classList.toggle('done', !was);
-  if (was) tag.classList.add('not-rec'); else tag.classList.remove('not-rec');
+  el.classList.add(type === 'completed' ? 'p-closed' : 'p-pending');
+  const chip = document.querySelector('.sc-amber');
+  if (chip) chip.innerHTML = 'Coaching status: <span id="coaching-status-txt">' + (type==='completed' ? 'Completed' : 'Pending') + '</span>';
 }
 
 function updateTypeTag() {
   const val = document.getElementById('case-type').value;
-  const tag = document.getElementById('display-type-tag');
-  tag.textContent = val || '—';
-  tag.className = 'l1-tag';
-  const cls = { CTM:'tag-ctm', Grievance:'tag-grievance', Audit:'tag-audit' };
-  if (cls[val]) tag.classList.add(cls[val]);
+  const tags = document.querySelectorAll('#display-type-tag, #display-type-tag2');
+  tags.forEach(tag => {
+    tag.textContent = val || '—';
+    tag.className = 'l1-tag';
+    const cls = {CTM:'tag-ctm',Grievance:'tag-grievance',Audit:'tag-audit','Trend coaching':'tag-trend'};
+    if (cls[val]) tag.classList.add(cls[val]);
+  });
+}
+
+function lookupFromL1() {
+  const tid = (document.getElementById('internal-tracking-id').value || '').trim();
+  const ccn = (document.getElementById('carrier-case-num').value || '').trim();
+  const key = tid || ccn;
+  if (!key) return;
+  let det = null;
+  try { det = localStorage.getItem('ctm_det_' + key); } catch(e){}
+  if (det) {
+    const pills = document.querySelectorAll('#det-pills .pill');
+    pills.forEach(p => p.classList.remove(...allPills));
+    pills.forEach(p => {
+      if (p.textContent.trim() === det) {
+        const map = {'Unfounded':'p-unfounded','Substantiated':'p-substantiated','Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending'};
+        const cls = map[det];
+        if (cls) p.classList.add(cls);
+      }
+    });
+    const banner = document.getElementById('det-sync-banner');
+    if (banner) banner.classList.add('visible');
+    const hdr = document.getElementById('header-det-txt');
+    if (hdr) hdr.textContent = det;
+  }
+}
+
+function runSearch() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const resultsDiv = document.getElementById('search-results');
+  resultsDiv.innerHTML = '';
+  if (!q) return;
+  try {
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('ctm_case_'));
+    const matches = [];
+    keys.forEach(k => {
+      try {
+        const rec = JSON.parse(localStorage.getItem(k));
+        if (rec && ((rec.internalId && rec.internalId.toLowerCase().includes(q)) || (rec.caseNum && rec.caseNum.toLowerCase().includes(q)) || (rec.carrier && rec.carrier.toLowerCase().includes(q)) || (rec.agent && rec.agent.toLowerCase().includes(q)))) { matches.push(rec); }
+      } catch(e){}
+    });
+    if (matches.length === 0) {
+      resultsDiv.innerHTML = '<div style="font-size:.82rem;color:var(--muted);padding:6px 0;">No matching records found.</div>';
+    } else {
+      matches.forEach(rec => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.innerHTML = '<strong>' + (rec.internalId||'—') + '</strong><span>' + (rec.caseNum||'No case #') + '</span><span>' + (rec.carrier||'—') + '</span><span>' + (rec.agent||'—') + '</span>';
+        item.onclick = () => {
+          document.getElementById('internal-tracking-id').value = rec.internalId || '';
+          document.getElementById('carrier-case-num').value = rec.caseNum || '';
+          document.getElementById('carrier-select').value = rec.carrier || '';
+          document.getElementById('agent-name').value = rec.agent || '';
+          lookupFromL1();
+          resultsDiv.innerHTML = '';
+          document.getElementById('search-input').value = '';
+        };
+        resultsDiv.appendChild(item);
+      });
+    }
+  } catch(e) {
+    resultsDiv.innerHTML = '<div style="font-size:.82rem;color:var(--muted);padding:6px 0;">Search unavailable in this context.</div>';
+  }
+}
+
+document.getElementById('search-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') runSearch(); });
+
+function exportToExcel() {
+  const fields = [
+    ['Case Type', document.getElementById('case-type')?.value || ''],
+    ['Carrier Case Number', document.getElementById('carrier-case-num')?.value || ''],
+    ['Internal Tracking ID', document.getElementById('internal-tracking-id')?.value || ''],
+    ['Carrier', document.getElementById('carrier-select')?.value || ''],
+    ['Date Received (L1)', document.getElementById('date-received')?.value || ''],
+    ['Carrier Due Date', document.getElementById('carrier-due-date')?.value || ''],
+    ['Imposed Date', document.getElementById('imposed-date')?.value || ''],
+    ['Agent', document.getElementById('agent-name')?.value || ''],
+    ['Determination', document.querySelector('#det-pills .p-unfounded,#det-pills .p-substantiated,#det-pills .p-partial,#det-pills .p-inconclusive,#det-pills .p-pending')?.textContent?.trim() || 'Pending'],
+    ['Action Taken', document.getElementById('action-taken')?.value || ''],
+    ['Agent Instructions', document.getElementById('agent-instructions')?.value || ''],
+    ['Assignment Type', document.querySelector('#assign-pills [class*=p-]')?.textContent?.trim() || ''],
+    ['Date Assigned', document.getElementById('date-assigned')?.value || ''],
+    ['Due Date', document.getElementById('due-date')?.value || ''],
+    ['Date Completed', document.getElementById('date-completed')?.value || ''],
+    ['Sales Manager', document.getElementById('sales-manager')?.value || ''],
+    ['Person Who Coached', document.getElementById('coach-person')?.value || ''],
+    ['Overall Status', document.querySelector('#status-pills .p-pending,#status-pills .p-closed')?.textContent?.trim() || 'Pending'],
+  ];
+  const header = fields.map(f => '"' + f[0] + '"').join(',');
+  const row = fields.map(f => '"' + (f[1]||'').replace(/"/g,'""') + '"').join(',');
+  const csv = header + '\n' + row;
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'CTM_Layer2_Export_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
 }
 
 let attachments = [];
 function handleFiles(files) {
-  Array.from(files).forEach(f => attachments.push({ name: f.name, size: f.size, id: Date.now() + Math.random() }));
+  Array.from(files).forEach(f => attachments.push({name:f.name,size:f.size,id:Date.now()+Math.random()}));
   renderAttachments();
 }
-function handleDrop(e) { e.preventDefault(); handleFiles(e.dataTransfer.files); }
-function removeAttachment(id) { attachments = attachments.filter(a => a.id !== id); renderAttachments(); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  handleFiles(e.dataTransfer.files);
+}
+function removeAttachment(id) {
+  attachments = attachments.filter(a => a.id !== id);
+  renderAttachments();
+}
 function renderAttachments() {
   const list = document.getElementById('attach-list');
   if (!attachments.length) { list.innerHTML = ''; return; }
-  const icons = { pdf:'📄',mp3:'🎵',wav:'🎵',m4a:'🎵',mp4:'🎬',mov:'🎬',png:'🖼',jpg:'🖼',jpeg:'🖼',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊' };
+  const icons = {pdf:'📄',mp3:'🎵',wav:'🎵',m4a:'🎵',mp4:'🎬',mov:'🎬',png:'🖼',jpg:'🖼',jpeg:'🖼',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊'};
   list.innerHTML = attachments.map(a => {
-    const ext  = a.name.split('.').pop().toLowerCase();
+    const ext = a.name.split('.').pop().toLowerCase();
     const icon = icons[ext] || '📎';
     const size = a.size > 1048576 ? (a.size/1048576).toFixed(1)+' MB' : Math.round(a.size/1024)+' KB';
-    return `<div class="attach-item"><div class="attach-icon">${icon}</div><div class="attach-name">${a.name}</div><div class="attach-size">${size}</div><div class="attach-del" onclick="removeAttachment(${a.id})">Remove</div></div>`;
+    return '<div class="attach-item"><div class="attach-icon">'+icon+'</div><div class="attach-name">'+a.name+'</div><div class="attach-size">'+size+'</div><div class="attach-del" onclick="removeAttachment('+a.id+')">Remove</div></div>';
   }).join('');
 }
 </script>
