@@ -207,12 +207,13 @@ textarea { resize:vertical; min-height:80px; }
           <input type="date" id="carrier-due-date" />
         </div>
         <div class="form-group">
-          <label>Imposed by carrier</label>
-          <input type="date" id="imposed-date" />
-        </div>
-        <div class="form-group">
           <label>Agent <span class="req">*</span></label>
           <input type="text" id="agent-name" placeholder="Full name" />
+          <div class="pill-group" id="agent-type-group" style="margin-top:6px">
+            <div class="pill" id="agent-type-w2" onclick="toggleAgentType('W2')">W2</div>
+            <div class="pill" id="agent-type-1099" onclick="toggleAgentType('1099')">1099</div>
+          </div>
+          <span style="font-size:.75rem;color:#888;margin-top:2px">Select W2 or 1099</span>
         </div>
       </div>
     </div>
@@ -230,11 +231,10 @@ textarea { resize:vertical; min-height:80px; }
     <div class="card-body">
       <div class="det-sync-banner" id="det-sync-banner">⚡ Determination loaded from Layer 1 record</div>
       <div class="pill-group" id="det-pills">
+        <div class="pill" onclick="toggleDet(this)">Founded</div>
         <div class="pill" onclick="toggleDet(this)">Unfounded</div>
         <div class="pill p-pending" onclick="toggleDet(this)">Pending</div>
-        <div class="pill" onclick="toggleDet(this)">Substantiated</div>
-        <div class="pill" onclick="toggleDet(this)">Partially substantiated</div>
-        <div class="pill" onclick="toggleDet(this)">Inconclusive</div>
+        <div class="pill" onclick="toggleDet(this)">NA</div>
       </div>
     </div>
   </div>
@@ -296,7 +296,7 @@ textarea { resize:vertical; min-height:80px; }
           <input type="date" id="date-completed" />
         </div>
         <div class="form-group full">
-          <label>Sales manager at time of coaching</label>
+          <label>Sales Manager</label>
           <input type="text" id="sales-manager" placeholder="May differ from manager at time of complaint (see Layer 1)" />
         </div>
         <div class="form-group full">
@@ -583,3 +583,10 @@ function collectData() {
   return {
     internalId:   (document.getElementById('internal-tracking-id').value || '').trim(),
     caseNum:      (document.getElementById('
+  function toggleAgentType(type) {
+    document.getElementById('agent-type-w2').classList.remove('p-coaching','p-pending');
+    document.getElementById('agent-type-1099').classList.remove('p-coaching','p-pending');
+    document.getElementById('agent-type-' + type.toLowerCase()).classList.add('p-coaching');
+    window._agentType = type;
+  }
+
