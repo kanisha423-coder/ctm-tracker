@@ -5,103 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CTM Layer 2 — Action &amp; Coaching Tracker</title>
 <style>
-  :root {
-    --navy:#0d2b45; --teal:#0f6e56; --amber:#b45309; --red:#b91c1c;
-    --green:#15803d; --blue:#1d4ed8; --purple:#7c3aed;
-    --bg:#f0f4f8; --card:#ffffff; --border:#d1d5db;
-    --text:#1e293b; --muted:#64748b; --light:#f8fafc;
-  }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
-  .header { background:linear-gradient(135deg,var(--navy) 0%,#1a4a6e 100%); color:#fff; padding:20px 28px 16px; }
-  .header-top { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
-  .header h1 { font-size:1.45rem; font-weight:700; letter-spacing:-.3px; }
-  .header .sub { font-size:.8rem; opacity:.75; margin-top:3px; }
-  .badge-l2 { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:4px 14px; font-size:.75rem; font-weight:600; white-space:nowrap; }
-  .header-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
-  .meta-chip { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 12px; font-size:.78rem; display:flex; flex-direction:column; gap:2px; }
-  .meta-chip span:first-child { opacity:.7; font-size:.7rem; text-transform:uppercase; letter-spacing:.5px; }
-  .meta-chip span:last-child { font-weight:600; }
-  .status-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-  .status-chip { border-radius:20px; padding:4px 12px; font-size:.75rem; font-weight:600; }
-  .sc-amber { background:#fef3c7; color:var(--amber); }
-  .sc-blue  { background:#dbeafe; color:var(--blue); }
-  .search-bar { background:#fff; border-bottom:1px solid var(--border); padding:12px 28px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  .search-bar input { flex:1; min-width:220px; padding:8px 14px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; outline:none; }
-  .search-bar input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
-  .search-bar button { padding:8px 18px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; }
-  .search-bar button:hover { background:#0a5a46; }
-  .export-btn { padding:8px 18px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; }
-  .export-btn:hover { background:#0a1f30; }
-  .search-results { width:100%; }
-  .search-result-item { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:8px 12px; margin-top:6px; font-size:.83rem; cursor:pointer; display:flex; gap:16px; flex-wrap:wrap; }
-  .search-result-item:hover { background:#dcfce7; }
-  main { max-width:860px; margin:0 auto; padding:24px 16px 60px; display:flex; flex-direction:column; gap:20px; }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); }
-  .card-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
-  .card-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
-  .ci-navy { background:#e0e7ff; }
-  .ci-teal { background:#d1fae5; }
-  .ci-amber { background:#fef3c7; }
-  .ci-purple { background:#f3e8ff; }
-  .card-title { font-size:.95rem; font-weight:700; }
-  .card-sub { font-size:.75rem; color:var(--muted); margin-top:1px; }
-  .card-body { padding:20px; }
-  .l1-banner { background:linear-gradient(90deg,#f0fdf4,#f8fafc); border:1px solid #bbf7d0; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
-  .l1-banner .arrow { font-size:1.2rem; }
-  .l1-banner .l1-label { font-size:.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
-  .l1-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
-  .l1-tag { background:#e2e8f0; border-radius:6px; padding:3px 10px; font-size:.8rem; font-weight:600; }
-  .tag-ctm { background:#dbeafe; color:var(--blue); }
-  .tag-grievance { background:#fce7f3; color:#9d174d; }
-  .tag-audit { background:#fef3c7; color:var(--amber); }
-  .tag-trend { background:#f3e8ff; color:var(--purple); }
-  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  @media(max-width:600px){ .form-grid { grid-template-columns:1fr; } }
-  .form-group { display:flex; flex-direction:column; gap:5px; }
-  .form-group.full { grid-column:1/-1; }
-  label { font-size:.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
-  label .req { color:var(--red); margin-left:2px; }
-  input[type=text], input[type=date], select, textarea { width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; color:var(--text); background:#fff; outline:none; transition:border-color .2s, box-shadow .2s; }
-  input:focus, select:focus, textarea:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
-  textarea { resize:vertical; min-height:80px; }
-  .pill-group { display:flex; flex-wrap:wrap; gap:8px; }
-  .pill { padding:7px 16px; border-radius:20px; font-size:.82rem; font-weight:600; border:1.5px solid var(--border); background:#f8fafc; cursor:pointer; transition:all .15s; }
-  .pill:hover { border-color:var(--teal); color:var(--teal); }
-  .p-pass { background:#d1fae5; border-color:var(--teal); color:var(--teal); }
-  .p-fail { background:#fee2e2; border-color:var(--red); color:var(--red); }
-  .p-review { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
-  .p-pending { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
-  .p-closed { background:#d1fae5; border-color:var(--teal); color:var(--teal); }
-  .p-coaching { background:#ede9fe; border-color:var(--purple); color:var(--purple); }
-  .p-unfounded { background:#e0f2fe; border-color:var(--blue); color:var(--blue); }
-  .p-substantiated { background:#fee2e2; border-color:var(--red); color:var(--red); }
-  .p-partial { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
-  .p-inconclusive { background:#f3e8ff; border-color:var(--purple); color:var(--purple); }
-  .det-sync-banner { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 14px; font-size:.8rem; color:#92400e; margin-bottom:12px; display:none; }
-  .det-sync-banner.visible { display:block; }
-  .coaching-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  @media(max-width:600px){ .coaching-grid { grid-template-columns:1fr; } }
-  .drop-zone { border:2px dashed var(--border); border-radius:10px; padding:28px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s; }
-  .drop-zone:hover, .drop-zone.drag-over { border-color:var(--teal); background:#f0fdf4; }
-  .drop-zone .dz-icon { font-size:2rem; margin-bottom:8px; }
-  .drop-zone .dz-text { font-size:.85rem; color:var(--muted); }
-  .drop-zone .dz-sub { font-size:.75rem; color:var(--muted); margin-top:4px; }
-  .attach-list { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
-  .attach-item { display:flex; align-items:center; gap:10px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:8px 12px; }
-  .attach-icon { font-size:1.2rem; }
-  .attach-name { flex:1; font-size:.83rem; font-weight:600; }
-  .attach-size { font-size:.75rem; color:var(--muted); }
-  .attach-del { font-size:.75rem; color:var(--red); cursor:pointer; font-weight:600; }
-  .attach-del:hover { text-decoration:underline; }
-  .footer-note { background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:12px 16px; font-size:.78rem; color:var(--muted); display:flex; align-items:flex-start; gap:8px; }
-  .footer-note .icon { flex-shrink:0; }
-  .action-row { display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap; }
-  .btn-draft { padding:10px 22px; background:#f1f5f9; border:1px solid var(--border); border-radius:8px; font-size:.88rem; font-weight:600; cursor:pointer; color:var(--text); }
-  .btn-draft:hover { background:#e2e8f0; }
-  .btn-submit { padding:10px 28px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:.88rem; font-weight:600; cursor:pointer; }
-  .btn-submit:hover { background:#0a5a46; }
-  .divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
+:root {
+  --navy:#0d2b45; --teal:#0f6e56; --amber:#b45309; --red:#b91c1c;
+  --green:#15803d; --blue:#1d4ed8; --purple:#7c3aed; --bg:#f0f4f8;
+  --card:#ffffff; --border:#d1d5db; --text:#1e293b; --muted:#64748b; --light:#f8fafc;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+.header { background:linear-gradient(135deg,var(--navy) 0%,#1a4a6e 100%); color:#fff; padding:20px 28px 16px; }
+.header-top { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.header h1 { font-size:1.45rem; font-weight:700; letter-spacing:-.3px; }
+.header .sub { font-size:.8rem; opacity:.75; margin-top:3px; }
+.badge-l2 { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:4px 14px; font-size:.75rem; font-weight:600; white-space:nowrap; }
+.header-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.meta-chip { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 12px; font-size:.78rem; display:flex; flex-direction:column; gap:2px; }
+.meta-chip span:first-child { opacity:.7; font-size:.7rem; text-transform:uppercase; letter-spacing:.5px; }
+.meta-chip span:last-child { font-weight:600; }
+.status-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.status-chip { border-radius:20px; padding:4px 12px; font-size:.75rem; font-weight:600; }
+.sc-amber { background:#fef3c7; color:var(--amber); }
+.sc-blue { background:#dbeafe; color:var(--blue); }
+.search-bar { background:#fff; border-bottom:1px solid var(--border); padding:12px 28px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.search-bar input { flex:1; min-width:220px; padding:8px 14px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; outline:none; }
+.search-bar input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
+.search-bar button { padding:8px 18px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; }
+.search-bar button:hover { background:#0a5a46; }
+.export-btn { padding:8px 18px; background:var(--navy); color:#fff; border:none; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; }
+.export-btn:hover { background:#0a1f30; }
+.search-results { width:100%; }
+.search-result-item { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:8px 12px; margin-top:6px; font-size:.83rem; cursor:pointer; display:flex; gap:16px; flex-wrap:wrap; }
+.search-result-item:hover { background:#dcfce7; }
+main { max-width:860px; margin:0 auto; padding:24px 16px 60px; display:flex; flex-direction:column; gap:20px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+.card-header { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+.card-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+.ci-navy { background:#e0e7ff; } .ci-teal { background:#d1fae5; } .ci-amber { background:#fef3c7; } .ci-purple { background:#f3e8ff; }
+.card-title { font-size:.95rem; font-weight:700; }
+.card-sub { font-size:.75rem; color:var(--muted); margin-top:1px; }
+.card-body { padding:20px; }
+.l1-banner { background:linear-gradient(90deg,#f0fdf4,#f8fafc); border:1px solid #bbf7d0; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+.l1-banner .arrow { font-size:1.2rem; }
+.l1-banner .l1-label { font-size:.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+.l1-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+.l1-tag { background:#e2e8f0; border-radius:6px; padding:3px 10px; font-size:.8rem; font-weight:600; }
+.tag-ctm { background:#dbeafe; color:var(--blue); } .tag-grievance { background:#fce7f3; color:#9d174d; }
+.tag-audit { background:#fef3c7; color:var(--amber); } .tag-trend { background:#f3e8ff; color:var(--purple); }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:600px){ .form-grid { grid-template-columns:1fr; } }
+.form-group { display:flex; flex-direction:column; gap:5px; }
+.form-group.full { grid-column:1/-1; }
+label { font-size:.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+label .req { color:var(--red); margin-left:2px; }
+input[type=text], input[type=date], select, textarea { width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; color:var(--text); background:#fff; outline:none; transition:border-color .2s, box-shadow .2s; }
+input:focus, select:focus, textarea:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
+textarea { resize:vertical; min-height:80px; }
+.pill-group { display:flex; flex-wrap:wrap; gap:8px; }
+.pill { padding:7px 16px; border-radius:20px; font-size:.82rem; font-weight:600; border:1.5px solid var(--border); background:#f8fafc; cursor:pointer; transition:all .15s; }
+.pill:hover { border-color:var(--teal); color:var(--teal); }
+.p-pass { background:#d1fae5; border-color:var(--teal); color:var(--teal); }
+.p-fail { background:#fee2e2; border-color:var(--red); color:var(--red); }
+.p-review { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
+.p-pending { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
+.p-closed { background:#d1fae5; border-color:var(--teal); color:var(--teal); }
+.p-coaching { background:#ede9fe; border-color:var(--purple); color:var(--purple); }
+.p-unfounded { background:#e0f2fe; border-color:var(--blue); color:var(--blue); }
+.p-substantiated { background:#fee2e2; border-color:var(--red); color:var(--red); }
+.p-partial { background:#fef3c7; border-color:var(--amber); color:var(--amber); }
+.p-inconclusive { background:#f3e8ff; border-color:var(--purple); color:var(--purple); }
+.field-error { border:2px solid var(--red) !important; background:#fff5f5 !important; }
+.error-msg { color:var(--red); font-size:.78rem; margin-top:3px; display:block; }
+.det-sync-banner { background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 14px; font-size:.8rem; color:#92400e; margin-bottom:12px; display:none; }
+.det-sync-banner.visible { display:block; }
+.session-warning { background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:10px 14px; font-size:.78rem; color:#9a3412; margin-bottom:16px; display:flex; align-items:flex-start; gap:8px; }
+.coaching-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:600px){ .coaching-grid { grid-template-columns:1fr; } }
+.drop-zone { border:2px dashed var(--border); border-radius:10px; padding:28px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s; }
+.drop-zone:hover, .drop-zone.drag-over { border-color:var(--teal); background:#f0fdf4; }
+.drop-zone .dz-icon { font-size:2rem; margin-bottom:8px; }
+.drop-zone .dz-text { font-size:.85rem; color:var(--muted); }
+.drop-zone .dz-sub { font-size:.75rem; color:var(--muted); margin-top:4px; }
+.attach-list { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+.attach-item { display:flex; align-items:center; gap:10px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:8px 12px; }
+.attach-icon { font-size:1.2rem; }
+.attach-name { flex:1; font-size:.83rem; font-weight:600; }
+.attach-size { font-size:.75rem; color:var(--muted); }
+.attach-del { font-size:.75rem; color:var(--red); cursor:pointer; font-weight:600; }
+.attach-del:hover { text-decoration:underline; }
+.footer-note { background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:12px 16px; font-size:.78rem; color:var(--muted); display:flex; align-items:flex-start; gap:8px; }
+.footer-note .icon { flex-shrink:0; }
+.action-row { display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap; }
+.btn-draft { padding:10px 22px; background:#f1f5f9; border:1px solid var(--border); border-radius:8px; font-size:.88rem; font-weight:600; cursor:pointer; color:var(--text); }
+.btn-draft:hover { background:#e2e8f0; }
+.btn-submit { padding:10px 28px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:.88rem; font-weight:600; cursor:pointer; }
+.btn-submit:hover { background:#0a5a46; }
+.toast { position:fixed; bottom:28px; right:28px; background:#1e293b; color:#fff; padding:12px 20px; border-radius:10px; font-size:.88rem; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,.2); z-index:9999; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; }
+.toast.show { opacity:1; transform:translateY(0); }
+.divider { border:none; border-top:1px solid var(--border); margin:16px 0; }
 </style>
 </head>
 <body>
@@ -116,12 +115,12 @@
   </div>
   <div class="header-meta">
     <div class="meta-chip"><span>Pulls from Layer 1</span><span>From Layer 1</span></div>
-    <div class="meta-chip"><span>Case number</span><span>&#x1F512; <span id="display-case-num">&#x2014;</span></span></div>
-    <div class="meta-chip"><span>Internal tracking ID</span><span id="display-tracking-id">&#x2014;</span></div>
-    <div class="meta-chip"><span>Type</span><span id="display-type-tag" class="l1-tag">&#x2014;</span></div>
-    <div class="meta-chip"><span>Carrier</span><span id="display-carrier">&#x2014;</span></div>
-    <div class="meta-chip"><span>Date received (L1)</span><span id="display-date-recv">&#x2014;</span></div>
-    <div class="meta-chip"><span>Agent</span><span id="display-agent">&#x2014;</span></div>
+    <div class="meta-chip"><span>Case number</span><span>🔒 <span id="display-case-num">—</span></span></div>
+    <div class="meta-chip"><span>Internal tracking ID</span><span id="display-tracking-id">—</span></div>
+    <div class="meta-chip"><span>Type</span><span id="display-type-tag" class="l1-tag">—</span></div>
+    <div class="meta-chip"><span>Carrier</span><span id="display-carrier">—</span></div>
+    <div class="meta-chip"><span>Date received (L1)</span><span id="display-date-recv">—</span></div>
+    <div class="meta-chip"><span>Agent</span><span id="display-agent">—</span></div>
   </div>
   <div class="status-chips">
     <div class="status-chip sc-amber">Coaching status: <span id="coaching-status-txt">In progress</span></div>
@@ -130,7 +129,7 @@
 </div>
 
 <div class="search-bar">
-  <input type="text" id="search-input" placeholder="Search by case #, carrier, agent name, or tracking ID&#x2026;" />
+  <input type="text" id="search-input" placeholder="Search by case #, carrier, agent name, or tracking ID…" />
   <button onclick="runSearch()">Search</button>
   <button class="export-btn" onclick="exportToExcel()">Export to Excel</button>
   <div class="search-results" id="search-results"></div>
@@ -138,9 +137,15 @@
 
 <main>
 
+  <!-- Session warning -->
+  <div class="session-warning">
+    ⚠️ <span><strong>Same-browser note:</strong> Auto-population from Layer 1 uses browser localStorage. Both forms must be used in the same browser on the same device. Data does not sync across devices or browsers.</span>
+  </div>
+
+  <!-- CASE IDENTIFICATION -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-navy">&#x1F5C2;&#xFE0F;</div>
+      <div class="card-icon ci-navy">🗂️</div>
       <div>
         <div class="card-title">Case identification</div>
         <div class="card-sub">Link this coaching record to the compliance intake in Layer 1</div>
@@ -148,12 +153,12 @@
     </div>
     <div class="card-body">
       <div class="l1-banner">
-        <span class="arrow">&#x2191;</span>
+        <span class="arrow">↑</span>
         <div>
           <div class="l1-label">Pulls from Layer 1</div>
           <div class="l1-tags">
-            <span class="l1-tag tag-ctm" id="display-type-tag2">&#x2014;</span>
-            <span class="l1-tag" id="display-carrier2">&#x2014;</span>
+            <span class="l1-tag tag-ctm" id="display-type-tag2">—</span>
+            <span class="l1-tag" id="display-carrier2">—</span>
           </div>
         </div>
       </div>
@@ -161,7 +166,7 @@
         <div class="form-group">
           <label>Case type <span class="req">*</span></label>
           <select id="case-type" onchange="updateTypeTag()">
-            <option value="">Select type&#x2026;</option>
+            <option value="">Select type…</option>
             <option>CTM</option>
             <option>Grievance</option>
             <option>Audit</option>
@@ -170,7 +175,7 @@
         </div>
         <div class="form-group">
           <label>Carrier case number</label>
-          <input type="text" id="carrier-case-num" placeholder="Leave blank if not yet assigned" />
+          <input type="text" id="carrier-case-num" placeholder="Leave blank if not yet assigned" oninput="lookupFromL1()" />
         </div>
         <div class="form-group">
           <label>Internal tracking ID <span class="req">*</span></label>
@@ -180,29 +185,17 @@
           <label>Carrier <span class="req">*</span></label>
           <select id="carrier-select">
             <option value="">Select carrier</option>
-            <option>Aetna</option>
-            <option>Allstate</option>
-            <option>BCBS &#x2013; IL (HCSC)</option>
-            <option>BCBS &#x2013; MT (HCSC)</option>
-            <option>BCBS &#x2013; NM (HCSC)</option>
-            <option>BCBS &#x2013; OK (HCSC)</option>
-            <option>BCBS &#x2013; TX (HCSC)</option>
-            <option>CarePlus</option>
-            <option>CareSource</option>
-            <option>Centene</option>
-            <option>Cigna</option>
-            <option>Devoted Health</option>
-            <option>Elevance</option>
-            <option>Florida Blue</option>
-            <option>HealthSun</option>
-            <option>Humana</option>
-            <option>IFG</option>
-            <option>Molina</option>
-            <option>Scan</option>
-            <option>Simply Healthcare</option>
-            <option>UnitedHealthcare</option>
-            <option>WellCare</option>
-            <option>Zing</option>
+            <option>Aetna</option><option>Allstate</option>
+            <option>BCBS – IL (HCSC)</option><option>BCBS – MT (HCSC)</option>
+            <option>BCBS – NM (HCSC)</option><option>BCBS – OK (HCSC)</option>
+            <option>BCBS – TX (HCSC)</option><option>CarePlus</option>
+            <option>CareSource</option><option>Centene</option>
+            <option>Cigna</option><option>Devoted Health</option>
+            <option>Elevance</option><option>Florida Blue</option>
+            <option>HealthSun</option><option>Humana</option>
+            <option>IFG</option><option>Molina</option>
+            <option>Scan</option><option>Simply Healthcare</option>
+            <option>UnitedHealthcare</option><option>WellCare</option><option>Zing</option>
           </select>
         </div>
         <div class="form-group">
@@ -225,16 +218,17 @@
     </div>
   </div>
 
+  <!-- DETERMINATION -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-teal">&#x2696;&#xFE0F;</div>
+      <div class="card-icon ci-teal">⚖️</div>
       <div>
         <div class="card-title">Determination</div>
         <div class="card-sub">Auto-syncs from Layer 1 when Internal Tracking ID or Carrier Case Number is entered</div>
       </div>
     </div>
     <div class="card-body">
-      <div class="det-sync-banner" id="det-sync-banner">&#x26A1; Determination loaded from Layer 1 record</div>
+      <div class="det-sync-banner" id="det-sync-banner">⚡ Determination loaded from Layer 1 record</div>
       <div class="pill-group" id="det-pills">
         <div class="pill" onclick="toggleDet(this)">Unfounded</div>
         <div class="pill p-pending" onclick="toggleDet(this)">Pending</div>
@@ -245,9 +239,10 @@
     </div>
   </div>
 
+  <!-- ACTION TAKEN -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-teal">&#x1F4CB;</div>
+      <div class="card-icon ci-teal">📋</div>
       <div>
         <div class="card-title">Action taken</div>
         <div class="card-sub">Document actions and instructions for this coaching record</div>
@@ -257,26 +252,27 @@
       <div class="form-grid">
         <div class="form-group full">
           <label>Action taken <span class="req">*</span></label>
-          <textarea id="action-taken" rows="3" placeholder="Describe the action taken&#x2026;"></textarea>
+          <textarea id="action-taken" rows="3" placeholder="Describe the action taken…"></textarea>
         </div>
         <div class="form-group full">
           <label>Agent instructions</label>
-          <textarea id="agent-instructions" rows="3" placeholder="Specific instructions given to the agent&#x2026;"></textarea>
+          <textarea id="agent-instructions" rows="3" placeholder="Specific instructions given to the agent…"></textarea>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- COACHING & TRAINING -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-purple">&#x1F393;</div>
+      <div class="card-icon ci-purple">🎓</div>
       <div>
         <div class="card-title">Coaching &amp; training assignment</div>
         <div class="card-sub">Routes to agent + manager</div>
       </div>
     </div>
     <div class="card-body">
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">&#x1F4E3; <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the agent and their sales manager.</p>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">📣 <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the agent and their sales manager.</p>
       <div class="coaching-grid">
         <div class="form-group">
           <label>Assignment type <span class="req">*</span></label>
@@ -311,9 +307,10 @@
     </div>
   </div>
 
+  <!-- OVERALL STATUS -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-amber">&#x1F4CA;</div>
+      <div class="card-icon ci-amber">📊</div>
       <div>
         <div class="card-title">Overall status</div>
         <div class="card-sub">Current status of this coaching record</div>
@@ -327,17 +324,22 @@
     </div>
   </div>
 
+  <!-- ATTACHMENTS -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-teal">&#x1F4CE;</div>
+      <div class="card-icon ci-teal">📎</div>
       <div>
         <div class="card-title">Attachments &amp; documentation</div>
-        <div class="card-sub">No limit &#x2014; delete and replace files at any time</div>
+        <div class="card-sub">No limit — delete and replace files at any time</div>
       </div>
     </div>
     <div class="card-body">
-      <div class="drop-zone" id="drop-zone" ondrop="handleDrop(event)" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" onclick="document.getElementById('file-input').click()">
-        <div class="dz-icon">&#x1F4C1;</div>
+      <div class="drop-zone" id="drop-zone"
+        ondrop="handleDrop(event)"
+        ondragover="event.preventDefault(); this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        onclick="document.getElementById('file-input').click()">
+        <div class="dz-icon">📁</div>
         <div class="dz-text">Drop files or click to upload</div>
         <div class="dz-sub">Call recordings, written statements, PIP documents, screenshots, agent forms</div>
       </div>
@@ -347,27 +349,44 @@
   </div>
 
   <div class="footer-note">
-    <span class="icon">&#x1F512;</span>
-    <span>Report access: Chris &amp; Bernice have read-only access to L1 &amp; L2 reports. Changes require edit permissions &#x2014; contact Kanisha or Tracy W.</span>
+    <span class="icon">🔒</span>
+    <span>Report access: Chris, Christine, Bernice &amp; Peter have read-only access to L1 &amp; L2 reports. Changes require edit permissions — contact Kanisha or Tracy W.</span>
   </div>
 
   <div class="action-row">
-    <button class="btn-draft">Save draft</button>
-    <button class="btn-submit">Submit coaching record</button>
+    <button class="btn-draft" onclick="saveDraft()">Save draft</button>
+    <button class="btn-submit" onclick="submitRecord()">Submit coaching record</button>
   </div>
 
 </main>
 
+<div class="toast" id="toast"></div>
+
 <script>
-const allPills = ['p-pass','p-fail','p-review','p-pending','p-closed','p-coaching','p-unfounded','p-substantiated','p-partial','p-inconclusive'];
+// ── Toast notification ──
+function showToast(msg, duration) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration || 3000);
+}
+
+// ── Pill helpers ──
+const allPills = ['p-pass','p-fail','p-review','p-pending','p-closed','p-coaching',
+                  'p-unfounded','p-substantiated','p-partial','p-inconclusive'];
 
 function toggleDet(el) {
   el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove(...allPills));
-  const map = {'Unfounded':'p-unfounded','Substantiated':'p-substantiated','Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending'};
+  const map = {'Unfounded':'p-unfounded','Substantiated':'p-substantiated',
+               'Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending'};
   const cls = map[el.textContent.trim()];
   if (cls) el.classList.add(cls);
   const hdr = document.getElementById('header-det-txt');
   if (hdr) hdr.textContent = el.textContent.trim();
+  // Persist to localStorage for L1 sync
+  const key = (document.getElementById('internal-tracking-id').value ||
+               document.getElementById('carrier-case-num').value || '').trim();
+  if (key) { try { localStorage.setItem('ctm_det_' + key, el.textContent.trim()); } catch(e){} }
 }
 
 function toggleAssign(el) {
@@ -381,13 +400,13 @@ function toggleStatus(el, type) {
   el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('p-pending','p-closed'));
   el.classList.add(type === 'completed' ? 'p-closed' : 'p-pending');
   const chip = document.querySelector('.sc-amber');
-  if (chip) chip.innerHTML = 'Coaching status: <span id="coaching-status-txt">' + (type==='completed' ? 'Completed' : 'Pending') + '</span>';
+  if (chip) chip.innerHTML = 'Coaching status: <span id="coaching-status-txt">' +
+    (type === 'completed' ? 'Completed' : 'Pending') + '</span>';
 }
 
 function updateTypeTag() {
   const val = document.getElementById('case-type').value;
-  const tags = document.querySelectorAll('#display-type-tag, #display-type-tag2');
-  tags.forEach(tag => {
+  document.querySelectorAll('#display-type-tag, #display-type-tag2').forEach(tag => {
     tag.textContent = val || '—';
     tag.className = 'l1-tag';
     const cls = {CTM:'tag-ctm',Grievance:'tag-grievance',Audit:'tag-audit','Trend coaching':'tag-trend'};
@@ -395,30 +414,66 @@ function updateTypeTag() {
   });
 }
 
+// ── Auto-populate from L1 via localStorage ──
 function lookupFromL1() {
   const tid = (document.getElementById('internal-tracking-id').value || '').trim();
   const ccn = (document.getElementById('carrier-case-num').value || '').trim();
   const key = tid || ccn;
   if (!key) return;
-  let det = null;
-  try { det = localStorage.getItem('ctm_det_' + key); } catch(e){}
-  if (det) {
-    const pills = document.querySelectorAll('#det-pills .pill');
-    pills.forEach(p => p.classList.remove(...allPills));
-    pills.forEach(p => {
-      if (p.textContent.trim() === det) {
-        const map = {'Unfounded':'p-unfounded','Substantiated':'p-substantiated','Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending'};
-        const cls = map[det];
-        if (cls) p.classList.add(cls);
+
+  // Sync determination
+  try {
+    const det = localStorage.getItem('ctm_det_' + key);
+    if (det) {
+      const pills = document.querySelectorAll('#det-pills .pill');
+      pills.forEach(p => p.classList.remove(...allPills));
+      const map = {'Unfounded':'p-unfounded','Substantiated':'p-substantiated',
+                   'Partially substantiated':'p-partial','Inconclusive':'p-inconclusive','Pending':'p-pending'};
+      pills.forEach(p => {
+        if (p.textContent.trim() === det && map[det]) p.classList.add(map[det]);
+      });
+      const banner = document.getElementById('det-sync-banner');
+      if (banner) banner.classList.add('visible');
+      const hdr = document.getElementById('header-det-txt');
+      if (hdr) hdr.textContent = det;
+    }
+  } catch(e){}
+
+  // Sync full L1 record data
+  try {
+    const saved = localStorage.getItem('ctm_l1_' + key);
+    if (saved) {
+      const d = JSON.parse(saved);
+      const setVal = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+      const setSelect = (id, v) => {
+        const el = document.getElementById(id);
+        if (!el || !v) return;
+        for (let i = 0; i < el.options.length; i++) {
+          if (el.options[i].text === v || el.options[i].value === v) { el.selectedIndex = i; break; }
+        }
+      };
+      setSelect('carrier-select', d.carrier);
+      setVal('agent-name', d.agentName);
+      setVal('date-received', d.dateRecv);
+      setVal('carrier-due-date', d.dueDate);
+      setVal('agent-instructions', d.agentInstr);
+
+      // Update header meta chips
+      if (d.carrier) {
+        document.getElementById('display-carrier').textContent = d.carrier;
+        document.getElementById('display-carrier2').textContent = d.carrier;
       }
-    });
-    const banner = document.getElementById('det-sync-banner');
-    if (banner) banner.classList.add('visible');
-    const hdr = document.getElementById('header-det-txt');
-    if (hdr) hdr.textContent = det;
-  }
+      if (d.agentName)  document.getElementById('display-agent').textContent = d.agentName;
+      if (d.dateRecv)   document.getElementById('display-date-recv').textContent = d.dateRecv;
+      if (tid)          document.getElementById('display-tracking-id').textContent = tid;
+      if (ccn)          document.getElementById('display-case-num').textContent = ccn;
+
+      showToast('✅ Layer 1 data loaded for ' + key);
+    }
+  } catch(e){}
 }
 
+// ── Search ──
 function runSearch() {
   const q = document.getElementById('search-input').value.trim().toLowerCase();
   const resultsDiv = document.getElementById('search-results');
@@ -430,21 +485,25 @@ function runSearch() {
     keys.forEach(k => {
       try {
         const rec = JSON.parse(localStorage.getItem(k));
-        if (rec && ((rec.internalId && rec.internalId.toLowerCase().includes(q)) || (rec.caseNum && rec.caseNum.toLowerCase().includes(q)) || (rec.carrier && rec.carrier.toLowerCase().includes(q)) || (rec.agent && rec.agent.toLowerCase().includes(q)))) { matches.push(rec); }
+        if (rec && (
+          (rec.internalId && rec.internalId.toLowerCase().includes(q)) ||
+          (rec.caseNum && rec.caseNum.toLowerCase().includes(q)) ||
+          (rec.carrier && rec.carrier.toLowerCase().includes(q)) ||
+          (rec.agent && rec.agent.toLowerCase().includes(q))
+        )) matches.push(rec);
       } catch(e){}
     });
-    if (matches.length === 0) {
+    if (!matches.length) {
       resultsDiv.innerHTML = '<div style="font-size:.82rem;color:var(--muted);padding:6px 0;">No matching records found.</div>';
     } else {
       matches.forEach(rec => {
         const item = document.createElement('div');
         item.className = 'search-result-item';
-        item.innerHTML = '<strong>' + (rec.internalId||'—') + '</strong><span>' + (rec.caseNum||'No case #') + '</span><span>' + (rec.carrier||'—') + '</span><span>' + (rec.agent||'—') + '</span>';
+        item.innerHTML = '<strong>' + (rec.internalId||'—') + '</strong><span>' +
+          (rec.caseNum||'No case #') + '</span><span>' + (rec.carrier||'—') + '</span><span>' + (rec.agent||'—') + '</span>';
         item.onclick = () => {
           document.getElementById('internal-tracking-id').value = rec.internalId || '';
           document.getElementById('carrier-case-num').value = rec.caseNum || '';
-          document.getElementById('carrier-select').value = rec.carrier || '';
-          document.getElementById('agent-name').value = rec.agent || '';
           lookupFromL1();
           resultsDiv.innerHTML = '';
           document.getElementById('search-input').value = '';
@@ -456,65 +515,71 @@ function runSearch() {
     resultsDiv.innerHTML = '<div style="font-size:.82rem;color:var(--muted);padding:6px 0;">Search unavailable in this context.</div>';
   }
 }
+document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(); });
 
-document.getElementById('search-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') runSearch(); });
+// ── Validation ──
+function clearErrors() {
+  document.querySelectorAll('.field-error').forEach(e => e.classList.remove('field-error'));
+  document.querySelectorAll('.error-msg').forEach(e => e.remove());
+}
 
-function exportToExcel() {
-  const fields = [
-    ['Case Type', document.getElementById('case-type')?.value || ''],
-    ['Carrier Case Number', document.getElementById('carrier-case-num')?.value || ''],
-    ['Internal Tracking ID', document.getElementById('internal-tracking-id')?.value || ''],
-    ['Carrier', document.getElementById('carrier-select')?.value || ''],
-    ['Date Received (L1)', document.getElementById('date-received')?.value || ''],
-    ['Carrier Due Date', document.getElementById('carrier-due-date')?.value || ''],
-    ['Imposed Date', document.getElementById('imposed-date')?.value || ''],
-    ['Agent', document.getElementById('agent-name')?.value || ''],
-    ['Determination', document.querySelector('#det-pills .p-unfounded,#det-pills .p-substantiated,#det-pills .p-partial,#det-pills .p-inconclusive,#det-pills .p-pending')?.textContent?.trim() || 'Pending'],
-    ['Action Taken', document.getElementById('action-taken')?.value || ''],
-    ['Agent Instructions', document.getElementById('agent-instructions')?.value || ''],
-    ['Assignment Type', document.querySelector('#assign-pills [class*=p-]')?.textContent?.trim() || ''],
-    ['Date Assigned', document.getElementById('date-assigned')?.value || ''],
-    ['Due Date', document.getElementById('due-date')?.value || ''],
-    ['Date Completed', document.getElementById('date-completed')?.value || ''],
-    ['Sales Manager', document.getElementById('sales-manager')?.value || ''],
-    ['Person Who Coached', document.getElementById('coach-person')?.value || ''],
-    ['Overall Status', document.querySelector('#status-pills .p-pending,#status-pills .p-closed')?.textContent?.trim() || 'Pending'],
+function markError(el, msg) {
+  if (!el) return;
+  el.classList.add('field-error');
+  const sp = document.createElement('span');
+  sp.className = 'error-msg';
+  sp.textContent = msg;
+  el.after(sp);
+}
+
+function validateForm() {
+  clearErrors();
+  let errors = [];
+
+  const required = [
+    { id: 'case-type',           label: 'Case Type' },
+    { id: 'internal-tracking-id',label: 'Internal Tracking ID' },
+    { id: 'carrier-select',      label: 'Carrier' },
+    { id: 'date-received',       label: 'Date Received' },
+    { id: 'agent-name',          label: 'Agent Name' },
+    { id: 'action-taken',        label: 'Action Taken' },
+    { id: 'date-assigned',       label: 'Date Assigned' },
+    { id: 'due-date',            label: 'Due Date' },
+    { id: 'coach-person',        label: 'Person Who Conducted Coaching' },
   ];
-  const header = fields.map(f => '"' + f[0] + '"').join(',');
-  const row = fields.map(f => '"' + (f[1]||'').replace(/"/g,'""') + '"').join(',');
-  const csv = header + '\n' + row;
-  const blob = new Blob([csv], {type:'text/csv'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'CTM_Layer2_Export_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
+
+  required.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el || !el.value.trim()) {
+      markError(el, f.label + ' is required.');
+      errors.push(f.label);
+    }
+  });
+
+  // Assignment type pill check
+  const assignActive = document.querySelector('#assign-pills .pill.' + allPills.join(', #assign-pills .pill.'));
+  if (!document.querySelector('#assign-pills .pill[class*="p-"]')) {
+    const group = document.getElementById('assign-pills');
+    if (group) {
+      const sp = document.createElement('span');
+      sp.className = 'error-msg';
+      sp.textContent = 'Assignment Type is required.';
+      group.after(sp);
+      errors.push('Assignment Type');
+    }
+  }
+
+  if (errors.length) {
+    // Scroll to first error
+    const first = document.querySelector('.field-error');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+  return true;
 }
 
-let attachments = [];
-function handleFiles(files) {
-  Array.from(files).forEach(f => attachments.push({name:f.name,size:f.size,id:Date.now()+Math.random()}));
-  renderAttachments();
-}
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('drag-over');
-  handleFiles(e.dataTransfer.files);
-}
-function removeAttachment(id) {
-  attachments = attachments.filter(a => a.id !== id);
-  renderAttachments();
-}
-function renderAttachments() {
-  const list = document.getElementById('attach-list');
-  if (!attachments.length) { list.innerHTML = ''; return; }
-  const icons = {pdf:'📄',mp3:'🎵',wav:'🎵',m4a:'🎵',mp4:'🎬',mov:'🎬',png:'🖼',jpg:'🖼',jpeg:'🖼',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊'};
-  list.innerHTML = attachments.map(a => {
-    const ext = a.name.split('.').pop().toLowerCase();
-    const icon = icons[ext] || '📎';
-    const size = a.size > 1048576 ? (a.size/1048576).toFixed(1)+' MB' : Math.round(a.size/1024)+' KB';
-    return '<div class="attach-item"><div class="attach-icon">'+icon+'</div><div class="attach-name">'+a.name+'</div><div class="attach-size">'+size+'</div><div class="attach-del" onclick="removeAttachment('+a.id+')">Remove</div></div>';
-  }).join('');
-}
-</script>
-</body>
-</html>
+// ── Collect form data ──
+function collectData() {
+  return {
+    internalId:   (document.getElementById('internal-tracking-id').value || '').trim(),
+    caseNum:      (document.getElementById('
