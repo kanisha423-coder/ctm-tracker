@@ -78,4 +78,387 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
 .attach-del:hover{background:#fde8e8}
 .recon-box{margin-top:14px;padding:12px 16px;background:#f0f4eb;border-radius:8px;border:1px solid #c8d8b0}
 .recon-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:0.8rem;color:#2c3e1f;letter-spacing:0.05em;text-transform:uppercase}
-.recon-hint{col
+.recon-hint{color:#666;font-size:0.75rem;margin-top:4px;margin-left:28px}
+.trackid-field{background:#f0f4eb!important;color:#2c3e1f!important;font-weight:600!important;cursor:default!important;border-color:#c8d8b0!important}
+.trackid-hint{color:#555;font-size:0.75rem;margin-top:4px}
+.mod-note{color:#2c7a2c;font-size:0.75rem;margin-top:3px;font-weight:600}
+.multi-select-box{display:flex;flex-wrap:wrap;gap:6px;min-height:42px;border:1.5px solid #d0d0d0;border-radius:8px;padding:6px 12px;cursor:pointer;background:#fff;align-items:center;transition:border-color 0.2s}
+.multi-select-box:hover,.multi-select-box.open{border-color:#2c3e1f}
+.multi-placeholder{color:#aaa;font-size:0.9rem}
+.multi-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid #2c3e1f;border-radius:8px;z-index:1000;max-height:240px;overflow-y:auto;box-shadow:0 6px 18px rgba(0,0,0,0.13)}
+.multi-dropdown.open{display:block}
+.multi-dropdown label{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:0.88rem;color:#333;transition:background 0.1s}
+.multi-dropdown label:last-child{border-bottom:none}
+.multi-dropdown label:hover{background:#f0f4eb}
+.multi-dropdown input[type="checkbox"]{width:16px;height:16px;accent-color:#2c3e1f}
+.reason-pill{background:#2c3e1f;color:#fff;padding:4px 10px;border-radius:20px;font-size:0.78rem;display:inline-flex;align-items:center;gap:6px}
+.reason-pill .remove{cursor:pointer;font-size:1rem;line-height:1;opacity:0.8}
+.reason-pill .remove:hover{opacity:1}
+.field-error{border:2px solid #c0392b!important;border-radius:8px;background-color:#fff8f8!important}
+.error-msg{color:#c0392b;font-size:0.8rem;margin-top:4px;display:block;animation:fadeIn 0.2s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.email-template{background:#f8f9fa;border:1px solid #e0e0e0;border-radius:8px;padding:18px;font-family:Georgia,serif;font-size:0.88rem;line-height:1.75;color:#222}
+.email-template hr{border:none;border-top:1px solid #ddd;margin:12px 0}
+.email-var{color:#2c3e1f;font-weight:600}
+.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0;user-select:none}
+.collapsible-body{display:none}
+.collapsible-body.open{display:block}
+.collapse-icon{font-size:1rem;color:#888;transition:transform 0.2s}
+.collapse-icon.open{transform:rotate(180deg)}
+.footer-bar{display:flex;justify-content:space-between;align-items:center;background:#fff;border-top:2px solid #eee;padding:14px 28px;border-radius:0 0 12px 12px;flex-wrap:wrap;gap:10px}
+.footer-note{font-size:0.78rem;color:#666;flex:1;min-width:200px}
+.footer-note strong{color:#2c3e1f}
+.btn-draft{padding:10px 24px;background:#fff;color:#1a1a1a;border:2px solid #ccc;border-radius:8px;font-size:0.88rem;font-weight:700;cursor:pointer}
+.btn-draft:hover{border-color:#2c3e1f}
+.btn-submit{padding:10px 28px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:0.88rem;font-weight:700;cursor:pointer}
+.btn-submit:hover{background:#2c3e1f}
+.highlight-match{outline:3px solid #f0c040;border-radius:6px}
+.toast{position:fixed;bottom:28px;right:28px;background:#1e293b;color:#fff;padding:12px 20px;border-radius:10px;font-size:0.88rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:9999;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Complaint Tracking Module</div>
+  <h1>Compliance intake record</h1>
+  <p class="subtitle">
+    Primary compliance record (Layer 1). Reviewer case notes and case data feed into the Layer 2 action and coaching tracker.
+    <strong>Edit access:</strong> Jamie &amp; Tom only.&nbsp;&nbsp;<strong>Report access:</strong> Chris, Christine, Bernice &amp; Peter (read-only).
+  </p>
+  <div class="badges">
+    <span class="badge badge-l1">LAYER 1 – INTAKE</span>
+    <span class="badge badge-l2" onclick="window.location.href='ctm_layer2_action_coaching_v3.html'">FEEDS LAYER 2 →</span>
+  </div>
+  <div class="toolbar">
+    <input class="search-box" id="search-box" type="text" placeholder="Search by case #, carrier, agent, tracking ID..." oninput="doSearch(this.value)">
+    <button class="btn-export" onclick="exportCSV()">↓ Export to Excel</button>
+  </div>
+
+  <!-- Session warning -->
+  <div class="session-warning">
+    ⚠️ <span><strong>Same-browser note:</strong> Data synced to Layer 2 uses browser localStorage. Both forms must be used in the same browser on the same device. Data does not sync across devices or browsers.</span>
+  </div>
+
+  <p class="req-note">* Required field</p>
+
+  <!-- ── CASE INFORMATION ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Case Information</span>
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label class="field-label" for="ctm-type">CTM Type <span class="req-star">*</span></label>
+      <select id="ctm-type">
+        <option value="">Select type</option>
+        <option value="ctm-grievance">CTM Grievance</option>
+        <option value="audit">Audit</option>
+      </select>
+    </div>
+    <div class="grid3" style="margin-bottom:16px">
+      <div class="fg">
+        <label class="field-label" for="carrier">Carrier Name <span class="req-star">*</span></label>
+        <select id="carrier">
+          <option value="">Select carrier</option>
+          <option>Aetna</option><option>Allstate</option>
+          <option>BCBS - IL (HCSC)</option><option>BCBS - MT (HCSC)</option>
+          <option>BCBS - NM (HCSC)</option><option>BCBS - OK (HCSC)</option>
+          <option>BCBS - TX (HCSC)</option><option>CarePlus</option>
+          <option>CareSource</option><option>Centene</option>
+          <option>Cigna</option><option>Devoted Health</option>
+          <option>Elevance</option><option>Florida Blue</option>
+          <option>HealthSun</option><option>Humana</option>
+          <option>IFG</option><option>Molina</option>
+          <option>Scan</option><option>Simply Healthcare</option>
+          <option>UnitedHealthcare</option><option>WellCare</option><option>Zing</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="case-num">Case Number</label>
+        <input type="text" id="case-num" placeholder="Carrier-assigned, if applicable">
+        <span class="field-hint">Not always available at intake.</span>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="track-id">Internal Tracking ID</label>
+        <input type="text" id="track-id" class="trackid-field" readonly placeholder="Auto-assigned on submit">
+        <span class="trackid-hint">⚙ Auto-assigned — unique per record</span>
+      </div>
+    </div>
+    <div class="grid3" style="margin-bottom:16px">
+      <div class="fg">
+        <label class="field-label" for="date-recv">Date Received <span class="req-star">*</span></label>
+        <input type="date" id="date-recv">
+      </div>
+      <div class="fg">
+        <label class="field-label" for="due-date">Due Date <span class="req-star">*</span></label>
+        <input type="date" id="due-date">
+        <span class="field-hint">Imposed by carrier — drives all deadlines</span>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="date-resp">Date Responded</label>
+        <input type="date" id="date-resp">
+      </div>
+    </div>
+    <div class="recon-box">
+      <label class="recon-label">
+        <input type="checkbox" id="reconciliation-checkbox" style="width:18px;height:18px;accent-color:#2c3e1f;cursor:pointer"
+          onchange="document.getElementById('recon-date-wrap').style.display=this.checked?'block':'none'">
+        Case Reconciled with Carrier
+      </label>
+      <div class="recon-hint">Check when the internal case ID has been matched and reconciled with the carrier case number.</div>
+      <div id="recon-date-wrap" style="display:none;margin-top:10px;margin-left:28px">
+        <label class="field-label" style="margin-bottom:4px;display:block">Date Reconciled</label>
+        <input type="date" id="reconciliation-date" style="width:auto">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CALLS / LEADS / AGENT STATEMENT ── -->
+  <div class="card">
+    <div class="reminder-note">
+      <strong>Pending Calls and Leads reminder:</strong> If Calls or Leads are marked Requested but not yet Sent while case status is Pending — automatic reminders go to <strong>Compliance and Peter only.</strong>
+    </div>
+    <div class="reminder-note blue">
+      <strong>* Pending Agent Statement reminder:</strong> If Agent Statement is marked Requested but not yet Sent while case status is Pending — automatic reminders go to <strong>Sales Manager and Agent only.</strong>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Requested <span class="req-star">*</span></th>
+          <th>Sent</th>
+          <th>Date Sent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Calls</td>
+          <td><div class="yn-row"><span class="yn-btn" id="calls-req-yes" onclick="setYN('calls_req','yes')">Yes</span><span class="yn-btn" id="calls-req-no" onclick="setYN('calls_req','no')">No</span></div></td>
+          <td><div class="yn-row"><span class="yn-btn" id="calls-sent-yes" onclick="setYN('calls_sent','yes')">Yes</span><span class="yn-btn" id="calls-sent-no" onclick="setYN('calls_sent','no')">No</span></div></td>
+          <td><input type="date" id="calls-date-sent" style="width:auto"></td>
+        </tr>
+        <tr>
+          <td>Leads</td>
+          <td><div class="yn-row"><span class="yn-btn" id="leads-req-yes" onclick="setYN('leads_req','yes')">Yes</span><span class="yn-btn" id="leads-req-no" onclick="setYN('leads_req','no')">No</span></div></td>
+          <td><div class="yn-row"><span class="yn-btn" id="leads-sent-yes" onclick="setYN('leads_sent','yes')">Yes</span><span class="yn-btn" id="leads-sent-no" onclick="setYN('leads_sent','no')">No</span></div></td>
+          <td><input type="date" id="leads-date-sent" style="width:auto"></td>
+        </tr>
+        <tr>
+          <td>Agent Statement</td>
+          <td><div class="yn-row"><span class="yn-btn" id="stmt-req-yes" onclick="setYN('stmt_req','yes')">Yes</span><span class="yn-btn" id="stmt-req-no" onclick="setYN('stmt_req','no')">No</span></div></td>
+          <td><div class="yn-row"><span class="yn-btn" id="stmt-sent-yes" onclick="setYN('stmt_sent','yes')">Yes</span><span class="yn-btn" id="stmt-sent-no" onclick="setYN('stmt_sent','no')">No</span></div></td>
+          <td><input type="date" id="stmt-date-sent" style="width:auto"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SITUATION DETAILS ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Situation Details</span>
+    </div>
+    <div class="grid2" style="margin-bottom:16px">
+      <div class="fg">
+        <label class="field-label">Reason for Complaint <span class="req-star">*</span></label>
+        <div id="reason-multi-container" style="position:relative">
+          <div class="multi-select-box" id="reason-pills-selected" onclick="toggleReasonDropdown(event)">
+            <span class="multi-placeholder" id="reason-placeholder">Select all that apply</span>
+          </div>
+          <div class="multi-dropdown" id="reason-dropdown">
+            <label><input type="checkbox" name="reason-complaint" value="Misrepresentation" onchange="updateReasonPills()"> Misrepresentation</label>
+            <label><input type="checkbox" name="reason-complaint" value="Unauthorized enrollment/disenrollment" onchange="updateReasonPills()"> Unauthorized enrollment/disenrollment</label>
+            <label><input type="checkbox" name="reason-complaint" value="Failure to disclose" onchange="updateReasonPills()"> Failure to disclose</label>
+            <label><input type="checkbox" name="reason-complaint" value="Marketing violation" onchange="updateReasonPills()"> Marketing violation</label>
+            <label><input type="checkbox" name="reason-complaint" value="Scope of appointment" onchange="updateReasonPills()"> Scope of appointment</label>
+            <label><input type="checkbox" name="reason-complaint" value="Agent conduct" onchange="updateReasonPills()"> Agent conduct</label>
+            <label><input type="checkbox" name="reason-complaint" value="Billing issue" onchange="updateReasonPills()"> Billing issue</label>
+            <label><input type="checkbox" name="reason-complaint" value="Other" onchange="updateReasonPills()"> Other</label>
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="num-calls">Number of Calls</label>
+        <input type="number" id="num-calls" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label class="field-label" for="situation">Situation <span class="req-star">*</span></label>
+      <textarea id="situation" placeholder="Summarize the complaint or audit finding." style="min-height:90px"></textarea>
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label class="field-label" for="agent-instructions">Agent Instructions <span class="req-star">*</span></label>
+      <textarea id="agent-instructions" placeholder="Describe the specific instructions the agent must follow for this case. Required in both layers." style="min-height:90px"></textarea>
+      <span class="field-hint">Required — ensures agents understand their tasks. Included in reminder emails.</span>
+    </div>
+    <div class="grid3" style="margin-bottom:16px">
+      <div class="fg">
+        <label class="field-label" for="bene-name">Beneficiary Name</label>
+        <input type="text" id="bene-name" placeholder="Full name">
+      </div>
+      <div class="fg">
+        <label class="field-label" for="bene-phone">Beneficiary Phone</label>
+        <input type="tel" id="bene-phone" placeholder="(000) 000-0000">
+      </div>
+      <div class="fg">
+        <label class="field-label" for="enroll-date">Enrollment Date</label>
+        <input type="date" id="enroll-date">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="field-label">Status <span class="req-star">*</span></label>
+      <div class="pill-group" id="status-group">
+        <span class="pill p-pending" onclick="togglePills('status-group',this,'p-pending','p-completed')">Pending</span>
+        <span class="pill" onclick="togglePills('status-group',this,'p-completed','p-pending')">Completed</span>
+      </div>
+      <span class="field-hint">Mark Completed when all items are sent and case is fully resolved.</span>
+    </div>
+  </div>
+
+  <!-- ── DETERMINATION ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Determination</span>
+      <span class="section-badge">SYNCS TO L2</span>
+    </div>
+    <div class="reminder-note" style="margin-bottom:14px">
+      Select a determination here. When Internal Tracking ID or Carrier Case Number is entered on Layer 2, it will automatically carry over.
+    </div>
+    <div class="fg">
+      <label class="field-label">Internal Determination <span class="req-star">*</span></label>
+      <div class="pill-group" id="det-group">
+        <span class="pill" onclick="toggleDet(this,'p-substantiated')">Founded</span>
+        <span class="pill" onclick="toggleDet(this,'p-unfounded')">Unfounded</span>
+        <span class="pill" onclick="toggleDet(this,'p-pending')">Pending</span>
+        <span class="pill" onclick="toggleDet(this,'')">NA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COACHING & TRAINING ASSIGNMENT ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Coaching &amp; Training Assignment</span>
+      <span class="section-badge">ROUTES TO AGENT + MANAGER</span>
+    </div>
+    <div class="reminder-note" style="margin-bottom:16px">
+      <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the <strong>agent and their sales manager.</strong>
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label class="field-label">Assignment Type <span class="req-star">*</span></label>
+      <div class="pill-group" id="assign-group">
+        <span class="pill" onclick="toggleAssign(this)">Training Module Only</span>
+        <span class="pill" onclick="toggleAssign(this)">Coaching Only</span>
+        <span class="pill" onclick="toggleAssign(this)">Training Module + Coaching</span>
+        <span class="pill" onclick="toggleAssign(this)">NA</span>
+      </div>
+    </div>
+    <div class="grid3" style="margin-bottom:16px">
+      <div class="fg">
+        <label class="field-label" for="date-assigned">Date Assigned <span class="req-star">*</span></label>
+        <input type="date" id="date-assigned">
+      </div>
+      <div class="fg">
+        <label class="field-label" for="due-coaching">Due Date <span class="req-star">*</span></label>
+        <input type="date" id="due-coaching">
+        <span class="mod-note">✏ Modifiable — adjust as needed for flexibility</span>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="date-completed">Date Completed</label>
+        <input type="date" id="date-completed">
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="fg">
+        <label class="field-label" for="sm-coaching">Sales Manager at Time of Coaching</label>
+        <input type="text" id="sm-coaching" placeholder="Enter name">
+        <span class="field-hint">May differ from manager at time of complaint.</span>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="conducted-by">Person Who Conducted Coaching <span class="req-star">*</span></label>
+        <input type="text" id="conducted-by" placeholder="Enter name">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AGENT, SM AND COMPLIANCE NAMES ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Agent, SM and Compliance Names</span>
+    </div>
+    <div class="grid3">
+      <div class="fg">
+        <label class="field-label" for="agent-name">Agent Name <span class="req-star">*</span></label>
+        <input type="text" id="agent-name" placeholder="Full name">
+      </div>
+      <div class="fg">
+        <label class="field-label" for="sm-name">Sales Manager at Time of Complaint <span class="req-star">*</span></label>
+        <input type="text" id="sm-name" placeholder="Full name">
+        <span class="field-hint">Coaching-time manager tracked in Coaching section above.</span>
+      </div>
+      <div class="fg">
+        <label class="field-label" for="reviewer">Reviewer <span class="req-star">*</span></label>
+        <select id="reviewer">
+          <option value="">Select</option>
+          <option>Tom</option>
+          <option>Jamie</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ATTACHMENTS ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Attachments</span>
+      <span class="section-badge">NO LIMIT</span>
+    </div>
+    <div class="attach-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+      <div class="attach-icon">+</div>
+      <div class="attach-label">Drop files or click to upload</div>
+      <div class="attach-sub">Call recordings, agent statements, leads, PIP documents, screenshots</div>
+      <div class="attach-limit">No limit on attachments — delete or replace anytime</div>
+    </div>
+    <input type="file" id="file-input" multiple style="display:none" onchange="handleFiles(this.files)">
+    <div class="attach-list" id="attach-list"></div>
+  </div>
+
+  <!-- ── REVIEWER CASE NOTES ── -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-accent"></div>
+      <span class="section-title">Reviewer Case Notes</span>
+      <span class="section-badge">L1 RECORD ONLY</span>
+    </div>
+    <textarea id="case-notes" placeholder="Case notes for the reviewer (Tom / Jamie). Visible in the Layer 1 compliance record only." style="min-height:100px"></textarea>
+  </div>
+
+  <!-- ── EMAIL NOTIFICATION TEMPLATE ── -->
+  <div class="card">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="section-accent"></div>
+        <span class="section-title">Email Notification Template</span>
+        <span class="section-badge">DRAFT PREVIEW</span>
+      </div>
+      <span class="collapse-icon">▼</span>
+    </div>
+    <div class="collapsible-body" id="email-template-body">
+      <hr style="border:none;border-top:1px solid #eee;margin:14px 0">
+      <p style="color:#666;font-size:0.82rem;margin-bottom:12px">This template auto-fills from the record above. Review before sending. Reminders are sent on Eastern Standard Time.</p>
+      <div class="email-template" id="email-template-preview">
+        <p><strong>Subject:</strong> Action Required – Compliance Case <span class="email-var" id="et-track-id">[Internal Tracking ID]</span></p>
+        <hr>
+        <p>Dear <span class="email-var" id="et-agent">[Agent Name]</span>,</p>
+        <br>
+        <p>You have been assigned a compliance action item. Please review the details below and complete your required task(s) by the due date.</p>
+        <br>
+        <p>
+          <strong>Carrier:</strong>
