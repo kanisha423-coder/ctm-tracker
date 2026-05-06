@@ -7,186 +7,75 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a1a;font-size:14px;padding:40px 20px 80px}
-.wrap{max-width:900px;margin:0 auto}
-.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7c6f5b;font-weight:600;margin-bottom:6px}
-h1{font-size:28px;font-weight:700;margin-bottom:6px}
-.sub{color:#7c6f5b;font-size:13px;margin-bottom:18px}
-.badges{display:flex;gap:8px;margin-bottom:24px}
-.badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.wrap{max-width:860px;margin:0 auto}
+.kicker{font-size:0.7rem;font-weight:700;letter-spacing:0.14em;color:#888;text-transform:uppercase;margin-bottom:6px}
+h1{font-size:2rem;font-weight:800;color:#1a1a1a;margin-bottom:6px}
+.subtitle{font-size:0.85rem;color:#555;margin-bottom:20px;line-height:1.5}
+.subtitle strong{color:#2c3e1f}
+.badges{display:flex;gap:10px;align-items:center;margin-bottom:28px;flex-wrap:wrap}
+.badge{display:inline-block;padding:6px 18px;border-radius:30px;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;cursor:pointer;transition:all 0.2s}
 .badge-l1{background:#1a1a1a;color:#fff}
-.badge-l2{border:1.5px solid #bbb;color:#666;background:transparent}
-.toolbar{display:flex;gap:10px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
-.search-wrap{position:relative;flex:1;min-width:220px;max-width:400px}
-.search-wrap input{width:100%;padding:8px 12px 8px 36px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;background:#fff;outline:none}
-.search-wrap input:focus{border-color:#7c6f5b}
-.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#aaa}
-.btn-excel{padding:8px 16px;background:#1d6f42;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
-.req-note{font-size:12px;color:#888;margin-bottom:20px}
-.req-note span{color:#c0392b}
-.card{background:#fff;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.card-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid #e8e4dd;display:flex;align-items:center;gap:8px}
-.card-title::before{content:'';display:inline-block;width:4px;height:16px;background:#7c6f5b;border-radius:2px}
-.row{display:grid;gap:16px;margin-bottom:16px}
-.r2{grid-template-columns:1fr 1fr}
-.r3{grid-template-columns:1fr 1fr 1fr}
-.fg{display:flex;flex-direction:column;gap:5px}
-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#666}
-.req{color:#c0392b;margin-left:2px}
-input[type=text],input[type=date],input[type=tel],input[type=number],select,textarea{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:13px;color:#1a1a1a;background:#fff;outline:none;font-family:inherit}
-input:focus,select:focus,textarea:focus{border-color:#7c6f5b}
-textarea{resize:vertical;min-height:90px}
-.note{font-size:11px;color:#888;margin-top:4px}
-.reminder-box{border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:12px;line-height:1.6}
-.rem-warn{background:#fef9ec;border:1px solid #f5d77e}
-.rem-info{background:#eef4fb;border:1px solid #b3d0f0}
+.badge-l2{background:#fff;color:#1a1a1a;border:1.5px solid #ccc;cursor:pointer}
+.badge-l2:hover{border-color:#2c3e1f;color:#2c3e1f}
+.toolbar{display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.search-box{flex:1;min-width:200px;padding:10px 14px 10px 36px;border:1.5px solid #ddd;border-radius:8px;font-size:0.9rem;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center;outline:none}
+.search-box:focus{border-color:#2c3e1f}
+.btn-export{padding:10px 20px;background:#2c3e1f;color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-export:hover{background:#3a5228}
+.req-note{font-size:0.78rem;color:#c0392b;margin-bottom:18px}
+.req-star{color:#c0392b!important;font-weight:700}
+.session-warning{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;font-size:0.78rem;color:#9a3412;margin-bottom:18px;display:flex;align-items:flex-start;gap:8px}
+.card{background:#fff;border-radius:12px;padding:28px 28px 24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #eee}
+.section-accent{width:4px;height:22px;background:#2c3e1f;border-radius:2px;flex-shrink:0}
+.section-title{font-size:0.78rem;font-weight:800;letter-spacing:0.1em;color:#2c3e1f;text-transform:uppercase}
+.section-badge{background:#e8f0dd;color:#2c3e1f;font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:0.06em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.field-label{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;color:#2c3e1f;text-transform:uppercase}
+.field-hint{font-size:0.75rem;color:#888;margin-top:2px}
+input[type="text"],input[type="tel"],input[type="number"],input[type="date"],select,textarea{
+  width:100%;padding:10px 12px;border:1.5px solid #d0d0d0;border-radius:8px;font-size:0.9rem;
+  font-family:inherit;color:#1a1a1a;background:#fff;transition:border-color 0.2s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#2c3e1f}
+textarea{resize:vertical;min-height:80px}
+select{cursor:pointer}
+.yn-row{display:flex;align-items:center;gap:12px}
+.yn-btn{padding:6px 18px;border-radius:20px;border:1.5px solid #d0d0d0;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s;background:#fff;color:#555}
+.yn-btn:hover{border-color:#2c3e1f;color:#2c3e1f}
+.yn-btn.yes-on{background:#2c3e1f;color:#fff;border-color:#2c3e1f}
+.yn-btn.no-on{background:#c0392b;color:#fff;border-color:#c0392b}
 table{width:100%;border-collapse:collapse;margin-top:4px}
-th{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#888;padding:8px 10px;border-bottom:1.5px solid #e8e4dd;text-align:left}
-td{padding:10px;border-bottom:1px solid #f0ede8;vertical-align:middle}
-td:first-child{font-weight:600;font-size:13px;width:140px}
-.yn-group{display:flex;gap:6px}
-.yn-btn{padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid #ddd;cursor:pointer;background:#fff;color:#555;transition:.15s;user-select:none}
-.yn-btn.yes-on{background:#0f6e56;border-color:#0f6e56;color:#fff}
-.yn-btn.no-on{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
-.pill-group{display:flex;gap:8px;flex-wrap:wrap}
-.pill{padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid #ddd;cursor:pointer;background:#fff;color:#555;transition:.15s}
-.pill:hover{background:#f5f4f0;border-color:#bbb}
-.p-pending{background:#fff8e8;border-color:#f0a500;color:#9a6700;font-weight:700}
-.p-completed{background:#e8f5f1;border-color:#0f6e56;color:#0f6e56;font-weight:700}
-.p-unfounded{background:#e8f5f1;border-color:#0f6e56;color:#0f6e56;font-weight:700}
-.p-substantiated{background:#fdecea;border-color:#c0392b;color:#c0392b;font-weight:700}
-.p-partial{background:#fff3e0;border-color:#e67e22;color:#a04000;font-weight:700}
-.p-inconclusive{background:#f3eeff;border-color:#7c5cbf;color:#5b3fa0;font-weight:700}
-.p-coaching{background:#e0f0ff;border-color:#2980b9;color:#1a6090;font-weight:700}
-.sync-note{background:#f0ece4;border-radius:8px;padding:10px 14px;font-size:12px;color:#7c6f5b;margin-bottom:12px;border:1px solid #d5cfc4}
-.tag-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#f0ece4;color:#7c6f5b;border:1px solid #d5cfc4;margin-left:8px;vertical-align:middle}
-.drop-zone{border:2px dashed #ddd;border-radius:10px;padding:36px;text-align:center;cursor:pointer;background:#fafaf8}
-.drop-zone:hover{border-color:#7c6f5b;background:#f5f4f0}
-.dz-plus{font-size:28px;color:#bbb;margin-bottom:6px}
-.dz-title{font-size:14px;font-weight:600;color:#555}
-.dz-sub{font-size:12px;color:#888;margin-top:4px}
-.dz-lnk{font-size:12px;color:#0f6e56;margin-top:6px}
-.attach-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f7f6f2;border-radius:8px;margin-top:8px}
-.attach-name{flex:1;font-size:13px;font-weight:500}
-.attach-size{font-size:11px;color:#888}
-.attach-del{font-size:11px;color:#c0392b;cursor:pointer;font-weight:600}
-.footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid #e8e4dd}
-.footer-note{font-size:11px;color:#888;line-height:1.5}
-.footer-note strong{color:#555}
-.btn-save{padding:10px 22px;border:1.5px solid #bbb;background:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#555}
-.btn-submit{padding:10px 22px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
-.highlight-match{background:#fff3cd}
-@media(max-width:640px){.r2,.r3{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="eyebrow">Complaint Tracking Module</div>
-  <h1>Compliance intake record</h1>
-  <p class="sub">Primary compliance record (Layer 1). Reviewer case notes and case data feed into the Layer 2 action and coaching tracker.</p>
-  <div class="badges"><span class="badge badge-l1">Layer 1 - Intake</span><span class="badge badge-l2">Feeds Layer 2</span></div>
-  <div class="toolbar">
-    <div class="search-wrap"><span class="search-icon">&#128269;</span><input type="text" id="srch" placeholder="Search by case #, carrier, agent, tracking ID..." oninput="doSearch(this.value)"></div>
-    <button class="btn-excel" onclick="exportCSV()">&#8595; Export to Excel</button>
-  </div>
-  <p class="req-note"><span>*</span> Required field</p>
-  <div class="card">
-    <div class="card-title">Case information</div>
-    <div class="row" style="grid-template-columns:1fr;margin-bottom:16px">
-      <div class="fg"><label for="ctm-type">CTM Type <span class="req">*</span></label><select id="ctm-type"><option value="">Select type</option><option>CTM</option><option>Grievance</option><option>Audit</option></select></div>
-    </div>
-    <div class="row r3">
-      <div class="fg"><label for="carrier">Carrier Name <span class="req">*</span></label><select id="carrier"><option value="">Select carrier</option><option>Aetna</option><option>Allstate</option><option>BCBS - IL (HCSC)</option><option>BCBS - MT (HCSC)</option><option>BCBS - NM (HCSC)</option><option>BCBS - OK (HCSC)</option><option>BCBS - TX (HCSC)</option><option>CarePlus</option><option>CareSource</option><option>Centene</option><option>Cigna</option><option>Devoted Health</option><option>Elevance</option><option>Florida Blue</option><option>HealthSun</option><option>Humana</option><option>IFG</option><option>Molina</option><option>Scan</option><option>Simply Healthcare</option><option>UnitedHealthcare</option><option>WellCare</option><option>Zing</option></select></div>
-      <div class="fg"><label for="case-num">Case Number</label><input type="text" id="case-num" placeholder="Carrier-assigned, if applicable"><span class="note">Not always available at intake.</span></div>
-      <div class="fg"><label for="track-id">Internal Tracking ID</label><input type="text" id="track-id" placeholder="Internal reference number"></div>
-    </div>
-    <div class="row r3">
-      <div class="fg"><label for="date-recv">Date Received <span class="req">*</span></label><input type="date" id="date-recv"></div>
-      <div class="fg"><label for="due-date">Due Date <span class="req">*</span></label><input type="date" id="due-date"><span class="note">Imposed by carrier - drives all deadlines</span></div>
-      <div class="fg"><label for="date-resp">Date Responded</label><input type="date" id="date-resp"></div>
-    </div>
-    <div class="reminder-box rem-warn"><strong>Pending Calls and Leads reminder:</strong> If Calls or Leads are marked Requested but not yet Sent while case status is Pending - automatic reminders go to <strong>Compliance and Peter only.</strong></div>
-    <div class="reminder-box rem-info"><strong>* Pending Agent Statement reminder:</strong> If Agent Statement is marked Requested but not yet Sent while case status is Pending - automatic reminders go to <strong>Sales Manager and Agent only.</strong></div>
-    <table>
-      <thead><tr><th>Item</th><th>Requested</th><th>Sent</th><th>Date Sent</th></tr></thead>
-      <tbody>
-        <tr><td>Calls</td><td><div class="yn-group"><span class="yn-btn" id="calls-req-yes" onclick="setYN('calls-req','yes')">Yes</span><span class="yn-btn no-on" id="calls-req-no" onclick="setYN('calls-req','no')">No</span></div></td><td><div class="yn-group"><span class="yn-btn" id="calls-sent-yes" onclick="setYN('calls-sent','yes')">Yes</span><span class="yn-btn no-on" id="calls-sent-no" onclick="setYN('calls-sent','no')">No</span></div></td><td><input type="date" id="calls-date-sent"></td></tr>
-        <tr><td>Leads</td><td><div class="yn-group"><span class="yn-btn" id="leads-req-yes" onclick="setYN('leads-req','yes')">Yes</span><span class="yn-btn no-on" id="leads-req-no" onclick="setYN('leads-req','no')">No</span></div></td><td><div class="yn-group"><span class="yn-btn" id="leads-sent-yes" onclick="setYN('leads-sent','yes')">Yes</span><span class="yn-btn no-on" id="leads-sent-no" onclick="setYN('leads-sent','no')">No</span></div></td><td><input type="date" id="leads-date-sent"></td></tr>
-        <tr><td>Agent Statement</td><td><div class="yn-group"><span class="yn-btn" id="stmt-req-yes" onclick="setYN('stmt-req','yes')">Yes</span><span class="yn-btn no-on" id="stmt-req-no" onclick="setYN('stmt-req','no')">No</span></div></td><td><div class="yn-group"><span class="yn-btn" id="stmt-sent-yes" onclick="setYN('stmt-sent','yes')">Yes</span><span class="yn-btn no-on" id="stmt-sent-no" onclick="setYN('stmt-sent','no')">No</span></div></td><td><input type="date" id="stmt-date-sent"></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="card">
-    <div class="card-title">Situation details</div>
-    <div class="row r2">
-      <div class="fg"><label for="allegation">Allegation <span class="req">*</span></label><select id="allegation"><option value="">Select</option><option>Misrepresentation</option><option>Unauthorized enrollment/disenrollment</option><option>Failure to disclose</option><option>Marketing violation</option><option>Scope of appointment</option><option>Agent conduct</option><option>Billing issue</option><option>Other</option></select></div>
-      <div class="fg"><label for="num-calls">Number of Calls</label><input type="number" id="num-calls" placeholder="0" min="0"></div>
-    </div>
-    <div class="fg" style="margin-bottom:16px"><label for="situation">Situation <span class="req">*</span></label><textarea id="situation" placeholder="Summarize the complaint or audit finding."></textarea></div>
-    <div class="row r3">
-      <div class="fg"><label for="bene-name">Beneficiary Name</label><input type="text" id="bene-name" placeholder="Full name"></div>
-      <div class="fg"><label for="bene-phone">Beneficiary Phone</label><input type="tel" id="bene-phone" placeholder="(000) 000-0000"></div>
-      <div class="fg"><label for="enroll-date">Enrollment Date</label><input type="date" id="enroll-date"></div>
-    </div>
-    <div class="fg"><label>Status <span class="req">*</span></label><div class="pill-group" id="status-group"><div class="pill p-pending" onclick="togglePills('status-group',this,'p-pending','p-completed')">Pending</div><div class="pill" onclick="togglePills('status-group',this,'p-completed','p-pending')">Completed</div></div><span class="note">Mark Completed when all items are sent and case is fully resolved.</span></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Determination <span class="tag-badge">Syncs to L2</span></div>
-    <div class="sync-note">Select a determination here. When Internal Tracking ID or Carrier Case Number is entered on Layer 2, it will automatically carry over.</div>
-    <div class="fg"><label>Internal Determination <span class="req">*</span></label><div class="pill-group" id="det-group"><div class="pill" onclick="toggleDet(this,'p-unfounded')">Unfounded</div><div class="pill" onclick="toggleDet(this,'p-substantiated')">Substantiated</div><div class="pill" onclick="toggleDet(this,'p-partial')">Partially substantiated</div><div class="pill" onclick="toggleDet(this,'p-inconclusive')">Inconclusive</div><div class="pill p-pending" onclick="toggleDet(this,'p-pending')">Pending</div></div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Coaching &amp; training assignment <span style="font-size:10px;font-weight:500;color:#888;text-transform:none;margin-left:4px">Routes to agent + manager</span></div>
-    <div class="reminder-box rem-info" style="margin-bottom:16px"><strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the <strong>agent and their sales manager.</strong></div>
-    <div class="fg" style="margin-bottom:16px"><label>Assignment Type <span class="req">*</span></label><div class="pill-group" id="assign-group"><div class="pill p-coaching" onclick="toggleAssign(this)">Coaching</div><div class="pill" onclick="toggleAssign(this)">Training</div><div class="pill" onclick="toggleAssign(this)">Coaching + Training</div><div class="pill" onclick="toggleAssign(this)">None required</div></div></div>
-    <div class="row r3">
-      <div class="fg"><label for="date-assigned">Date Assigned <span class="req">*</span></label><input type="date" id="date-assigned"></div>
-      <div class="fg"><label for="due-coaching">Due Date <span class="req">*</span></label><input type="date" id="due-coaching"></div>
-      <div class="fg"><label for="date-completed">Date Completed</label><input type="date" id="date-completed"></div>
-    </div>
-    <div class="row r2">
-      <div class="fg"><label for="sm-coaching">Sales Manager at Time of Coaching</label><input type="text" id="sm-coaching" placeholder="Enter name"><span class="note">May differ from manager at time of complaint.</span></div>
-      <div class="fg"><label for="conducted-by">Person Who Conducted Coaching <span class="req">*</span></label><input type="text" id="conducted-by" placeholder="Enter name"></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Agent, SM and compliance names</div>
-    <div class="row r3">
-      <div class="fg"><label for="agent-name">Agent Name <span class="req">*</span></label><input type="text" id="agent-name" placeholder="Full name"></div>
-      <div class="fg"><label for="sm-name">Sales Manager at Time of Complaint <span class="req">*</span></label><input type="text" id="sm-name" placeholder="Full name"><span class="note">Coaching-time manager tracked in Coaching section above.</span></div>
-      <div class="fg"><label for="reviewer">Reviewer <span class="req">*</span></label><select id="reviewer"><option value="">Select</option><option>Tom</option><option>Jamie</option></select></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Attachments <span class="tag-badge">No limit</span></div>
-    <div class="drop-zone" ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="document.getElementById('file-in').click()"><div class="dz-plus">+</div><div class="dz-title">Drop files or click to upload</div><div class="dz-sub">Call recordings, agent statements, leads, PIP documents, screenshots</div><div class="dz-lnk">No limit on attachments</div></div>
-    <input type="file" id="file-in" multiple style="display:none" onchange="handleFiles(this.files)">
-    <div id="attach-list"></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Reviewer case notes <span class="tag-badge">L1 Record Only</span></div>
-    <div class="fg"><textarea id="case-notes" placeholder="Case notes for the reviewer (Tom / Jamie). Visible in the Layer 1 compliance record only."></textarea></div>
-  </div>
-  <div class="footer">
-    <div class="footer-note"><strong>Report access:</strong> Chris and Bernice have read-only report access to L1 and L2. Changes require edit permissions - contact Kanisha or Tracy W.</div>
-    <div style="display:flex;gap:10px"><button class="btn-save">Save draft</button><button class="btn-submit">Submit intake record</button></div>
-  </div>
-</div>
-<script>
-const DET_CLS=['p-unfounded','p-substantiated','p-partial','p-inconclusive','p-pending'];
-function setYN(p,v){const y=document.getElementById(p+'-yes'),n=document.getElementById(p+'-no');y.className='yn-btn'+(v==='yes'?' yes-on':'');n.className='yn-btn'+(v==='no'?' no-on':'');window['_yn_'+p]=v==='yes'?'Yes':'No';}
-function togglePills(g,el,on,off){document.getElementById(g).querySelectorAll('.pill').forEach(p=>p.classList.remove(on,off));el.classList.add(on);}
-function toggleDet(el,cls){document.getElementById('det-group').querySelectorAll('.pill').forEach(p=>p.classList.remove(...DET_CLS));el.classList.add(cls);const det=el.textContent.trim();const key=(document.getElementById('track-id').value||document.getElementById('case-num').value||'').trim();if(key)localStorage.setItem('ctm_det_'+key,det);}
-function toggleAssign(el){document.getElementById('assign-group').querySelectorAll('.pill').forEach(p=>p.classList.remove('p-coaching','p-pending','p-completed'));const m={'Coaching':'p-coaching','Training':'p-pending','Coaching + Training':'p-coaching','None required':''};const c=m[el.textContent.trim()];if(c)el.classList.add(c);}
-function doSearch(q){if(!q.trim()){document.querySelectorAll('.highlight-match').forEach(e=>e.classList.remove('highlight-match'));return;}const lq=q.toLowerCase();['case-num','track-id','carrier','agent-name','sm-name'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const v=(el.value||el.options?.[el.selectedIndex]?.text||'').toLowerCase();const w=el.closest('.fg')||el.parentElement;if(v&&v.includes(lq))w.classList.add('highlight-match');else w.classList.remove('highlight-match');});}
-let atts=[];
-function handleFiles(f){Array.from(f).forEach(x=>atts.push({name:x.name,size:x.size,id:Date.now()+Math.random()}));renderAtt();}
-function handleDrop(e){e.preventDefault();handleFiles(e.dataTransfer.files);}
-function removeAtt(id){atts=atts.filter(a=>a.id!==id);renderAtt();}
-function renderAtt(){const l=document.getElementById('attach-list');if(!atts.length){l.innerHTML='';return;}l.innerHTML=atts.map(a=>{const sz=a.size>1048576?(a.size/1048576).toFixed(1)+' MB':Math.round(a.size/1024)+' KB';return '<div class="attach-item"><div class="attach-name">'+a.name+'</div><div class="attach-size">'+sz+'</div><div class="attach-del" onclick="removeAtt('+a.id+')">Remove</div></div>';}).join('');}
-function gv(id){const e=document.getElementById(id);return e?e.value:'';}
-function gt(id){const e=document.getElementById(id);return e?(e.options[e.selectedIndex]?.text||''):'';}
-function gp(g){return document.querySelector('#'+g+' .pill.p-pending,#'+g+' .pill.p-completed,#'+g+' .pill.p-unfounded,#'+g+' .pill.p-substantiated,#'+g+' .pill.p-partial,#'+g+' .pill.p-inconclusive,#'+g+' .pill.p-coaching')?.textContent?.trim()||'';}
-function exportCSV(){const rows=[['Field','Value'],['CTM Type',gt('ctm-type')],['Carrier',gt('carrier')],['Case Number',gv('case-num')],['Internal Tracking ID',gv('track-id')],['Date Received',gv('date-recv')],['Due Date',gv('due-date')],['Date Responded',gv('date-resp')],['Calls Requested',window._yn_calls_req||'No'],['Calls Sent',window._yn_calls_sent||'No'],['Calls Date Sent',gv('calls-date-sent')],['Leads Requested',window._yn_leads_req||'No'],['Leads Sent',window._yn_leads_sent||'No'],['Leads Date Sent',gv('leads-date-sent')],['Agent Statement Requested',window._yn_stmt_req||'No'],['Agent Statement Sent',window._yn_stmt_sent||'No'],['Agent Stmt Date Sent',gv('stmt-date-sent')],['Allegation',gt('allegation')],['Number of Calls',gv('num-calls')],['Situation',gv('situation')],['Beneficiary Name',gv('bene-name')],['Beneficiary Phone',gv('bene-phone')],['Enrollment Date',gv('enroll-date')],['Status',gp('status-group')],['Determination',gp('det-group')],['Assignment Type',gp('assign-group')],['Date Assigned',gv('date-assigned')],['Coaching Due Date',gv('due-coaching')],['Date Completed',gv('date-completed')],['SM at Time of Coaching',gv('sm-coaching')],['Person Who Conducted Coaching',gv('conducted-by')],['Agent Name',gv('agent-name')],['Sales Manager',gv('sm-name')],['Reviewer',gt('reviewer')],['Case Notes',gv('case-notes')]];const csv=rows.map(r=>r.map(c=>'"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');const b=new Blob([csv],{type:'text/csv'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='CTM_Layer1_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(u);}
-</script>
-</body>
-</html>
+thead th{font-size:0.7rem;font-weight:800;letter-spacing:0.1em;color:#888;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:2px solid #eee}
+tbody tr{border-bottom:1px solid #f0f0f0}
+tbody td{padding:10px 10px;vertical-align:middle}
+tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
+.pill-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.pill{padding:7px 16px;border-radius:20px;border:1.5px solid #d0d0d0;font-size:0.82rem;font-weight:600;cursor:pointer;color:#555;background:#fff;transition:all 0.15s;white-space:nowrap}
+.pill:hover{border-color:#2c3e1f;color:#2c3e1f}
+.p-pending{background:#f5e9c8;color:#7a5c00;border-color:#e8d090}
+.p-completed{background:#e8f0dd;color:#2c5f0f;border-color:#b8d898}
+.p-unfounded{background:#e8f0dd;color:#2c5f0f;border-color:#b8d898}
+.p-substantiated{background:#fde8e8;color:#8b1a1a;border-color:#f0b0b0}
+.p-inconclusive{background:#ede8f5;color:#4a2c7a;border-color:#c0a8e8}
+.p-coaching{background:#e8f0dd;color:#2c5f0f;border-color:#b8d898}
+.reminder-note{background:#fdf8ee;border:1px solid #e8d898;border-radius:8px;padding:12px 16px;font-size:0.82rem;color:#5a4a00;margin-bottom:12px;line-height:1.5}
+.reminder-note strong{color:#3a2a00}
+.reminder-note.blue{background:#eef4fb;border-color:#b8d0ec;color:#1a3a5a}
+.reminder-note.blue strong{color:#0a2040}
+.attach-zone{border:2px dashed #d0d0d0;border-radius:10px;padding:32px 20px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#fafafa}
+.attach-zone:hover{border-color:#2c3e1f;background:#f0f4eb}
+.attach-icon{font-size:1.8rem;margin-bottom:8px;color:#aaa}
+.attach-label{font-weight:700;color:#333;font-size:0.9rem}
+.attach-sub{font-size:0.78rem;color:#888;margin-top:4px}
+.attach-limit{font-size:0.75rem;color:#2c7a2c;font-weight:600;margin-top:6px}
+.attach-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.attach-item{display:flex;align-items:center;gap:10px;background:#f0f4eb;border-radius:6px;padding:8px 12px}
+.attach-name{flex:1;font-size:0.85rem;font-weight:600;color:#2c3e1f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.attach-size{font-size:0.75rem;color:#888}
+.attach-del{font-size:0.78rem;color:#c0392b;cursor:pointer;font-weight:700;padding:2px 8px;border-radius:4px;border:1px solid #f0b0b0;background:#fff}
+.attach-del:hover{background:#fde8e8}
+.recon-box{margin-top:14px;padding:12px 16px;background:#f0f4eb;border-radius:8px;border:1px solid #c8d8b0}
+.recon-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:0.8rem;color:#2c3e1f;letter-spacing:0.05em;text-transform:uppercase}
+.recon-hint{col
