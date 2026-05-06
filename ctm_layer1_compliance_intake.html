@@ -375,9 +375,9 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
     <div class="grid2">
       <div class="fg">
-        <label class="field-label" for="sm-coaching">Sales Manager at Time of Coaching</label>
+        <label class="field-label" for="sm-coaching">Sales Manager</label>
         <input type="text" id="sm-coaching" placeholder="Enter name">
-        <span class="field-hint">May differ from manager at time of complaint.</span>
+        
       </div>
       <div class="fg">
         <label class="field-label" for="conducted-by">Person Who Conducted Coaching <span class="req-star">*</span></label>
@@ -396,6 +396,11 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
       <div class="fg">
         <label class="field-label" for="agent-name">Agent Name <span class="req-star">*</span></label>
         <input type="text" id="agent-name" placeholder="Full name">
+        <div class="pill-group" id="agent-type-group" style="margin-top:6px">
+          <span class="pill" id="agent-type-w2" onclick="toggleAgentType('W2')">W2</span>
+          <span class="pill" id="agent-type-1099" onclick="toggleAgentType('1099')">1099</span>
+        </div>
+        <span class="field-hint">Select W2 or 1099</span>
       </div>
       <div class="fg">
         <label class="field-label" for="sm-name">Sales Manager at Time of Complaint <span class="req-star">*</span></label>
@@ -462,3 +467,10 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
         <br>
         <p>
           <strong>Carrier:</strong>
+  function toggleAgentType(type) {
+    document.getElementById('agent-type-w2').classList.remove('p-coaching','p-pending');
+    document.getElementById('agent-type-1099').classList.remove('p-coaching','p-pending');
+    document.getElementById('agent-type-' + type.toLowerCase()).classList.add('p-coaching');
+    window._agentType = type;
+  }
+
