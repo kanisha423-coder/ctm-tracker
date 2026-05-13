@@ -410,38 +410,34 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     <textarea id="case-notes" placeholder="Case notes for the reviewer (Tom / Jamie). Visible in the Layer 1 compliance record only." style="min-height:100px"></textarea>
   </div>
 
-  <!-- -- EMAIL NOTIFICATION TEMPLATE -- -->
+  <!-- -- EMAIL NOTIFICATION TEMPLATES -- -->
+  <!-- NOTE: Agents, SMs, and Kyal do NOT receive reminders or past-due notices if item is pended
+       because compliance is waiting on lead source material. -->
+
+  <!-- EMAIL 1: FIRST NOTICE OF NEW ITEM -->
   <div class="card">
     <div class="collapsible-header" onclick="toggleCollapsible(this)">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="section-accent"></div>
-        <span class="section-title">Email Notification Template</span>
-        <span class="section-badge">DRAFT PREVIEW</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-title" style="font-size:0.95rem">&#128231; Email 1 — First Notice of New Item</span>
+        <span class="section-badge">TO: AGENT &amp; SALES MANAGER</span>
       </div>
-      <span class="collapse-icon">&#x25BC;</span>
+      <span class="collapse-icon">&#9660;</span>
     </div>
-    <div class="collapsible-body" id="email-template-body">
-      <hr style="border:none;border-top:1px solid #eee;margin:14px 0">
-      <p style="color:#666;font-size:0.82rem;margin-bottom:12px">This template auto-fills from the record above. Review before sending. Reminders are sent on Eastern Standard Time.</p>
+    <div class="collapsible-body">
+      <p class="reminder-note" style="margin-top:10px">Sent immediately when the case is created. Goes to <strong>Agent</strong> and <strong>Sales Manager</strong>.</p>
       <div class="email-template" id="email-template-preview">
-        <p><strong>Subject:</strong> Action Required -- Compliance Case <span class="email-var" id="et-track-id">[Internal Tracking ID]</span></p>
+        <p><strong>Subject:</strong> Action Required &#8212; Compliance Case <span class="email-var" id="et-track-id">[Internal Tracking ID]</span></p>
         <hr>
         <p>Dear <span class="email-var" id="et-agent">[Agent Name]</span>,</p>
         <br>
         <p>You have been assigned a compliance action item. Please review the details below and complete your required task(s) by the due date.</p>
         <br>
-        <p>
-          <strong>Carrier:</strong> <span class="email-var" id="et-carrier">[Carrier Name]</span>
-        </p>
-        <p>
-          <strong>Case Number:</strong> <span class="email-var" id="et-case-num">[Case Number]</span>
-        </p>
-        <p>
-          <strong>Due Date:</strong> <span class="email-var" id="et-due-date">[Due Date]</span>
-        </p>
-        <p id="et-call-link-row" style="display:none">
-          <strong>Call Recording:</strong> <a class="email-var" id="et-call-link" href="#" target="_blank">[Call Link]</a>
-        </p>
+        <p><strong>Type of Request:</strong> <span class="email-var" id="et-type">[CTM / Grievance / Audit]</span></p>
+        <p><strong>Internal Tracking #:</strong> <span class="email-var" id="et-track-id2">[Internal Tracking ID]</span></p>
+        <p><strong>Sales Manager:</strong> <span class="email-var" id="et-sm">[Sales Manager Name]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var" id="et-due-date">[Due Date]</span></p>
+        <p><strong>Agent Instructions:</strong><br><span class="email-var" id="et-agent-instructions">[Agent Instructions]</span></p>
+        <p id="et-attach-row"><strong>Attachments:</strong> <span class="email-var">[See attached documents]</span></p>
         <br>
         <p>If you have any questions, please contact your compliance team.</p>
         <br>
@@ -450,8 +446,103 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
   </div>
 
-</div>
+  <!-- EMAIL 2: REMINDER — 2 DAYS BEFORE DUE DATE (Agent Statement pending only) -->
+  <div class="card">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-title" style="font-size:0.95rem">&#128231; Email 2 — Reminder: 2 Days Before Due Date</span>
+        <span class="section-badge">TO: AGENT &amp; SALES MANAGER ONLY</span>
+      </div>
+      <span class="collapse-icon">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="reminder-note blue" style="margin-top:10px">
+        Sent <strong>2 days before the due date</strong> &#8212; only if Agent Statement is marked <strong>Requested</strong> but not yet <strong>Sent</strong> and case is still <strong>Pending</strong>.<br>
+        &#9888; <strong>Suppressed</strong> if item is pended because compliance is waiting on lead source material.
+      </p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> Reminder &#8212; Compliance Action Due in 2 Days [<span class="email-var">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear <span class="email-var">[Agent Name]</span>,</p>
+        <br>
+        <p>This is a reminder that your compliance action item is due in <strong>2 days</strong> and your Agent Statement has not yet been submitted.</p>
+        <br>
+        <p><strong>Internal Tracking #:</strong> <span class="email-var">[Internal Tracking ID]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var">[Due Date]</span></p>
+        <p><strong>Outstanding:</strong> Agent Statement — Requested but not yet Sent</p>
+        <br>
+        <p>Please submit your Agent Statement as soon as possible to avoid a past-due notice.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
 
+  <!-- EMAIL 3: PAST DUE NOTICE — Agent Statement still open -->
+  <div class="card">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-title" style="font-size:0.95rem">&#128231; Email 3 — Past Due Notice</span>
+        <span class="section-badge">TO: KYAL &amp; SALES MANAGER</span>
+      </div>
+      <span class="collapse-icon">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="reminder-note" style="margin-top:10px;background:#fde8e8;border-color:#f0b0b0;color:#8b1a1a">
+        Sent when the item is <strong>past due</strong> and Agent Statement is still not closed &#8212; to <strong>Kyal</strong> and <strong>Sales Manager</strong>.<br>
+        &#9888; <strong>Suppressed</strong> if item is pended because compliance is waiting on lead source material.
+      </p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> PAST DUE &#8212; Compliance Action Item [<span class="email-var">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear <span class="email-var">[Sales Manager Name]</span> and Kyal,</p>
+        <br>
+        <p>The following compliance action item is <strong>past due</strong> and the Agent Statement has not been received.</p>
+        <br>
+        <p><strong>Internal Tracking #:</strong> <span class="email-var">[Internal Tracking ID]</span></p>
+        <p><strong>Agent:</strong> <span class="email-var">[Agent Name]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var">[Due Date]</span></p>
+        <p><strong>Outstanding:</strong> Agent Statement not submitted</p>
+        <br>
+        <p>Please follow up with the agent immediately to obtain the outstanding statement.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 4: REMINDER — 1 DAY PAST DUE (Lead source / material not received) -->
+  <div class="card">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-title" style="font-size:0.95rem">&#128231; Email 4 — 1 Day Past Due (Lead Source Material)</span>
+        <span class="section-badge">TO: COMPLIANCE MAILBOX &amp; PETER</span>
+      </div>
+      <span class="collapse-icon">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="reminder-note blue" style="margin-top:10px">
+        Sent when item is <strong>1 day past due</strong> &#8212; only applies when the sole reason for the open item is that <strong>lead source material has not been received</strong>.<br>
+        Goes to <strong>Compliance mailbox</strong> and <strong>Peter</strong> only. Agents, SMs, and Kyal do <strong>not</strong> receive this notice.
+      </p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> Follow-Up Needed &#8212; Lead Source Material Not Received [<span class="email-var">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear Compliance Team / Peter,</p>
+        <br>
+        <p>The following compliance case is <strong>1 day past due</strong>. The item remains open solely because the <strong>lead source material has not yet been received</strong>.</p>
+        <br>
+        <p><strong>Internal Tracking #:</strong> <span class="email-var">[Internal Tracking ID]</span></p>
+        <p><strong>Agent:</strong> <span class="email-var">[Agent Name]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var">[Due Date]</span></p>
+        <p><strong>Pending Reason:</strong> Lead source material not received</p>
+        <br>
+        <p>Please coordinate to obtain the required lead documentation so this case can be closed.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
 <script>
   function updateEmail() {
     const trackId = document.getElementById('track-id') ? document.getElementById('track-id').value || '[Internal Tracking ID]' : '[Internal Tracking ID]';
