@@ -182,6 +182,11 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
         <span class="field-hint">Not always available at intake.</span>
       </div>
       <div class="fg">
+        <label class="field-label" for="affiliated-case">Affiliated Case #</label>
+        <input type="text" id="affiliated-case" placeholder="Case number of related case, if applicable">
+        <span class="field-hint">Group related cases by entering the associated case number.</span>
+      </div>
+      <div class="fg">
         <label class="field-label" for="track-id">Internal Tracking ID</label>
         <input type="text" id="track-id" class="trackid-field" readonly placeholder="Auto-assigned on submit">
         <span class="trackid-hint">* Auto-assigned -- unique per record</span>
@@ -341,6 +346,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
         <span class="pill" onclick="toggleDet(this,'p-unfounded')">Unfounded</span>
         <span class="pill" onclick="toggleDet(this,'p-pending')">Pending</span>
         <span class="pill" onclick="toggleDet(this,'')">NA</span>
+        <span class="pill" onclick="toggleDet(this,'p-inconclusive')">Inconclusive</span>
       </div>
     </div>
   </div>
@@ -362,7 +368,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
         <span class="field-hint">Select W2 or 1099</span>
       </div>
       <div class="fg">
-        <label class="field-label" for="sm-name">Sales Manager at Time of Complaint <span class="req-star">*</span></label>
+        <label class="field-label" for="sm-name">Sales Manager on Complaint <span class="req-star">*</span></label>
         <input type="text" id="sm-name" placeholder="Full name">
         <span class="field-hint">Coaching-time manager tracked in Coaching section above.</span>
       </div>
