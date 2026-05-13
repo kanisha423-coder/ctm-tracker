@@ -128,22 +128,22 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     <strong>Edit access:</strong> Jamie &amp; Tom only.&nbsp;&nbsp;<strong>Report access:</strong> Chris, Christine, Bernice &amp; Peter (read-only).
   </p>
   <div class="badges">
-    <span class="badge badge-l1">LAYER 1 – INTAKE</span>
-    <span class="badge badge-l2" onclick="window.location.href='ctm_layer2_action_coaching_v3.html'">FEEDS LAYER 2 →</span>
+    <span class="badge badge-l1">LAYER 1 â INTAKE</span>
+    <span class="badge badge-l2" onclick="window.location.href='ctm_layer2_action_coaching_v3.html'">FEEDS LAYER 2 â</span>
   </div>
   <div class="toolbar">
     <input class="search-box" id="search-box" type="text" placeholder="Search by case #, carrier, agent, tracking ID..." oninput="doSearch(this.value)">
-    <button class="btn-export" onclick="exportCSV()">↓ Export to Excel</button>
+    <button class="btn-export" onclick="exportCSV()">â Export to Excel</button>
   </div>
 
   <!-- Session warning -->
   <div class="session-warning">
-    ⚠️ <span><strong>Same-browser note:</strong> Data synced to Layer 2 uses browser localStorage. Both forms must be used in the same browser on the same device. Data does not sync across devices or browsers.</span>
+    â ï¸ <span><strong>Same-browser note:</strong> Data synced to Layer 2 uses browser localStorage. Both forms must be used in the same browser on the same device. Data does not sync across devices or browsers.</span>
   </div>
 
   <p class="req-note">* Required field</p>
 
-  <!-- ── CASE INFORMATION ── -->
+  <!-- ââ CASE INFORMATION ââ -->
   <div class="card">
     <div class="section-header">
       <div class="section-accent"></div>
@@ -151,9 +151,10 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
     <div class="fg" style="margin-bottom:16px">
       <label class="field-label" for="ctm-type">CTM Type <span class="req-star">*</span></label>
-      <select id="ctm-type">
+      <select id="ctm-type" onchange="updateEmailType()">
         <option value="">Select type</option>
-        <option value="ctm-grievance">CTM Grievance</option>
+        <option value="ctm">CTM</option>
+        <option value="grievance">Grievance</option>
         <option value="audit">Audit</option>
       </select>
     </div>
@@ -183,7 +184,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
       <div class="fg">
         <label class="field-label" for="track-id">Internal Tracking ID</label>
         <input type="text" id="track-id" class="trackid-field" readonly placeholder="Auto-assigned on submit">
-        <span class="trackid-hint">⚙ Auto-assigned — unique per record</span>
+        <span class="trackid-hint">â Auto-assigned â unique per record</span>
       </div>
     </div>
     <div class="grid3" style="margin-bottom:16px">
@@ -194,12 +195,17 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
       <div class="fg">
         <label class="field-label" for="due-date">Due Date <span class="req-star">*</span></label>
         <input type="date" id="due-date">
-        <span class="field-hint">Imposed by carrier — drives all deadlines</span>
+        <span class="field-hint">Imposed by carrier â drives all deadlines</span>
       </div>
       <div class="fg">
         <label class="field-label" for="date-resp">Date Responded</label>
         <input type="date" id="date-resp">
       </div>
+    </div>
+    <div class="fg" style="margin-bottom:16px">
+      <label class="field-label" for="call-link">Call Recording Link</label>
+      <input type="url" id="call-link" placeholder="Paste Magnemite call link here" oninput="updateEmailCallLink()">
+      <span class="field-hint">Link will be included in agent notification email.</span>
     </div>
     <div class="recon-box">
       <label class="recon-label">
@@ -215,13 +221,13 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
   </div>
 
-  <!-- ── CALLS / LEADS / AGENT STATEMENT ── -->
+  <!-- ââ CALLS / LEADS / AGENT STATEMENT ââ -->
   <div class="card">
     <div class="reminder-note">
-      <strong>Pending Calls and Leads reminder:</strong> If Calls or Leads are marked Requested but not yet Sent while case status is Pending — automatic reminders go to <strong>Compliance and Peter only.</strong>
+      <strong>Pending Calls and Leads reminder:</strong> If Calls or Leads are marked Requested but not yet Sent while case status is Pending â automatic reminders go to <strong>Compliance and Peter only.</strong>
     </div>
     <div class="reminder-note blue">
-      <strong>* Pending Agent Statement reminder:</strong> If Agent Statement is marked Requested but not yet Sent while case status is Pending — automatic reminders go to <strong>Sales Manager and Agent only.</strong>
+      <strong>* Pending Agent Statement reminder:</strong> If Agent Statement is marked Requested but not yet Sent while case status is Pending â automatic reminders go to <strong>Sales Manager and Agent only.</strong>
     </div>
     <table>
       <thead>
@@ -255,7 +261,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </table>
   </div>
 
-  <!-- ── SITUATION DETAILS ── -->
+  <!-- ââ SITUATION DETAILS ââ -->
   <div class="card">
     <div class="section-header">
       <div class="section-accent"></div>
@@ -292,7 +298,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     <div class="fg" style="margin-bottom:16px">
       <label class="field-label" for="agent-instructions">Agent Instructions <span class="req-star">*</span></label>
       <textarea id="agent-instructions" placeholder="Describe the specific instructions the agent must follow for this case. Required in both layers." style="min-height:90px"></textarea>
-      <span class="field-hint">Required — ensures agents understand their tasks. Included in reminder emails.</span>
+      <span class="field-hint">Required â ensures agents understand their tasks. Included in reminder emails.</span>
     </div>
     <div class="grid3" style="margin-bottom:16px">
       <div class="fg">
@@ -318,7 +324,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
   </div>
 
-  <!-- ── DETERMINATION ── -->
+  <!-- ââ DETERMINATION ââ -->
   <div class="card">
     <div class="section-header">
       <div class="section-accent"></div>
@@ -339,54 +345,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
   </div>
 
-  <!-- ── COACHING & TRAINING ASSIGNMENT ── -->
-  <div class="card">
-    <div class="section-header">
-      <div class="section-accent"></div>
-      <span class="section-title">Coaching &amp; Training Assignment</span>
-      <span class="section-badge">ROUTES TO AGENT + MANAGER</span>
-    </div>
-    <div class="reminder-note" style="margin-bottom:16px">
-      <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the <strong>agent and their sales manager.</strong>
-    </div>
-    <div class="fg" style="margin-bottom:16px">
-      <label class="field-label">Assignment Type <span class="req-star">*</span></label>
-      <div class="pill-group" id="assign-group">
-        <span class="pill" onclick="toggleAssign(this)">Training Module Only</span>
-        <span class="pill" onclick="toggleAssign(this)">Coaching Only</span>
-        <span class="pill" onclick="toggleAssign(this)">Training Module + Coaching</span>
-        <span class="pill" onclick="toggleAssign(this)">NA</span>
-      </div>
-    </div>
-    <div class="grid3" style="margin-bottom:16px">
-      <div class="fg">
-        <label class="field-label" for="date-assigned">Date Assigned <span class="req-star">*</span></label>
-        <input type="date" id="date-assigned">
-      </div>
-      <div class="fg">
-        <label class="field-label" for="due-coaching">Due Date <span class="req-star">*</span></label>
-        <input type="date" id="due-coaching">
-        <span class="mod-note">✏ Modifiable — adjust as needed for flexibility</span>
-      </div>
-      <div class="fg">
-        <label class="field-label" for="date-completed">Date Completed</label>
-        <input type="date" id="date-completed">
-      </div>
-    </div>
-    <div class="grid2">
-      <div class="fg">
-        <label class="field-label" for="sm-coaching">Sales Manager</label>
-        <input type="text" id="sm-coaching" placeholder="Enter name">
-        
-      </div>
-      <div class="fg">
-        <label class="field-label" for="conducted-by">Person Who Conducted Coaching <span class="req-star">*</span></label>
-        <input type="text" id="conducted-by" placeholder="Enter name">
-      </div>
-    </div>
-  </div>
-
-  <!-- ── AGENT, SM AND COMPLIANCE NAMES ── -->
+ <!-- ââ AGENT, SM AND COMPLIANCE NAMES ââ -->
   <div class="card">
     <div class="section-header">
       <div class="section-accent"></div>
@@ -418,7 +377,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     </div>
   </div>
 
-  <!-- ── ATTACHMENTS ── -->
+  <!-- ââ ATTACHMENTS ââ -->
   <div class="card">
     <div class="section-header">
       <div class="section-accent"></div>
@@ -429,13 +388,13 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
       <div class="attach-icon">+</div>
       <div class="attach-label">Drop files or click to upload</div>
       <div class="attach-sub">Call recordings, agent statements, leads, PIP documents, screenshots</div>
-      <div class="attach-limit">No limit on attachments — delete or replace anytime</div>
+      <div class="attach-limit">No limit on attachments â delete or replace anytime</div>
     </div>
     <input type="file" id="file-input" multiple style="display:none" onchange="handleFiles(this.files)">
     <div class="attach-list" id="attach-list"></div>
   </div>
 
-  <!-- ── REVIEWER CASE NOTES ── -->
+  <!-- ââ REVIEWER CASE NOTES ââ -->
   <div class="card">
     <div class="section-header">
       <div class="section-accent"></div>
@@ -445,7 +404,7 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     <textarea id="case-notes" placeholder="Case notes for the reviewer (Tom / Jamie). Visible in the Layer 1 compliance record only." style="min-height:100px"></textarea>
   </div>
 
-  <!-- ── EMAIL NOTIFICATION TEMPLATE ── -->
+  <!-- ââ EMAIL NOTIFICATION TEMPLATE ââ -->
   <div class="card">
     <div class="collapsible-header" onclick="toggleCollapsible(this)">
       <div style="display:flex;align-items:center;gap:12px">
@@ -453,20 +412,78 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
         <span class="section-title">Email Notification Template</span>
         <span class="section-badge">DRAFT PREVIEW</span>
       </div>
-      <span class="collapse-icon">▼</span>
+      <span class="collapse-icon">â¼</span>
     </div>
     <div class="collapsible-body" id="email-template-body">
       <hr style="border:none;border-top:1px solid #eee;margin:14px 0">
       <p style="color:#666;font-size:0.82rem;margin-bottom:12px">This template auto-fills from the record above. Review before sending. Reminders are sent on Eastern Standard Time.</p>
       <div class="email-template" id="email-template-preview">
-        <p><strong>Subject:</strong> Action Required – Compliance Case <span class="email-var" id="et-track-id">[Internal Tracking ID]</span></p>
+        <p><strong>Subject:</strong> Action Required â Compliance Case <span class="email-var" id="et-track-id">[Internal Tracking ID]</span></p>
         <hr>
         <p>Dear <span class="email-var" id="et-agent">[Agent Name]</span>,</p>
         <br>
         <p>You have been assigned a compliance action item. Please review the details below and complete your required task(s) by the due date.</p>
         <br>
         <p>
-          <strong>Carrier:</strong>
+          <strong>Carrier:</strong> <span class="email-var" id="et-carrier">[Carrier Name]</span>
+        </p>
+        <p>
+          <strong>Case Number:</strong> <span class="email-var" id="et-case-num">[Case Number]</span>
+        </p>
+        <p>
+          <strong>Due Date:</strong> <span class="email-var" id="et-due-date">[Due Date]</span>
+        </p>
+        <p id="et-call-link-row" style="display:none">
+          <strong>Call Recording:</strong> <a class="email-var" id="et-call-link" href="#" target="_blank">[Call Link]</a>
+        </p>
+        <br>
+        <p>If you have any questions, please contact your compliance team.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function updateEmail() {
+    const trackId = document.getElementById('track-id') ? document.getElementById('track-id').value || '[Internal Tracking ID]' : '[Internal Tracking ID]';
+    const agent = document.getElementById('agent-name') ? document.getElementById('agent-name').value || '[Agent Name]' : '[Agent Name]';
+    const carrier = document.getElementById('carrier') ? (document.getElementById('carrier').options[document.getElementById('carrier').selectedIndex] || {text: '[Carrier Name]'}).text : '[Carrier Name]';
+    const caseNum = document.getElementById('case-num') ? document.getElementById('case-num').value || '[Case Number]' : '[Case Number]';
+    const dueDate = document.getElementById('due-date') ? document.getElementById('due-date').value || '[Due Date]' : '[Due Date]';
+    if (document.getElementById('et-track-id')) document.getElementById('et-track-id').textContent = trackId;
+    if (document.getElementById('et-agent')) document.getElementById('et-agent').textContent = agent;
+    if (document.getElementById('et-carrier')) document.getElementById('et-carrier').textContent = carrier;
+    if (document.getElementById('et-case-num')) document.getElementById('et-case-num').textContent = caseNum;
+    if (document.getElementById('et-due-date')) document.getElementById('et-due-date').textContent = dueDate;
+  }
+
+  function updateEmailCallLink() {
+    const callLink = document.getElementById('call-link') ? document.getElementById('call-link').value.trim() : '';
+    const row = document.getElementById('et-call-link-row');
+    const linkEl = document.getElementById('et-call-link');
+    if (callLink && row && linkEl) {
+      linkEl.textContent = callLink;
+      linkEl.href = callLink;
+      row.style.display = '';
+    } else if (row) {
+      row.style.display = 'none';
+    }
+  }
+
+  function updateEmailType() {
+    const sel = document.getElementById('ctm-type');
+    if (!sel) return;
+    const type = sel.value;
+    const subjectEl = document.getElementById('et-track-id');
+    if (subjectEl) {
+      const trackId = document.getElementById('track-id') ? document.getElementById('track-id').value || '[Internal Tracking ID]' : '[Internal Tracking ID]';
+      subjectEl.textContent = trackId;
+    }
+  }
+
   function toggleAgentType(type) {
     document.getElementById('agent-type-w2').classList.remove('p-coaching','p-pending');
     document.getElementById('agent-type-1099').classList.remove('p-coaching','p-pending');
@@ -474,3 +491,10 @@ tbody td:first-child{font-size:0.82rem;font-weight:600;color:#333;width:160px}
     window._agentType = type;
   }
 
+  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('input', updateEmail);
+    document.addEventListener('change', updateEmail);
+  });
+</script>
+</body>
+</html>
