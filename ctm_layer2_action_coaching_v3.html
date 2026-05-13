@@ -25,6 +25,14 @@ body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:
 .status-chip { border-radius:20px; padding:4px 12px; font-size:.75rem; font-weight:600; }
 .sc-amber { background:#fef3c7; color:var(--amber); }
 .sc-blue { background:#dbeafe; color:var(--blue); }
+.sc-teal { background:#d1fae5; color:var(--teal); }
+.sc-red { background:#fee2e2; color:var(--red); }
+.email-template { background:#f8f9fa; border:1px solid #e0e0e0; border-radius:8px; padding:18px; font-family:Georgia,serif; font-size:0.88rem; line-height:1.75; color:#222; }
+.email-template hr { border:none; border-top:1px solid #ddd; margin:12px 0; }
+.email-var { color:#0d6efd; font-weight:600; }
+.collapsible-header { display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:4px 0; user-select:none; }
+.collapsible-body { display:none; }
+.collapsible-body.open { display:block; }
 .search-bar { background:#fff; border-bottom:1px solid var(--border); padding:12px 28px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .search-bar input { flex:1; min-width:220px; padding:8px 14px; border:1px solid var(--border); border-radius:8px; font-size:.88rem; outline:none; }
 .search-bar input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(15,110,86,.1); }
@@ -369,6 +377,132 @@ textarea { resize:vertical; min-height:80px; }
     <button class="btn-submit" onclick="submitRecord()">Submit coaching record</button>
   </div>
 
+
+  <!-- -- EMAIL NOTIFICATION TEMPLATES (L2) -- -->
+
+  <!-- EMAIL 1: FIRST NOTICE OF NEW COACHING/TRAINING ITEM -->
+  <div class="card" style="margin-top:16px">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="card-title" style="font-size:0.95rem">&#128231; Email 1 — First Notice of New Coaching / Training Item</span>
+        <span class="status-chip sc-teal">TO: AGENT &amp; SALES MANAGER</span>
+      </div>
+      <span style="font-size:1rem;color:#888">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="card-sub" style="margin:10px 0 8px">Sent immediately when the coaching/training record is created. Goes to <strong>Agent</strong> and <strong>Sales Manager</strong>.</p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> Action Required &#8212; Coaching / Training Assignment [<span class="email-var" id="l2-et-track-id">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear <span class="email-var" id="l2-et-agent">[Agent Name]</span>,</p>
+        <br>
+        <p>You have been assigned a coaching and/or training item. Please review the details below and complete all required tasks by the due date.</p>
+        <br>
+        <p><strong>Sales Manager:</strong> <span class="email-var" id="l2-et-sm">[Sales Manager Name]</span></p>
+        <p><strong>Internal Tracking ID #:</strong> <span class="email-var" id="l2-et-track-id2">[Internal Tracking ID]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var" id="l2-et-due-date">[Due Date]</span></p>
+        <p><strong>Agent Instructions:</strong><br><span class="email-var" id="l2-et-instructions">[Agent Instructions]</span></p>
+        <p id="l2-et-module-row"><strong>Required Module(s):</strong> <span class="email-var">[Training Module Only / Coaching Only / Both]</span></p>
+        <p id="l2-et-attach-row"><strong>Attachments:</strong> <span class="email-var">[See attached documents]</span></p>
+        <br>
+        <p>If you have any questions, please contact your compliance team.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 2: REMINDER — TRAINING MODULE REQUIRED BUT NOT COMPLETED -->
+  <div class="card" style="margin-top:8px">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="card-title" style="font-size:0.95rem">&#128231; Email 2 — Reminder: Training Module Not Completed</span>
+        <span class="status-chip sc-amber">TO: AGENT &amp; SALES MANAGER</span>
+      </div>
+      <span style="font-size:1rem;color:#888">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="card-sub" style="margin:10px 0 8px;color:#b45309">
+        Sent when a <strong>Training Module is marked Required</strong> but has not been marked <strong>Completed</strong>. Goes to <strong>Agent</strong> and <strong>Sales Manager</strong>.
+      </p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> Reminder &#8212; Training Module Not Yet Completed [<span class="email-var">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear <span class="email-var">[Agent Name]</span>,</p>
+        <br>
+        <p>This is a reminder that a <strong>required training module</strong> has not yet been completed for your assigned coaching record.</p>
+        <br>
+        <p><strong>Internal Tracking ID #:</strong> <span class="email-var">[Internal Tracking ID]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var">[Due Date]</span></p>
+        <p><strong>Outstanding:</strong> Training Module &#8212; Required but not completed</p>
+        <br>
+        <p>Please complete the required training module as soon as possible.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 3: REMINDER — 1 DAY PRIOR TO DUE DATE (Compliance mailbox) -->
+  <div class="card" style="margin-top:8px">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="card-title" style="font-size:0.95rem">&#128231; Email 3 — Reminder: 1 Day Before Due Date</span>
+        <span class="status-chip sc-teal">TO: COMPLIANCE MAILBOX</span>
+      </div>
+      <span style="font-size:1rem;color:#888">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="card-sub" style="margin:10px 0 8px">
+        Sent <strong>1 day prior to the due date</strong> &#8212; reminder of tasks due sent to the <strong>Compliance mailbox</strong>.
+      </p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> Reminder &#8212; Coaching Item Due Tomorrow [<span class="email-var">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear Compliance Team,</p>
+        <br>
+        <p>The following coaching/training item is due <strong>tomorrow</strong>. Please verify all tasks are on track for timely completion.</p>
+        <br>
+        <p><strong>Internal Tracking ID #:</strong> <span class="email-var">[Internal Tracking ID]</span></p>
+        <p><strong>Agent:</strong> <span class="email-var">[Agent Name]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var">[Due Date]</span></p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 4: PAST DUE NOTIFICATION — Peter -->
+  <div class="card" style="margin-top:8px">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="card-title" style="font-size:0.95rem">&#128231; Email 4 — Past Due Notification</span>
+        <span class="status-chip sc-red">TO: PETER</span>
+      </div>
+      <span style="font-size:1rem;color:#888">&#9660;</span>
+    </div>
+    <div class="collapsible-body">
+      <p class="card-sub" style="margin:10px 0 8px;color:#991b1b">
+        Sent when the coaching/training item is <strong>past due</strong>. Goes to <strong>Peter</strong>.
+      </p>
+      <div class="email-template">
+        <p><strong>Subject:</strong> PAST DUE &#8212; Coaching / Training Item [<span class="email-var">[Internal Tracking ID]</span>]</p>
+        <hr>
+        <p>Dear Peter,</p>
+        <br>
+        <p>The following coaching/training action item is <strong>past due</strong> and requires your attention.</p>
+        <br>
+        <p><strong>Internal Tracking ID #:</strong> <span class="email-var">[Internal Tracking ID]</span></p>
+        <p><strong>Agent:</strong> <span class="email-var">[Agent Name]</span></p>
+        <p><strong>Sales Manager:</strong> <span class="email-var">[Sales Manager Name]</span></p>
+        <p><strong>Due Date:</strong> <span class="email-var">[Due Date]</span></p>
+        <br>
+        <p>Please follow up to ensure this item is resolved promptly.</p>
+        <br>
+        <p>Thank you,<br>Compliance Team</p>
+      </div>
+    </div>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -620,6 +754,13 @@ function toggleAgentType(type) {
   if (target) target.classList.add('p-active');
   window._agentType = type;
 }
+
+  function toggleCollapsible(header) {
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+    const icon = header.querySelector('[style*="color:#888"]');
+    if (icon) icon.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
 </script>
 </body>
 </html>
