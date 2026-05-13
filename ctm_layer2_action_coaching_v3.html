@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTM Layer 2 — Action &amp; Coaching Tracker</title>
+<title>CTM Layer 2 â Action &amp; Coaching Tracker</title>
 <style>
 :root {
   --navy:#0d2b45; --teal:#0f6e56; --amber:#b45309; --red:#b91c1c;
@@ -111,16 +111,16 @@ textarea { resize:vertical; min-height:80px; }
       <h1>Complaint Tracking Module</h1>
       <div class="sub">Action &amp; coaching tracker</div>
     </div>
-    <div class="badge-l2">Layer 2 — Action &#x2191;</div>
+    <div class="badge-l2">Layer 2 â Action &#x2191;</div>
   </div>
   <div class="header-meta">
     <div class="meta-chip"><span>Pulls from Layer 1</span><span>From Layer 1</span></div>
-    <div class="meta-chip"><span>Case number</span><span>🔒 <span id="display-case-num">—</span></span></div>
-    <div class="meta-chip"><span>Internal tracking ID</span><span id="display-tracking-id">—</span></div>
-    <div class="meta-chip"><span>Type</span><span id="display-type-tag" class="l1-tag">—</span></div>
-    <div class="meta-chip"><span>Carrier</span><span id="display-carrier">—</span></div>
-    <div class="meta-chip"><span>Date received (L1)</span><span id="display-date-recv">—</span></div>
-    <div class="meta-chip"><span>Agent</span><span id="display-agent">—</span></div>
+    <div class="meta-chip"><span>Case number</span><span>ð <span id="display-case-num">â</span></span></div>
+    <div class="meta-chip"><span>Internal tracking ID</span><span id="display-tracking-id">â</span></div>
+    <div class="meta-chip"><span>Type</span><span id="display-type-tag" class="l1-tag">â</span></div>
+    <div class="meta-chip"><span>Carrier</span><span id="display-carrier">â</span></div>
+    <div class="meta-chip"><span>Date received (L1)</span><span id="display-date-recv">â</span></div>
+    <div class="meta-chip"><span>Agent</span><span id="display-agent">â</span></div>
   </div>
   <div class="status-chips">
     <div class="status-chip sc-amber">Coaching status: <span id="coaching-status-txt">In progress</span></div>
@@ -129,7 +129,7 @@ textarea { resize:vertical; min-height:80px; }
 </div>
 
 <div class="search-bar">
-  <input type="text" id="search-input" placeholder="Search by case #, carrier, agent name, or tracking ID…" />
+  <input type="text" id="search-input" placeholder="Search by case #, carrier, agent name, or tracking IDâ¦" />
   <button onclick="runSearch()">Search</button>
   <button class="export-btn" onclick="exportToExcel()">Export to Excel</button>
   <div class="search-results" id="search-results"></div>
@@ -139,13 +139,13 @@ textarea { resize:vertical; min-height:80px; }
 
   <!-- Session warning -->
   <div class="session-warning">
-    ⚠️ <span><strong>Same-browser note:</strong> Auto-population from Layer 1 uses browser localStorage. Both forms must be used in the same browser on the same device. Data does not sync across devices or browsers.</span>
+    â ï¸ <span><strong>Same-browser note:</strong> Auto-population from Layer 1 uses browser localStorage. Both forms must be used in the same browser on the same device. Data does not sync across devices or browsers.</span>
   </div>
 
   <!-- CASE IDENTIFICATION -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-navy">🗂️</div>
+      <div class="card-icon ci-navy">ðï¸</div>
       <div>
         <div class="card-title">Case identification</div>
         <div class="card-sub">Link this coaching record to the compliance intake in Layer 1</div>
@@ -153,12 +153,12 @@ textarea { resize:vertical; min-height:80px; }
     </div>
     <div class="card-body">
       <div class="l1-banner">
-        <span class="arrow">↑</span>
+        <span class="arrow">â</span>
         <div>
           <div class="l1-label">Pulls from Layer 1</div>
           <div class="l1-tags">
-            <span class="l1-tag tag-ctm" id="display-type-tag2">—</span>
-            <span class="l1-tag" id="display-carrier2">—</span>
+            <span class="l1-tag tag-ctm" id="display-type-tag2">â</span>
+            <span class="l1-tag" id="display-carrier2">â</span>
           </div>
         </div>
       </div>
@@ -166,7 +166,7 @@ textarea { resize:vertical; min-height:80px; }
         <div class="form-group">
           <label>Case type <span class="req">*</span></label>
           <select id="case-type" onchange="updateTypeTag()">
-            <option value="">Select type…</option>
+            <option value="">Select typeâ¦</option>
             <option>CTM</option>
             <option>Grievance</option>
             <option>Audit</option>
@@ -186,9 +186,9 @@ textarea { resize:vertical; min-height:80px; }
           <select id="carrier-select">
             <option value="">Select carrier</option>
             <option>Aetna</option><option>Allstate</option>
-            <option>BCBS – IL (HCSC)</option><option>BCBS – MT (HCSC)</option>
-            <option>BCBS – NM (HCSC)</option><option>BCBS – OK (HCSC)</option>
-            <option>BCBS – TX (HCSC)</option><option>CarePlus</option>
+            <option>BCBS â IL (HCSC)</option><option>BCBS â MT (HCSC)</option>
+            <option>BCBS â NM (HCSC)</option><option>BCBS â OK (HCSC)</option>
+            <option>BCBS â TX (HCSC)</option><option>CarePlus</option>
             <option>CareSource</option><option>Centene</option>
             <option>Cigna</option><option>Devoted Health</option>
             <option>Elevance</option><option>Florida Blue</option>
@@ -215,6 +215,11 @@ textarea { resize:vertical; min-height:80px; }
           </div>
           <span style="font-size:.75rem;color:#888;margin-top:2px">Select W2 or 1099</span>
         </div>
+      <div class="form-group full-width" style="margin-top:12px">
+        <label>Call Recording Link <span style="font-size:.75rem;color:#888;font-weight:400">(from Layer 1 / Magnemite)</span></label>
+        <input type="url" id="call-link" placeholder="Auto-filled from Layer 1 or paste Magnemite link" style="width:100%" />
+        <span style="font-size:.72rem;color:#888;margin-top:3px;display:block">Link will be included in agent email notifications.</span>
+      </div>
       </div>
     </div>
   </div>
@@ -222,14 +227,14 @@ textarea { resize:vertical; min-height:80px; }
   <!-- DETERMINATION -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-teal">⚖️</div>
+      <div class="card-icon ci-teal">âï¸</div>
       <div>
         <div class="card-title">Determination</div>
         <div class="card-sub">Auto-syncs from Layer 1 when Internal Tracking ID or Carrier Case Number is entered</div>
       </div>
     </div>
     <div class="card-body">
-      <div class="det-sync-banner" id="det-sync-banner">⚡ Determination loaded from Layer 1 record</div>
+      <div class="det-sync-banner" id="det-sync-banner">â¡ Determination loaded from Layer 1 record</div>
       <div class="pill-group" id="det-pills">
         <div class="pill" onclick="toggleDet(this)">Founded</div>
         <div class="pill" onclick="toggleDet(this)">Unfounded</div>
@@ -242,7 +247,7 @@ textarea { resize:vertical; min-height:80px; }
   <!-- ACTION TAKEN -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-teal">📋</div>
+      <div class="card-icon ci-teal">ð</div>
       <div>
         <div class="card-title">Action taken</div>
         <div class="card-sub">Document actions and instructions for this coaching record</div>
@@ -252,11 +257,11 @@ textarea { resize:vertical; min-height:80px; }
       <div class="form-grid">
         <div class="form-group full">
           <label>Action taken <span class="req">*</span></label>
-          <textarea id="action-taken" rows="3" placeholder="Describe the action taken…"></textarea>
+          <textarea id="action-taken" rows="3" placeholder="Describe the action takenâ¦"></textarea>
         </div>
         <div class="form-group full">
           <label>Agent instructions</label>
-          <textarea id="agent-instructions" rows="3" placeholder="Specific instructions given to the agent…"></textarea>
+          <textarea id="agent-instructions" rows="3" placeholder="Specific instructions given to the agentâ¦"></textarea>
         </div>
       </div>
     </div>
@@ -265,14 +270,14 @@ textarea { resize:vertical; min-height:80px; }
   <!-- COACHING & TRAINING -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-purple">🎓</div>
+      <div class="card-icon ci-purple">ð</div>
       <div>
         <div class="card-title">Coaching &amp; training assignment</div>
         <div class="card-sub">Routes to agent + manager</div>
       </div>
     </div>
     <div class="card-body">
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">📣 <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the agent and their sales manager.</p>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:14px;">ð£ <strong>Reminder routing:</strong> Incomplete coaching or training reminders route to the agent and their sales manager.</p>
       <div class="coaching-grid">
         <div class="form-group">
           <label>Assignment type <span class="req">*</span></label>
@@ -310,7 +315,7 @@ textarea { resize:vertical; min-height:80px; }
   <!-- OVERALL STATUS -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-amber">📊</div>
+      <div class="card-icon ci-amber">ð</div>
       <div>
         <div class="card-title">Overall status</div>
         <div class="card-sub">Current status of this coaching record</div>
@@ -327,10 +332,10 @@ textarea { resize:vertical; min-height:80px; }
   <!-- ATTACHMENTS -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon ci-teal">📎</div>
+      <div class="card-icon ci-teal">ð</div>
       <div>
         <div class="card-title">Attachments &amp; documentation</div>
-        <div class="card-sub">No limit — delete and replace files at any time</div>
+        <div class="card-sub">No limit â delete and replace files at any time</div>
       </div>
     </div>
     <div class="card-body">
@@ -339,7 +344,7 @@ textarea { resize:vertical; min-height:80px; }
         ondragover="event.preventDefault(); this.classList.add('drag-over')"
         ondragleave="this.classList.remove('drag-over')"
         onclick="document.getElementById('file-input').click()">
-        <div class="dz-icon">📁</div>
+        <div class="dz-icon">ð</div>
         <div class="dz-text">Drop files or click to upload</div>
         <div class="dz-sub">Call recordings, written statements, PIP documents, screenshots, agent forms</div>
       </div>
@@ -349,8 +354,8 @@ textarea { resize:vertical; min-height:80px; }
   </div>
 
   <div class="footer-note">
-    <span class="icon">🔒</span>
-    <span>Report access: Chris, Christine, Bernice &amp; Peter have read-only access to L1 &amp; L2 reports. Changes require edit permissions — contact Kanisha or Tracy W.</span>
+    <span class="icon">ð</span>
+    <span>Report access: Chris, Christine, Bernice &amp; Peter have read-only access to L1 &amp; L2 reports. Changes require edit permissions â contact Kanisha or Tracy W.</span>
   </div>
 
   <div class="action-row">
@@ -363,7 +368,7 @@ textarea { resize:vertical; min-height:80px; }
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Toast notification ──
+// ââ Toast notification ââ
 function showToast(msg, duration) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -371,7 +376,7 @@ function showToast(msg, duration) {
   setTimeout(() => t.classList.remove('show'), duration || 3000);
 }
 
-// ── Pill helpers ──
+// ââ Pill helpers ââ
 const allPills = ['p-pass','p-fail','p-review','p-pending','p-closed','p-coaching',
                   'p-unfounded','p-substantiated','p-partial','p-inconclusive'];
 
@@ -407,14 +412,14 @@ function toggleStatus(el, type) {
 function updateTypeTag() {
   const val = document.getElementById('case-type').value;
   document.querySelectorAll('#display-type-tag, #display-type-tag2').forEach(tag => {
-    tag.textContent = val || '—';
+    tag.textContent = val || 'â';
     tag.className = 'l1-tag';
     const cls = {CTM:'tag-ctm',Grievance:'tag-grievance',Audit:'tag-audit','Trend coaching':'tag-trend'};
     if (cls[val]) tag.classList.add(cls[val]);
   });
 }
 
-// ── Auto-populate from L1 via localStorage ──
+// ââ Auto-populate from L1 via localStorage ââ
 function lookupFromL1() {
   const tid = (document.getElementById('internal-tracking-id').value || '').trim();
   const ccn = (document.getElementById('carrier-case-num').value || '').trim();
@@ -457,6 +462,7 @@ function lookupFromL1() {
       setVal('date-received', d.dateRecv);
       setVal('carrier-due-date', d.dueDate);
       setVal('agent-instructions', d.agentInstr);
+      setVal('call-link', d.callLink || '');
 
       // Update header meta chips
       if (d.carrier) {
@@ -468,12 +474,12 @@ function lookupFromL1() {
       if (tid)          document.getElementById('display-tracking-id').textContent = tid;
       if (ccn)          document.getElementById('display-case-num').textContent = ccn;
 
-      showToast('✅ Layer 1 data loaded for ' + key);
+      showToast('â Layer 1 data loaded for ' + key);
     }
   } catch(e){}
 }
 
-// ── Search ──
+// ââ Search ââ
 function runSearch() {
   const q = document.getElementById('search-input').value.trim().toLowerCase();
   const resultsDiv = document.getElementById('search-results');
@@ -499,8 +505,8 @@ function runSearch() {
       matches.forEach(rec => {
         const item = document.createElement('div');
         item.className = 'search-result-item';
-        item.innerHTML = '<strong>' + (rec.internalId||'—') + '</strong><span>' +
-          (rec.caseNum||'No case #') + '</span><span>' + (rec.carrier||'—') + '</span><span>' + (rec.agent||'—') + '</span>';
+        item.innerHTML = '<strong>' + (rec.internalId||'â') + '</strong><span>' +
+          (rec.caseNum||'No case #') + '</span><span>' + (rec.carrier||'â') + '</span><span>' + (rec.agent||'â') + '</span>';
         item.onclick = () => {
           document.getElementById('internal-tracking-id').value = rec.internalId || '';
           document.getElementById('carrier-case-num').value = rec.caseNum || '';
@@ -517,7 +523,7 @@ function runSearch() {
 }
 document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(); });
 
-// ── Validation ──
+// ââ Validation ââ
 function clearErrors() {
   document.querySelectorAll('.field-error').forEach(e => e.classList.remove('field-error'));
   document.querySelectorAll('.error-msg').forEach(e => e.remove());
@@ -578,15 +584,36 @@ function validateForm() {
   return true;
 }
 
-// ── Collect form data ──
+// ââ Collect form data ââ
 function collectData() {
   return {
     internalId:   (document.getElementById('internal-tracking-id').value || '').trim(),
-    caseNum:      (document.getElementById('
-  function toggleAgentType(type) {
-    document.getElementById('agent-type-w2').classList.remove('p-coaching','p-pending');
-    document.getElementById('agent-type-1099').classList.remove('p-coaching','p-pending');
-    document.getElementById('agent-type-' + type.toLowerCase()).classList.add('p-coaching');
-    window._agentType = type;
-  }
+    caseNum:      (document.getElementById('carrier-case-num').value || '').trim(),
+    caseNum2:     (document.getElementById('carrier-case-num').value || '').trim(),
+    carrier:      (document.getElementById('carrier-select') ? document.getElementById('carrier-select').value || '' : ''),
+    dateRecv:     (document.getElementById('date-received') ? document.getElementById('date-received').value || '' : ''),
+    agentName:    (document.getElementById('agent-name') ? document.getElementById('agent-name').value || '' : ''),
+    callLink:     (document.getElementById('call-link') ? document.getElementById('call-link').value || '' : ''),
+    actionTaken:  (document.getElementById('action-taken') ? document.getElementById('action-taken').value || '' : ''),
+    agentInstr:   (document.getElementById('agent-instructions') ? document.getElementById('agent-instructions').value || '' : ''),
+    dueDate:      (document.getElementById('due-date') ? document.getElementById('due-date').value || '' : ''),
+    dateAssigned: (document.getElementById('date-assigned') ? document.getElementById('date-assigned').value || '' : ''),
+    dateCompleted:(document.getElementById('date-completed') ? document.getElementById('date-completed').value || '' : ''),
+    salesManager: (document.getElementById('sales-manager') ? document.getElementById('sales-manager').value || '' : ''),
+    coachPerson:  (document.getElementById('coach-person') ? document.getElementById('coach-person').value || '' : ''),
+    agentType:    window._agentType || '',
+  };
+}
 
+function toggleAgentType(type) {
+  const w2  = document.getElementById('agent-type-w2');
+  const i99 = document.getElementById('agent-type-1099');
+  if (w2)  w2.classList.remove('p-active','pill-active','active');
+  if (i99) i99.classList.remove('p-active','pill-active','active');
+  const target = document.getElementById('agent-type-' + type.toLowerCase());
+  if (target) target.classList.add('p-active');
+  window._agentType = type;
+}
+</script>
+</body>
+</html>
