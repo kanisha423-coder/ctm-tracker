@@ -178,6 +178,11 @@ textarea { resize:vertical; min-height:80px; }
           <input type="text" id="carrier-case-num" placeholder="Leave blank if not yet assigned" oninput="lookupFromL1()" />
         </div>
         <div class="form-group">
+          <label>Affiliated Case #</label>
+          <input type="text" id="affiliated-case" placeholder="Case number of related case, if applicable" />
+          <span class="field-hint">Group related cases by entering the associated case number.</span>
+        </div>
+        <div class="form-group">
           <label>Internal tracking ID <span class="req">*</span></label>
           <input type="text" id="internal-tracking-id" placeholder="e.g. IDITC-0847" oninput="lookupFromL1()" />
         </div>
@@ -240,6 +245,7 @@ textarea { resize:vertical; min-height:80px; }
         <div class="pill" onclick="toggleDet(this)">Unfounded</div>
         <div class="pill p-pending" onclick="toggleDet(this)">Pending</div>
         <div class="pill" onclick="toggleDet(this)">NA</div>
+        <div class="pill" onclick="toggleDet(this)">Inconclusive</div>
       </div>
     </div>
   </div>
@@ -301,8 +307,8 @@ textarea { resize:vertical; min-height:80px; }
           <input type="date" id="date-completed" />
         </div>
         <div class="form-group full">
-          <label>Sales Manager</label>
-          <input type="text" id="sales-manager" placeholder="May differ from manager at time of complaint (see Layer 1)" />
+          <label>Sales Manager on</label>
+          <input type="text" id="sales-manager" placeholder="May differ from manager on complaint (see Layer 1)" />
         </div>
         <div class="form-group full">
           <label>Person who conducted coaching <span class="req">*</span></label>
